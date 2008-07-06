@@ -48,8 +48,7 @@ SettingsDialog::SettingsDialog() : CDialog(IDD_SETTINGS) {
 	}
 	MyLayoutList.initialize(*this);
 
-	// Разрешаем системе самостоятельно выбрать элемент
-	// управления, на который установить фокус ввода
+	// Позволяем системе выбрать элемент управления и установить на него фокус
 	return TRUE;
 }
 

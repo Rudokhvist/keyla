@@ -61,13 +61,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE |
 CAPTION "Настройки keyla"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Применить",ID_SETTINGS_BUTTON_APPLY,90,186,50,14
-    PUSHBUTTON      "ОК",ID_SETTINGS_BUTTON_OK,144,186,50,14
-    PUSHBUTTON      "Отмена",ID_SETTINGS_BUTTON_CANCEL,198,186,50,14
     LTEXT           "Сочетание клавиш для переключения на следующую расладку",
                     ID_SETTINGS_COMMON_STATIC1,12,24,220,8
     EDITTEXT        ID_SETTINGS_EDIT_KEY,12,36,228,14,ES_AUTOHSCROLL | 
-                    ES_READONLY
+                    ES_READONLY | NOT WS_TABSTOP
     CONTROL         "Отлючить сочетание клавиш из настроек Windows",
                     ID_SETTINGS_CHECK_EATWINDOWSKEY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,12,60,189,10
@@ -88,6 +85,9 @@ BEGIN
                     10
     CONTROL         "",ID_SETTINGS_TABS,"SysTabControl32",WS_TABSTOP,6,6,240,
                     174
+	PUSHBUTTON      "Применить",ID_SETTINGS_BUTTON_APPLY,90,186,50,14
+    DEFPUSHBUTTON   "ОК",ID_SETTINGS_BUTTON_OK,144,186,50,14
+    PUSHBUTTON      "Отмена",ID_SETTINGS_BUTTON_CANCEL,198,186,50,14
 END
 
 /////////////////////////////////////////////////////////////////////////////

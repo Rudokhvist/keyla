@@ -9,4 +9,7 @@ namespace settingsWindow {
 	// Показать окно настроек
 	void show();
 
+	// Узнать, активно ли в данный момент окно настроек
+	bool isShown();
+
 }

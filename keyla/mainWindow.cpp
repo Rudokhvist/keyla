@@ -34,15 +34,22 @@ protected:
 
 		// Сообщение от иконки в трее
 		if (message == mainWindow::TrayIconMessage && wparam == mainWindow::TrayIconId)
+			// NOTE: Во избежание недоразумений, не позволяем использовать иконку, когда активно окно настроек
 			switch (lparam) {
 				case WM_CONTEXTMENU:
 				case WM_RBUTTONUP:
-					trayIcon::showMenu();
+					if (settingsWindow::isShown()) 
+						MessageBeep(-1);
+					else
+						trayIcon::showMenu();
 					return 0;
 				case NIN_KEYSELECT:
 				case NIN_SELECT:
 				case WM_LBUTTONUP:
-					settingsWindow::show();
+					if (settingsWindow::isShown()) 
+						MessageBeep(-1);
+					else
+						settingsWindow::show();
 					return 0;
 			}
 		
