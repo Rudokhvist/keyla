@@ -2,10 +2,10 @@
 #labels Featured
 
 Иконка программы в трее. По щелчку правой кнопкой мыши вызывается меню.
-[http://code.google.com/p/keyla/source/browse/trunk/Screenshots/TrayIcon_Rus.jpg]
+http://code.google.com/p/keyla/source/browse/trunk/Screenshots/TrayIcon_Rus.jpg
 
 Общие настройки программы.
-[http://code.google.com/p/keyla/source/browse/trunk/Screenshots/SettingsDialog_Common_Rus.jpg]
+http://code.google.com/p/keyla/source/browse/trunk/Screenshots/SettingsDialog_Common_Rus.jpg
 
 Настройка сочетаний клавиш для каждой раскладки в отдельности. Сочетания клавиш не назначены. Чтобы назначить сочетание клавиш, щёлкните левой кнопкой по ячейке в столбце "Сочетание клавиш". Чтобы очистить сочетание клавиш, щёлкните правой кнопкой и выберите "Очистить".
-[http://code.google.com/p/keyla/source/browse/trunk/Screenshots/SettingsDialog_Layouts_Rus.jpg]
+http://code.google.com/p/keyla/source/browse/trunk/Screenshots/SettingsDialog_Layouts_Rus.jpg
