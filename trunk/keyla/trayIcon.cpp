@@ -4,7 +4,6 @@
 #include "res/resource.h"
 #include "settings.h"
 #include "trayIcon.h"
-#include "util/FatalError.h"
 
 #include <algorithm>
 #include <map>

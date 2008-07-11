@@ -1,19 +1,24 @@
 #include "common.h"
 
-#include "gui/SettingsDialog.h"
+#include "gui/GuiSettingsWindow.h"
 #include "mainWindow.h"
 #include "settingsWindow.h"
 
-static SettingsDialog MySettingsDialog;
+// Флажок устанавливается, когда окно настроек активно
+static bool shown = false;
 
 namespace settingsWindow {
 
 	void show() {
-		MySettingsDialog.DoModal();
+		assert(!shown);
+
+		shown = true;
+		GuiSettingsWindow().DoModal();
+		shown = false;
 	}
 
 	bool isShown() {
-		return IsWindowVisible(MySettingsDialog) != 0;
+		return shown;
 	}
 
 }

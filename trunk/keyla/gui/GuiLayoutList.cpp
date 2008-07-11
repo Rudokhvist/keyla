@@ -1,18 +1,17 @@
 #include "../common.h"
-#include "GuiLayoutList.h"
-#include "SettingsDialog.h"
 #include "../layoutList.h"
+#include "../settings.h"
+#include "GuiLayoutList.h"
+#include "GuiSettingsWindow.h"
 
 #include <commctrl.h>
-
-using namespace std;
 
 HotKeyEditDelegate::HotKeyEditDelegate() : m_layoutList(0) {
 }
 
-HWND HotKeyEditDelegate::Create(LayoutList & layoutList) {
+HWND HotKeyEditDelegate::Create(GuiLayoutList & layoutList) {
 	m_layoutList = &layoutList;
-	return HotKeyEdit::Create(layoutList);
+	return GuiHotKey::Create(layoutList);
 }
 
 /* virtual */ LRESULT HotKeyEditDelegate::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
@@ -25,46 +24,52 @@ HWND HotKeyEditDelegate::Create(LayoutList & layoutList) {
 			m_layoutList->delegateDeactivated();
 			break;
 	}
-	return HotKeyEdit::WndProc(window, message, wparam, lparam);
+	return GuiHotKey::WndProc(window, message, wparam, lparam);
 }
 
-LayoutList::LayoutList() : m_settingsDialog(0), m_delegateActive(false), m_delegateRow(0) {
+GuiLayoutList::GuiLayoutList() : m_delegateActive(false), m_delegateRow(0) {
 }
 
-void LayoutList::initialize(SettingsDialog & settingsDialog) {
-	m_settingsDialog = &settingsDialog;
+void GuiLayoutList::initialize() {
 
 	// Элемент управления должен быть уж создан
 	HWND hwnd = GetHwnd();
 	assert(hwnd != 0);
 
+	// Создание делегата
 	m_delegate.DestroyWindow();
 	m_delegate.Create(*this);
 
+	// Настройка делегата
 	HFONT font = reinterpret_cast<HFONT>(SendMessage(GetHwnd(), WM_GETFONT, 0, 0));
 	SendMessage(m_delegate, WM_SETFONT, reinterpret_cast<WPARAM>(font), 0);
 
+	// Настройка списка
 	ListView_SetExtendedListViewStyle(hwnd, LVS_EX_GRIDLINES);
 
+	// Добавление колонок
 	LVCOLUMN lvc = {LVCF_TEXT};
 	lvc.pszText = TEXT("Язык");
 	ListView_InsertColumn(hwnd, 0, &lvc);
 	lvc.pszText = TEXT("Сочетание клавиш");
 	ListView_InsertColumn(hwnd, 1, &lvc);
 
+	// Сохранение локальной копии настроек
+	m_layoutHotKeys = settings::Settings.layoutHotKeys;
+
 	update();
 }
 
-void LayoutList::update() {
+void GuiLayoutList::update() {
 
 	// Элемент управления должен быть уж создан
 	HWND hwnd = GetHwnd();
 	assert(hwnd != 0);
 
-	for (size_t i = 0; i < layoutList::LayoutList.size(); ++i) {
-		HKL layout = layoutList::LayoutList[i];
+	for (size_t i = 0; i < layoutList::GuiLayoutList.size(); ++i) {
+		HKL layout = layoutList::GuiLayoutList[i];
 		tstring layoutLanguage = layoutList::layoutLanguage(layout);
-		tstring layoutHotKey = m_settingsDialog->m_settings.layoutHotKeys[i].text();
+		tstring layoutHotKey = m_layoutHotKeys[i].text();
 
 		LVITEM lvi = {0};
 		lvi.mask = LVIF_TEXT;
@@ -79,12 +84,16 @@ void LayoutList::update() {
 	ListView_SetColumnWidth(hwnd, 1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-void LayoutList::delegateDeactivated() {
+void GuiLayoutList::apply() {
+	settings::Settings.layoutHotKeys = m_layoutHotKeys;
+}
+
+void GuiLayoutList::delegateDeactivated() {
 
 	// Метод может вызываться "для надёжности", то есть когда, возможно, делагат уже скрыт
 	if (!m_delegateActive) return;
 
-	m_settingsDialog->m_settings.layoutHotKeys[m_delegateRow] = m_delegate.hotKey();
+	m_layoutHotKeys[m_delegateRow] = m_delegate.hotKey();
 	ListView_SetItemText(GetHwnd(), m_delegateRow, 1, const_cast<LPTSTR>(m_delegate.hotKey().text().c_str()));
 	
 	verify(ShowWindow(m_delegate, SW_HIDE));
@@ -93,10 +102,10 @@ void LayoutList::delegateDeactivated() {
 	m_delegateRow = 0;
 }
 
-/* virtual */ LRESULT LayoutList::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+/* virtual */ LRESULT GuiLayoutList::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
 	switch (message) {
 		case WM_LBUTTONUP: {
-			// По двойному щелчку на ячейке второго столбца начинаем
+			// По щелчку на ячейке второго столбца начинаем
 			// редактирование в этой ячейке сочетания клавиш
 
 			POINT pt;
@@ -115,7 +124,7 @@ void LayoutList::delegateDeactivated() {
 			SetWindowPos(m_delegate, 0, rc.left + 1, rc.top, rc.right - rc.left, rc.bottom - rc.top - 1, SWP_NOZORDER | SWP_SHOWWINDOW);
 			
 			SetFocus(m_delegate);
-			m_delegate.setHotKey(m_settingsDialog->m_settings.layoutHotKeys[row]);
+			m_delegate.setHotKey(m_layoutHotKeys[row]);
 
 			m_delegateActive = true;			
 			m_delegateRow = row;

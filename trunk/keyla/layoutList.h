@@ -10,7 +10,7 @@
 namespace layoutList {
 
 	// Объект для хранения списка раскладок
-	extern std::vector<HKL> LayoutList;
+	extern std::vector<HKL> GuiLayoutList;
 
 	// Загрузить список раскладок
 	void load();

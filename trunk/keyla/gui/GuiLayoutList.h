@@ -1,24 +1,25 @@
 #pragma once
 
-#include "HotKeyEdit.h"
-#include "../../win32pp/WinCore.h"
+#include "GuiHotKey.h"
+#include "../../win32xx/WinCore.h"
 
-class LayoutList;
-class SettingsDialog;
+#include <vector>
+
+class GuiLayoutList;
 
 //
 // Вспомотельныей класс элемента управления для выбора сочетания клавиш
 // для любой раскладки в списке
 //
-class HotKeyEditDelegate : public HotKeyEdit {
+class HotKeyEditDelegate : public GuiHotKey {
 public:
 
 	// Конструктор
 	HotKeyEditDelegate();
 
 	// Переопределение метода базового класса. Этому классу требуется
-	// не просто HWND родительского окна, но ссылка на LayoutList
-	HWND Create(LayoutList & layoutList);
+	// не просто HWND родительского окна, но ссылка на GuiLayoutList
+	HWND Create(GuiLayoutList & layoutList);
 
 protected:
 
@@ -27,7 +28,7 @@ protected:
 private:
 
 	// Ссылка на список раскладок, который владеет делегатом
-	LayoutList * m_layoutList;
+	GuiLayoutList * m_layoutList;
 };
 
 //
@@ -38,19 +39,22 @@ private:
 // элементу управления ListView с помощью Attach.
 // Удостоверьтесь, что элемент управления имеет стиль Report.
 //
-class LayoutList : public CWnd{
+class GuiLayoutList : public CWnd{
 public:
 
 	// Конструктор
-	LayoutList();
+	GuiLayoutList();
 
 	// Инициализировать содержимое элемента управления.
 	// Метод update вызывается автоматически
 	// settingsWindow - окно, в котором расположен элемент управления
-	void initialize(SettingsDialog & settingsDialog);
+	void initialize();
 
 	// Обновить содержимое элемента управления
 	void update();
+
+	// Применить сделанные изменения (внести их в глобальные настройки)
+	void apply();
 
 	// Метод вызывается из объекта m_delegate, когда с делегата был снят фокус.
 	// Введённую информацию заносим в таблицу, а делегат скрываем
@@ -62,8 +66,8 @@ protected:
 
 private:
 
-	// Диалоговое окно, которому принадлежим
-	SettingsDialog * m_settingsDialog;
+	// Локальная копия настроек сочетаний клавиш для раскладок
+	std::vector<HotKey> m_layoutHotKeys;
 
 	// Флажок, который устанавливается, есть идёт редакирования сочетания клавиш
 	// (показан и активен делегат)

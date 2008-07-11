@@ -28,8 +28,8 @@ namespace core {
 		HWND hwnd = GetForegroundWindow();
 		HKL layout = GetKeyboardLayout(GetWindowThreadProcessId(hwnd, 0));
 		
-		vector<HKL>::iterator begin = layoutList::LayoutList.begin();
-		vector<HKL>::iterator end = layoutList::LayoutList.end();
+		vector<HKL>::iterator begin = layoutList::GuiLayoutList.begin();
+		vector<HKL>::iterator end = layoutList::GuiLayoutList.end();
 		vector<HKL>::iterator it = find(begin, end, layout);
 		if (it == end) {
 			assert(false);
@@ -43,7 +43,7 @@ namespace core {
 	}
 
 	void setLayout(unsigned int index) {
-		::setLayout( GetForegroundWindow(), layoutList::LayoutList[index] );
+		::setLayout( GetForegroundWindow(), layoutList::GuiLayoutList[index] );
 	}
 
 	void activeWindowChanged(HWND activeWindow, HKL layout) {
