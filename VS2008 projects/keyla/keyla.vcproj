@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
@@ -44,7 +44,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -94,8 +94,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
@@ -118,7 +118,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -175,14 +175,6 @@
 			Name="util"
 			>
 			<File
-				RelativePath=".\util\FatalError.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\util\FatalError.h"
-				>
-			</File>
-			<File
 				RelativePath=".\util\HotKey.cpp"
 				>
 			</File>
@@ -195,11 +187,11 @@
 			Name="res"
 			>
 			<File
-				RelativePath=".\res\Icon.ico"
+				RelativePath=".\res\Generic.exe.manifest"
 				>
 			</File>
 			<File
-				RelativePath=".\res\keyla.exe.manifest"
+				RelativePath=".\res\Icon.ico"
 				>
 			</File>
 			<File
@@ -223,19 +215,41 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gui\GuiHotKey.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gui\GuiHotKey.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gui\GuiLayoutList.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\gui\GuiLayoutList.h"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\gui\HotKeyEdit.cpp"
+				RelativePath=".\gui\GuiSettingsWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\gui\HotKeyEdit.h"
+				RelativePath=".\gui\GuiSettingsWindow.h"
 				>
 			</File>
 			<File
@@ -252,22 +266,6 @@
 			</File>
 			<File
 				RelativePath=".\gui\Menu.h"
-				>
-			</File>
-			<File
-				RelativePath=".\gui\SettingsDialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\gui\SettingsDialog.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="external"
-			>
-			<File
-				RelativePath="..\win32pp\WinCore.cpp"
 				>
 			</File>
 		</Filter>

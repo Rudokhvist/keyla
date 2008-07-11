@@ -1,8 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "keyla", "keyla\keyla.vcproj", "{A850C0B9-606E-4B47-BB99-D0A679AA3987}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C536715F-9F07-4D45-87F6-95E212CA81A0} = {C536715F-9F07-4D45-87F6-95E212CA81A0}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32pp", "win32pp\win32pp.vcproj", "{C536715F-9F07-4D45-87F6-95E212CA81A0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32xx", "win32xx\win32xx.vcproj", "{C536715F-9F07-4D45-87F6-95E212CA81A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

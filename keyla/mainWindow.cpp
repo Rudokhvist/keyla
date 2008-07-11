@@ -4,9 +4,9 @@
 #include "res/resource.h"
 #include "settingsWindow.h"
 #include "trayIcon.h"
-#include "../win32pp/WinCore.h"
+#include "../win32xx/WinCore.h"
 
-class MainWindowClass : public CWnd {
+class MainWindow : public CWnd {
 protected:
 
 	virtual void PreRegisterClass(WNDCLASS & wc) {
@@ -18,11 +18,17 @@ protected:
 	}
 
 	virtual void PreCreate(CREATESTRUCT & cs) {
-		CWnd::PreCreate(cs);
-
 		// Окно занимается только обработкой сообщений. С пользователем
 		// напрямую не взаимодействует, поэтому должно быть скрыто
 		cs.style &= ~WS_VISIBLE;
+
+		// NOTE: Чтобы реализация базового класса не затёрла изменения в стилях,
+		// нужно установить cs.style != 0
+		cs.style |= WS_BORDER;
+
+		// NOTE: Сначала изменяем параметры, потом вызываем метод базового класса.
+		// Того требует реализация класса CWnd
+		CWnd::PreCreate(cs);
 	}
 
 	virtual void OnCreate() {
@@ -85,12 +91,12 @@ protected:
 		return CWnd::OnCommand(wparam, lparam);
 	}
 
-} MainWindow;
+} MyMainWindow;
 
 namespace mainWindow {
 
 	void create() {
-		MainWindow.Create();
+		MyMainWindow.Create();
 	}
 
 }

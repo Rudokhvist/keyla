@@ -7,7 +7,7 @@ Icon::Icon() : m_icon(0) {
 }
 
 Icon::Icon(LPCTSTR resourceName) {
-	const unsigned int flags = LR_LOADFROMFILE | LR_LOADTRANSPARENT;
+	const unsigned int flags = LR_LOADTRANSPARENT;
 	HGDIOBJ obj = LoadImage(GetModuleHandle(0), resourceName, IMAGE_ICON, 0, 0, flags);
 	m_icon = static_cast<HICON>(obj);
 	assert(m_icon != 0);
