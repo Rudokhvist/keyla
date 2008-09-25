@@ -1,4 +1,5 @@
 #include "common.h"
+#include "application.h"
 #include "layoutList.h"
 #include "mainWindow.h"
 #include "res/resource.h"
@@ -21,7 +22,20 @@ static const LPCTSTR Tooltip = TEXT("keyla - переключатель раскладок клавиатуры"
 // Словарь с иконками для каждой раскладки
 // ключ - строковое представление language id ракладки
 // значение - описатель иконки
-static map<tstring, HICON> LayoutIcons; 
+class TLayoutIcons : public map<pair<tstring, bool>, HICON> {
+public:
+
+	using map<pair<tstring, bool>, HICON>::find;
+	iterator find(const tstring & langid) {
+		return find(make_pair(langid, Application::GetApp()->isActive()));
+	}
+
+	using map<pair<tstring, bool>, HICON>::insert;
+	pair<iterator, bool> insert(const tstring & langid, HICON icon) {
+		return insert(make_pair(make_pair(langid, Application::GetApp()->isActive()), icon));
+	}
+};
+static TLayoutIcons LayoutIcons; 
 
 namespace trayIcon {
 
@@ -51,13 +65,16 @@ namespace trayIcon {
 	void indicateLayout(HKL layout) {
 		HICON icon = 0;
 		tstring langid = layoutList::layoutLangId(layout);
-		map<tstring, HICON>::const_iterator it = LayoutIcons.find(langid);
+		TLayoutIcons::const_iterator it = LayoutIcons.find(langid);
 		if (it != LayoutIcons.end()) {
 			// Иконка уже была загружена
 			icon = it->second;
 		} else {
 			// Загружаем иконку
-			tstring path = TEXT("icons\\") + langid + TEXT(".ico");
+
+			tstring path = TEXT("icons\\") + langid;
+			path += Application::GetApp()->isActive() ? TEXT(".ico") : TEXT("_grayscale.ico");
+
 			icon = static_cast<HICON>(LoadImage(0, path.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT));
 			if (icon == 0) {
 				// Иконка не найдена. Используем нашу стандартную иконку
@@ -66,7 +83,7 @@ namespace trayIcon {
 			} else {
 				// Иконка загружена. Добавляем её в словарь
 				// NOTE: Интересно, передача в insert нашего итератора ускорит вставку???
-				LayoutIcons.insert(make_pair(langid, icon));
+				LayoutIcons.insert(langid, icon);
 			}
 		}
 		// Собственно изменяем иконку
@@ -88,11 +105,14 @@ namespace trayIcon {
 		verify(DestroyMenu(Menu));
 		Menu = 0;
 
-		map<tstring, HICON>::const_iterator it = LayoutIcons.begin();
-		map<tstring, HICON>::const_iterator end = LayoutIcons.end();
+		TLayoutIcons::const_iterator it = LayoutIcons.begin();
+		TLayoutIcons::const_iterator end = LayoutIcons.end();
 		for (; it != end; ++it)
 			DestroyIcon(it->second);
 		LayoutIcons.clear();
 	}
 
+	HMENU getMenu() {
+		return Menu;
+	}
 }

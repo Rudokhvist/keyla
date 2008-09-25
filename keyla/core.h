@@ -35,5 +35,7 @@ namespace core {
 	//          клавиш и нажатие было обработано, иначе false
 	bool keyPressed(unsigned int vk, unsigned int modifiers);
 
-
+	
+	// Получить текущую раскладку
+	HKL getLayout();
 }

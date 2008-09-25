@@ -16,4 +16,7 @@ namespace trayIcon {
 
 	// Уничтожить иконку в трее
 	void destroy();
+
+	// Получить контекстное меню
+	HMENU getMenu();
 }

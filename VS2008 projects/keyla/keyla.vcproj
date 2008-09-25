@@ -4,6 +4,7 @@
 	Version="9,00"
 	Name="keyla"
 	ProjectGUID="{A850C0B9-606E-4B47-BB99-D0A679AA3987}"
+	RootNamespace="keyla"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -265,6 +266,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="exclusion"
+			>
+			<File
+				RelativePath=".\exclusion\exclusion.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\exclusion\exclusion.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\application.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\application.h"
+			>
+		</File>
 		<File
 			RelativePath=".\common.cpp"
 			>

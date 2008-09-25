@@ -1,4 +1,5 @@
 #include "common.h"
+#include "application.h"
 #include "core.h"
 #include "mainWindow.h"
 #include "res/resource.h"
@@ -81,6 +82,15 @@ protected:
 		// Сообщения от меню (иконки в трее)
 		if (hwnd == 0 && code == 0)
 			switch (id) {
+				case ID_TRAYICONMENU_TOGGLE: {
+					Application::GetApp()->toggle();
+
+					MENUITEMINFO mii = {sizeof(mii), MIIM_TYPE, MFT_STRING};
+					mii.dwTypeData = Application::GetApp()->isActive() ? _T("Отключить") : _T("Включить");
+					SetMenuItemInfo(trayIcon::getMenu(), id, FALSE, &mii);
+
+					return 0;
+				}
 				case ID_TRAYICONMENU_SETTINGS:
 					settingsWindow::show();
 					return 0;
