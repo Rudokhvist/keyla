@@ -1,4 +1,5 @@
 #include "common.h"
+#include "application.h"
 #include "core.h"
 #include "layoutList.h"
 #include "settings.h"
@@ -47,7 +48,7 @@ namespace core {
 	}
 
 	void activeWindowChanged(HWND activeWindow, HKL layout) {
-		if (ExpectedLayout != 0 && settings::Settings.globalLayout) {
+		if (Application::GetApp()->isActive() && ExpectedLayout != 0 && settings::Settings.globalLayout) {
 			// Переключаем раскладку в этом окне на "глобальную".
 			// Установку нужной иконки в трее и прочую индикацию проведем  в layoutChanged,
 			// куда мы обязательно попадём
@@ -62,7 +63,11 @@ namespace core {
 
 	bool layoutChanged(HKL layout) {
 		bool ret;
-		if (layout == ExpectedLayout) {
+		if (!Application::GetApp()->isActive()) {
+			// Разрешить переключение
+			ret = false;
+		}
+		else if (layout == ExpectedLayout) {
 			// Разрешить переключение
 			ret = false;
 		}
@@ -78,6 +83,8 @@ namespace core {
 	}
 
 	bool keyPressed(unsigned int vk, unsigned int modifiers) {
+		if (!Application::GetApp()->isActive())
+			return false;
 		
 		HotKey h(vk, modifiers);
 		if (settings::Settings.mainHotKey == h) {
@@ -96,4 +103,7 @@ namespace core {
 		return false;
 	}
 
+	HKL getLayout() {
+		return ExpectedLayout;
+	}
 }
