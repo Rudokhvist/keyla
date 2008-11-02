@@ -1,0 +1,29 @@
+These diagrams may help you to understand the code.
+
+DESCRIPTION
+
+"Initialization" illustrates the order of initialization of program's components
+during startup. "Shutdown" illustrates how the components are turned off when
+the program is shutting down. "Interaction" illustrates components' interaction
+when the program is working.
+
+LEGEND
+
+solid arrows - methods' invocation
+dashed arrows - data transfer
+dotted arrows - implementation detail
+
+The more left a component is placed at "Initialization" / "Shutdown" diagrams,
+the earlier it gets initialized / turned off.
+
+SOFTWARE USED
+
+In order to generate the diagrams I manually filled *.dot files and applied
+GraphViz(http://www.graphviz.org/) to them. Here are the commands used:
+
+> neato initialization.dot -T pdf -o initialization.pdf
+> neato shutdown.dot -T pdf -o shutdown.pdf
+> dot interaction.dot -T pdf -o interaction.pdf
+
+Syntax of *.dot files is described at http://www.graphviz.org/Documentation.php
+(see "User's Guides" section).

@@ -1,0 +1,26 @@
+digraph initialization{	
+	overlap=scale
+
+	Core
+	Kh[label="Keyboard hook"]
+	Lh[label="Layout hook"]
+	Lol[label="List of layouts"]
+	Mw[label="Main window"]
+	Registry
+	Sd[label="Settings dialog"]
+	Settings	
+	Ti[label="Tray icon"]
+	
+	Core -> Ti
+	Kh -> Core
+	Lh -> Core
+	Lol -> Core[style="dashed"]
+	Lol -> Sd[style="dashed"]
+	Lol -> Ti[style="dashed"]
+	Sd -> Registry[style="dashed"]
+	Sd -> Settings[style="dashed", dir="both"]
+	Settings -> Core[style="dashed"]
+	Settings -> Ti[style="dashed"]
+	Ti -> Mw[style="dotted", dir="both"]
+	Ti -> Sd
+}

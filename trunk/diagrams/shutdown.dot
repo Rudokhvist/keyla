@@ -1,0 +1,12 @@
+digraph initialization{	
+	Ti[label="Tray icon", pos="1,4!"]
+	Mw[label="Main window", pos="1,3!"]
+	Main[pos="1,2!"]
+	Kh[label="Keyboard hook", pos="0,1!"]
+	Lh[label="Layout hook", pos="2,1!"]
+	
+	Ti -> Mw
+	Mw -> Main
+	Main -> Kh
+	Main -> Lh
+}
