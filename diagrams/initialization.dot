@@ -1,0 +1,16 @@
+digraph initialization{	
+	Main[pos="6,3!"]
+	Lol[label="List of layouts", pos="2,2!"]
+	Settings[pos="4,2!"]
+	Mw[label="Main window", pos="6,2!"]
+	Ti[label="Tray icon", pos="6,1!"]
+	Lh[label="Layout hook", pos="8,2!"]
+	Kh[label="Keyboard hook", pos="10,2!"]
+	
+	Main -> Lol
+	Main -> Settings
+	Main -> Mw
+	Mw -> Ti
+	Main -> Lh
+	Main -> Kh
+}
