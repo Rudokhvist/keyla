@@ -1,6 +1,5 @@
 #include "common.h"
 #include "application.h"
-#include "core.h"
 #include "mainWindow.h"
 #include "res/resource.h"
 #include "settingsWindow.h"
