@@ -1,6 +1,5 @@
 //
-// Модуль SETTINGS заведует чтением настроек программы из конфигурационных файлов
-// и записью настроек программы в них. Для этого модуль предоставляет функции load и save
+// Module SETTINGS can read program settings from the registry and save them there
 //
 
 #pragma once
@@ -13,25 +12,26 @@
 namespace settings {
 
 	//
-	// Единственный объект, хранящий настройки программы.
-	// Инициализируется в методе load
+	// Settings are stored here
 	//
 	extern struct SettingsStruct {
 		SettingsStruct();
 
-		// Сочетание клавиш для переключения на следующую раскладку
+		// Shortcut to switch to next layout
 		HotKey mainHotKey;
-		// Запретить использовать для переключения сочетание клавиш, установленное в системе
+		// Forbid external change of layout (via the language panel or using system shortcut)
 		bool skipSystemHotKey;
-		// Использовать ли одну глобальную раскладку, а не свою для каждого окна
+		// Whether to use single global layout
 		bool globalLayout;
-		// Сочетания клавиш для переключения на конкретную раскладку
+		// Shortcuts to switch to particular layouts
 		std::vector<HotKey> layoutHotKeys;
-		// Главная иконка приложения
+		// Program icon
 		Icon mainIcon;
 	} Settings;
 
+	// Load program settings from the registry
 	void load();
 
+	// Save program settings to the registry
 	void save();
 }

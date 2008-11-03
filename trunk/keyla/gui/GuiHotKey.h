@@ -5,31 +5,29 @@
 #include "../../win32xx/WinCore.h"
 
 //
-// Класс элемента управления для ввода сочетания клавиш
+// Class of a control to choose a key binding
 //
-// Элемент управления можно создать с помощью метода Create
-// или привязать к существующему полю ввода с помощью Attach.
-// При использовании Create элемент управления создаётся невидимым.
-// При использовании Attach удостоверьтесь, что поле ввода отключено (disabled)
+// A control can be Create'd of Attach'ed to an existing control.
+// A control is initially invisible when it is Create'd.
+// If you use Attach, be sure that the control is disabled.
 //
 class GuiHotKey : public CWnd{
 public:
 
-	// Конструктор
+	// Default constructor
 	GuiHotKey();
 
-	// Установить сочетание клавиш
+	// Set shortcut
 	void setHotKey(const HotKey & hotKey);
 
-	// Установить сочетание клавиш.
-	// Описание параметров см. в комментариях к методу HotKey::set
+	// Set shortcut
+	// Parameters' description can be found near HotKey::set declaration
 	void setHotKey(unsigned int vk, unsigned int modifiers);
 
-	// Очистить сочетание клавиш.
-	// Описание параметров см. в комментариях к методу HotKey::set
+	// Clear shortcut
 	void clearHotKey();
 
-	// Получить ссылку на объект, в котором хранится установленное сочетание клавиш
+	// Get shortcut
 	const HotKey & hotKey() const;
 
 protected:
@@ -39,33 +37,31 @@ protected:
 
 private:
 
-	// Инициализировать элемент управления
+	// Initialize the control
 	void initialize();
 
-	// Значение, которое используется для определения необходимости
-	// вызова метода initialize в функции окна
+	// Used to determine whether to initialize()
 	HWND m_lastInitializedHwnd;
 
-	// Установленное сочетание клавиш
+	// Shortcut itself
 	HotKey m_hotKey;
 
 
-	// Указатель на экземпляр класса, который соответствует элементу управления,
-	// на котором в настоящий момент находится фокус. Или нулевой указатель
+	// The control that is currently focused or NULL
 	static GuiHotKey * ActiveInstance;
 
 
-	// Хук на клавиутуру. Выбран тип хука WH_KEYBOARD_LL, поскольку только
-	// с его помощью можно отловить такие "системные" сочетания клавиш, как Win-D
+	// Keyboard hook procedure. It must be WH_KEYBOARD_LL in order to
+	// catch all shortcuts, including ones used by Windows (e.g., Win-D)
 	static LRESULT CALLBACK keyboardHook(int code, WPARAM wparam, LPARAM lparam);
 
-	// Хук на клавиатуру
+	// Keyboard hook handle
 	static HHOOK KeyboardHook;
 
-	// Модификаторы, которые набрали за время действия хука
-	// (набор флагов HotKey::Modifiers)
+	// Modifiers (see HotKey::Modifiers) currently pressed
+	// Used when the keyboard hook is active
 	static unsigned int Modifiers;
 
-	// Контекстное меню
+	// Context menu
 	static Menu ContextMenu;
 };

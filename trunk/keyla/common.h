@@ -1,6 +1,6 @@
 //
-// Заголовочный файл, который включается во все файлы с исходным кодом
-// Подключает часто используемые заголовочные файлы и определяет вспомогательные функци.
+// Header that gets included from every *.cpp file
+// It includes frequently used system headers and provides some helper functions
 //
 
 #pragma once
@@ -8,12 +8,13 @@
 #include <windows.h>
 #include <tchar.h>
 
-// Отобразить контекстное меню в том месте, где сейчас находится курсор мыши.
-// Из-за ограничений функции TrackPopupMenu переданное меню должно содержать
-// единственное подменю, которое собственно и будет отображено
+// Display context menu at the cursor
+//
+// According to the requirements of WinAPI function TrackPopupMenu,
+// the menu passed must contain the only submenu, that will get displayed in turn
 // 
-// menu - меню, см. комментарий выше
-// window - окно, которому при выборе пункта меню придёт сообщение WM_COMMAND
+// menu - a menu (see comment above)
+// window - window that will receive WM_COMMANDs from the context menu
 //
 void showContextMenu(HMENU menu, HWND window);
 

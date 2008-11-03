@@ -21,7 +21,7 @@ static void WINAPI timerProc(HWND, UINT message, UINT_PTR timerId, DWORD time) {
 	
 	if (layout != LastActiveLayout) {		
 		if (core::layoutChanged(layout)) {
-			// Отменить изменение раскладки
+			// Forbid the change
 			PostMessage(hwnd, WM_INPUTLANGCHANGEREQUEST, 0, reinterpret_cast<LPARAM>(LastActiveLayout));
 			return;
 		}

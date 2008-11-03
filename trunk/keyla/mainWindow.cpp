@@ -12,22 +12,19 @@ protected:
 	virtual void PreRegisterClass(WNDCLASS & wc) {
 		CWnd::PreRegisterClass(wc);
 
-		// Используем определённый класс окна, чтобы по его названию
-		// в случае чего искать запущенное приложение
+		// Use partucular window class to be able to find a running application instance easily
 		wc.lpszClassName = TEXT("keyla main window");
 	}
 
 	virtual void PreCreate(CREATESTRUCT & cs) {
-		// Окно занимается только обработкой сообщений. С пользователем
-		// напрямую не взаимодействует, поэтому должно быть скрыто
+		// Window only handles messages. It does not interact with user, so hide it.
 		cs.style &= ~WS_VISIBLE;
 
-		// NOTE: Чтобы реализация базового класса не затёрла изменения в стилях,
-		// нужно установить cs.style != 0
+		// NOTE: CWnd overwrites our changes in cs.style if it is zero. So let it be non-zero.
 		cs.style |= WS_BORDER;
 
-		// NOTE: Сначала изменяем параметры, потом вызываем метод базового класса.
-		// Того требует реализация класса CWnd
+		// NOTE: Due to CWnd's implementation we first need to change cs
+		// and after that call the base class member
 		CWnd::PreCreate(cs);
 	}
 
@@ -38,9 +35,9 @@ protected:
 
 	virtual LRESULT WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
 
-		// Сообщение от иконки в трее
+		// Message from the tray icon
 		if (message == mainWindow::TrayIconMessage && wparam == mainWindow::TrayIconId)
-			// NOTE: Во избежание недоразумений, не позволяем использовать иконку, когда активно окно настроек
+			// NOTE: Do not allow to touch the icon when the settings window is shown
 			switch (lparam) {
 				case WM_CONTEXTMENU:
 				case WM_RBUTTONUP:
@@ -61,11 +58,11 @@ protected:
 		
 		if (message == WM_DESTROY) {
 		
-			// Деинициализация иконки в трее. Её нельзя произвести в модуле MAIN,
-			// т.к. иконка привязана к HWND окна, а в модуле MAIN его получить не получится
+			// Destroy the tray icon. We do it here as we should pass main window's HWND.
+			// Otherwise it would be better to do it in the MAIN module.
 			trayIcon::destroy();
 
-			// Завершение приложения
+			// Quit the application
 			PostQuitMessage(0);
 			return 0;
 		}
@@ -78,7 +75,7 @@ protected:
 		unsigned int id = LOWORD(wparam);
 		HWND hwnd = reinterpret_cast<HWND>(lparam);
 
-		// Сообщения от меню (иконки в трее)
+		// Message from the contenxt menu of the tray icon
 		if (hwnd == 0 && code == 0)
 			switch (id) {
 				case ID_TRAYICONMENU_TOGGLE: {

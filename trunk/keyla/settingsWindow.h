@@ -1,15 +1,14 @@
 //
-// Модуль SETTINGS_WINDOW предоставляет функции для управления окном настроек
+// Module SETTINGS_WINDOW provides some functions to control the settings window
 //
 
 #pragma once
 
 namespace settingsWindow {
 
-	// Показать окно настроек
+	// Show the settings window
 	void show();
 
-	// Узнать, активно ли в данный момент окно настроек
+	// Get to know, whether the settings window is active
 	bool isShown();
-
 }

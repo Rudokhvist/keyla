@@ -1,6 +1,5 @@
 //
-// ћодуль MAIN заведует инициализацией при запуске программы и
-// очисткой ресурсов при завершении программы
+// Module MAIN initializes and turns off other modules
 //
 
 #pragma comment(lib, "comctl32")

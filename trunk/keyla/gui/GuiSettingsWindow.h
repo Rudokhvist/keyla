@@ -7,26 +7,26 @@
 class GuiSettingsWindow : public CPropertySheet {
 public:
 
-	// Конструтор
+	// Default contstructor
 	GuiSettingsWindow();
 
-	// Применить сделанные изменения. Метод вызывается из объекта класса FirstPage
+	// Apply changes. This method gets called from an instance of FirstPage
 	void apply();
 
 private:
 
-	// Класс, от которого должен наследоваться класс первой страницы
+	// Class of a Page
 	class Page : public CPropertyPage {
 	public:
 
-		// Конструктор
+		// Constructor
 		Page(GuiSettingsWindow & parent, int resourceId, LPCTSTR title);
 
 		virtual void OnSetActive();
 		virtual void OnApply();
 		virtual void OnOK();
 
-		// Сохранить сделанные изменения. Метод вызывается из объекта класса GuiSettingsWindow
+		// Apply changes. This method gets called from an instance of GuiSettingsWindow
 		virtual void apply() = 0;
 
 	private:

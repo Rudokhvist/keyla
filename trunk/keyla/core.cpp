@@ -8,15 +8,14 @@
 #include <algorithm>
 using namespace std;
 
-// Запоминаем раскладку, на которую провели переключение,
-// чтобы затем в функции layoutChanged это изменение разрешить
+// Remember the layout we switched to in order to allow this change in layoutChanged()
 static HKL ExpectedLayout;
 
-// Установить в заданном окне переданную раскладку.
-// Функция обновляет глобальную переменную ExpectedLayout.
+// Set layout in particular window
+// Function overwrited global variable ExpectedLayout.
 //
-// window - окно
-// layout - раскладка
+// window - window
+// layout - layout to switch to
 //
 void setLayout(HWND window, HKL layout) {
 	ExpectedLayout = layout;
@@ -35,14 +34,13 @@ namespace core {
 
 	void activeWindowChanged(HWND activeWindow, HKL layout) {
 		if (Application::GetApp()->isActive() && ExpectedLayout != 0 && settings::Settings.globalLayout) {
-			// Переключаем раскладку в этом окне на "глобальную".
-			// Установку нужной иконки в трее и прочую индикацию проведем  в layoutChanged,
-			// куда мы обязательно попадём
+			// Switch layout in this window to match the global layout
+			// We will set tray icon and do other indication in layoutChanged(), which we will certainly reach
 			::setLayout(activeWindow, ExpectedLayout);
 			return;
 		}
 
-		// Сохраняем раскладку и устанавливаем индикацию
+		// Save layout and indicate it
 		ExpectedLayout = layout;
 		trayIcon::indicateLayout(layout);
 	}
@@ -50,19 +48,19 @@ namespace core {
 	bool layoutChanged(HKL layout) {
 		bool ret;
 		if (!Application::GetApp()->isActive()) {
-			// Разрешить переключение
+			// Permit layout change
 			ret = false;
 		}
 		else if (layout == ExpectedLayout) {
-			// Разрешить переключение
+			// Permit layout change
 			ret = false;
 		}
 		else {			
-			// Иначе действуем в соответствии с настройками
+			// Otherwise follow the settings
 			ret = settings::Settings.skipSystemHotKey;
 		}
 		if (ret == false) {
-			// Если разрешили, устанавливаем индикацию этой раскладки
+			// If we permitted layout change, indicate new layout
 			trayIcon::indicateLayout(layout);
 		}
 		return ret;

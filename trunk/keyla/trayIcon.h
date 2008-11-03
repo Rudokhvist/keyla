@@ -1,22 +1,21 @@
 //
-// Модуль TRAY_ICON заведует иконкой приложения в трее, с помощью
-// которой и производится управление программой
+// Module TRAY_ICON owns the tray icon
 //
 
 namespace trayIcon {
 
-	// Создать иконку в трее
+	// Create the tray icon
 	void create(HWND mainWindow);
 
-	// Отобразить меню иконки. Сообщения от меню посылаются главному окну
+	// Show the context menu. Messages of the menu are sent to the MAIN_WINDOW module
 	void showMenu();
 
-	// Установить иконку, соответствующую раскладке layout
+	// Select the icon that corresponds the layout passed
 	void indicateLayout(HKL layout);
 
-	// Уничтожить иконку в трее
+	// Destroy the tray icon
 	void destroy();
 
-	// Получить контекстное меню
+	// Get the context menu
 	HMENU getMenu();
 }

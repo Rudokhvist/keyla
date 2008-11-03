@@ -50,6 +50,6 @@ Application::Application() : m_exclusion(0), m_active(false) {
 void Application::toggle() {
 	m_active = !m_active;
 
-	// ƒл€ смены иконки. »конки отличаютс€ в зависимости от того, активна программа или нет
+	// Icons for active and disabled mode are different, so change it
 	trayIcon::indicateLayout(core::getLayout());
 }

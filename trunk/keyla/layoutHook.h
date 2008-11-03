@@ -1,15 +1,15 @@
 //
-// ћодуль ACTIVE_WINDOW_HOOK отслеживает активное окно
-// и при изменении обращаетс€ к модулю CORE
+// Module ACTIVE_WINDOW_HOOK keeps track of active window
+// When user activates other window, module reports the CORE module about it
 //
 
 #pragma once
 
 namespace layoutHook {
 
-	// Ќачать слежение за активным окном
+	// Begin keeping track of active window
 	void create();
 
-	// «акончить слежение за активным окном
+	// Stop keeping track of active window
 	void destroy();
 }

@@ -1,41 +1,38 @@
 //
-// Модуль CORE предоставляет функции управления раскладками
+// Module CORE provides functions to manipulate layouts
 //
-// Если не оговорено особо, функции производят переключение раскладки в зависимости от настроек.
-// В частности, учитывается опция единой раскладки на всю систему
+// If the opposite is not stated, all functions act according to the global settings
 //
 
 #pragma once
 
 namespace core {
 
-	// Переключиться на следующую раскладку
+	// Switch to next layout
 	void nextLayout();
 
-	// Переключиться на заданную раскладку
-	// index - номер раскладки в списке, который хранится в модуле LAYOUT_LIST
+	// Switch to particular layout
+	// index - index of the layout in the list stored in the LAYOUT_LIST module
 	void setLayout(unsigned int index);
 
-	// Функция, которая вызывается при изменении активного окна в системе
-	// activeWindow - новое активное окно
-	// layout - раскладка в этом окне
+	// Function that gets called when user activates other window
+	// activeWindow - window that became active
+	// layout - layout in the window
 	void activeWindowChanged(HWND activeWindow, HKL layout);
 
-	// Функция, которая вызывается при изменении раскладки в активном окне
-	// layout - новая раскладка
-	// return - true, если нужно отменить изменение раскладки, иначе false
+	// Function that gets calles when layout is changed in the active window
+	// layout - new layout
+	// return - whether to forbid this change
 	bool layoutChanged(HKL layout);
 
-	// Функция, которая вызывается при нажатии клавиши
+	// Function that gets called when a key pressed
 	//
-	// vk - виртуальный код клавиши
-	// modifiers - модификаторы (набор флагов из перечисления HotKey::Modifiers)
-	//
-	// return - true, если клавише соответствует установленное сочетание
-	//          клавиш и нажатие было обработано, иначе false
+	// vk - virtual key code
+	// modifiers - bitwise OR of HotKey::Modifiers
+	// return - whether the key was handled
 	bool keyPressed(unsigned int vk, unsigned int modifiers);
 
 	
-	// Получить текущую раскладку
+	// Get current layout
 	HKL getLayout();
 }

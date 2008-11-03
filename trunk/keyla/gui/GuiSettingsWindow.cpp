@@ -32,7 +32,7 @@ GuiSettingsWindow::Page::Page(GuiSettingsWindow &parent, int resourceId, LPCTSTR
 /* virtual */ void GuiSettingsWindow::Page::OnSetActive() {
 	CPropertyPage::OnSetActive();
 	
-	// ¬ключаем кнопку "применить", пусть она всегда будет активна
+	// Let the Apply button to be always active
 	SetModified(true);
 }
 

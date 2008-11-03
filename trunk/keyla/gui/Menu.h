@@ -1,22 +1,22 @@
 #pragma once
 
 //
-// Класс меню.
+// Class of a Menu
 //
-// Политика копирования - копирование запрещено
-// Политика преобразования типов - возможно неявное преобразование в HMENU
+// Copy policy - copying must be restricted
+// Type cast policy - there is an implicit cast to HMENU
 //
 class Menu {
 public:
 
-	// Конструктор по умолчанию
+	// Default constructor
 	Menu();
 
-	// Конструктор для загрузки меню из ресурсов
-	// resourceName - название ресурса или MAKEINTRESOURCE(идентификатор-ресурса)
+	// Constructor to load a menu from resources
+	// resourceName - resource-name or MAKEINTRESOURCE(resource-id)
 	Menu(LPCTSTR resourceName);
 
-	// Деструктор. Автоматически уничтожает меню
+	// Destructor that automatically destroys the contained object (i.e., HMENU)
 	~Menu();
 
 	operator HMENU();

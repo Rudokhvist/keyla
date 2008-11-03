@@ -32,29 +32,29 @@ GuiLayoutList::GuiLayoutList() : m_delegateActive(false), m_delegateRow(0) {
 
 void GuiLayoutList::initialize() {
 
-	// Элемент управления должен быть уж создан
+	// Control must be already created
 	HWND hwnd = GetHwnd();
 	assert(hwnd != 0);
 
-	// Создание делегата
+	// Create the delegate
 	m_delegate.DestroyWindow();
 	m_delegate.Create(*this);
 
-	// Настройка делегата
+	// Set up the delegate
 	HFONT font = reinterpret_cast<HFONT>(SendMessage(GetHwnd(), WM_GETFONT, 0, 0));
 	SendMessage(m_delegate, WM_SETFONT, reinterpret_cast<WPARAM>(font), 0);
 
-	// Настройка списка
+	// Customize the ListView
 	ListView_SetExtendedListViewStyle(hwnd, LVS_EX_GRIDLINES);
 
-	// Добавление колонок
+	// Now add some columns
 	LVCOLUMN lvc = {LVCF_TEXT};
 	lvc.pszText = TEXT("Язык");
 	ListView_InsertColumn(hwnd, 0, &lvc);
 	lvc.pszText = TEXT("Сочетание клавиш");
 	ListView_InsertColumn(hwnd, 1, &lvc);
 
-	// Сохранение локальной копии настроек
+	// Save a local copy of Settings to change
 	m_layoutHotKeys = settings::Settings.layoutHotKeys;
 
 	update();
@@ -62,7 +62,7 @@ void GuiLayoutList::initialize() {
 
 void GuiLayoutList::update() {
 
-	// Элемент управления должен быть уж создан
+	// Control must be already created
 	HWND hwnd = GetHwnd();
 	assert(hwnd != 0);
 
@@ -90,7 +90,8 @@ void GuiLayoutList::apply() {
 
 void GuiLayoutList::delegateDeactivated() {
 
-	// Метод может вызываться "для надёжности", то есть когда, возможно, делагат уже скрыт
+	// This method may be called to ensure that the delegate is not active,
+	// even if it is already destroyed. So we need this check
 	if (!m_delegateActive) return;
 
 	m_layoutHotKeys[m_delegateRow] = m_delegate.hotKey();
@@ -105,8 +106,7 @@ void GuiLayoutList::delegateDeactivated() {
 /* virtual */ LRESULT GuiLayoutList::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
 	switch (message) {
 		case WM_LBUTTONUP: {
-			// По щелчку на ячейке второго столбца начинаем
-			// редактирование в этой ячейке сочетания клавиш
+			// When a cell in the second column is clicked, edit the shortcut in it
 
 			POINT pt;
 			pt.x = LOWORD(lparam);

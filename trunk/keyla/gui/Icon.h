@@ -1,22 +1,22 @@
 #pragma once
 
 //
-//  ласс иконки.
+// Class of an Icon
 //
-// ѕолитика копировани€ - копирование запрещено
-// ѕолитика преобразовани€ типов - возможно не€вное преобразование в HICON
+// Copy policy - copying must be restricted
+// Type cast policy - there is an implicit type cast to HICON
 //
 class Icon {
 public:
 
-	//  онструктор по умолчанию
+	// Default constructor
 	Icon();
 
-	//  онструктор дл€ загрузки иконки из ресурсов
-	// resourceName - название ресурса или MAKEINTRESOURCE(идентификатор-ресурса)
+	// Constructor that loads an icon from resources
+	// resourceName - resource-name or MAKEINTRESOURCE(resource-id)
 	Icon(LPCTSTR resourceName);
 
-	// ƒеструктор. јвтоматически уничтожает иконку
+	// Destructor that automatically destroys the contained object (i.e., HICON)
 	~Icon();
 
 	operator HICON();

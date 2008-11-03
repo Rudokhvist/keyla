@@ -54,7 +54,7 @@ const HotKey & GuiHotKey::hotKey() const {
 			unsigned int id = LOWORD(wparam);
 			HWND hwnd = reinterpret_cast<HWND>(lparam);
 
-			// Сообщения от (контекстного) меню
+			// Messages from the (context) menu
 			if (hwnd == 0 && code == 0)
 				switch (id) {
 					case ID_HOTKEYEDIT_CLEAR:
@@ -62,13 +62,12 @@ const HotKey & GuiHotKey::hotKey() const {
 						return 0;
 				}
 
-			// Не нашли похожей команды
+			// We did not recognize the command
 			return 0;
 		}
 
-		// Когда на элементе управления фокус ввода, должен работать хук на клавиатуру.
-		// Выбран тип хука WH_KEYBOARD_LL, поскольку только с его помощью можно отловить
-		// такие "системные" сочетания клавиш, как Win-D
+		// When the control is focused, run the keyboard hook. It must be WH_KEYBOARD_LL
+		// in order to catch all shortcuts, including ones used by Windows (e.g., Win-D)
 
 		case WM_SETFOCUS:
 			ActiveInstance = this;
@@ -91,11 +90,11 @@ const HotKey & GuiHotKey::hotKey() const {
 
 /* static */ LRESULT CALLBACK GuiHotKey::keyboardHook(int code, WPARAM wparam, LPARAM lparam) {
 
-	// В документации сказано, что в случае code < 0 хук должен ничего не делать
+	// MSDN says one must do nothing when code is < 0
 	if (code < 0)
 		return CallNextHookEx(0, code, wparam, lparam);
 
-	// Некуда записывать информацию, поэтому ничего не делаем
+	// There is no attached control somehow. Do nothing.
 	if (ActiveInstance == 0) {
 		assert(false);
 		return CallNextHookEx(0, code, wparam, lparam); 
@@ -127,12 +126,12 @@ const HotKey & GuiHotKey::hotKey() const {
 		else if (vk == VK_RSHIFT)   Modifiers |= HotKey::RShift;
 
 		else {
-			// Если была нажата другая клавиша
+			// The key is not in the list above
 			ActiveInstance->setHotKey(vk, Modifiers | (extended ? HotKey::Extended : 0));
 			return TRUE;
 		}
 
-		// Если была нажата одна из вышеперечисленных клавиш
+		// The key is in the list above
 		ActiveInstance->setHotKey(0, Modifiers);
 
 	} else {
@@ -145,16 +144,17 @@ const HotKey & GuiHotKey::hotKey() const {
 		else if (vk == VK_RSHIFT)   Modifiers &= ~HotKey::RShift;
 
 		else {
-			// Если была нажата другая клавиша
+			// The key is not in the list above
 			return TRUE;
 		}
 
-		// Если была нажата одна из вышеперечисленных клавиш
+		// The key is in the list above
 		if (ActiveInstance->hotKey().vk() == 0)
 			ActiveInstance->setHotKey(0, Modifiers);			
 	}
 
-	return TRUE; // обработали нажатие
+	// The key event was handled
+	return TRUE;
 }
 
 void GuiHotKey::initialize() {
