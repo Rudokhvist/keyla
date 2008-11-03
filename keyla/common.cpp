@@ -1,7 +1,7 @@
 #include "common.h"
 
 void showContextMenu(HMENU menu, HWND window) {
-	// „тобы меню исчезало при щелчке вне него
+	// This is necessary to make the menu disappear when user clicks outside of it
 	SetForegroundWindow(window);
 
 	POINT pt;

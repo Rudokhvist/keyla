@@ -1,6 +1,5 @@
 //
-// Модуль LAYOUT_LIST организует получение списка раскладок,
-// включённых пользователем в системе
+// Module LAYOUT_LIST stores the list of layouts enabled in the system
 // 
 
 #pragma once
@@ -9,15 +8,15 @@
 
 namespace layoutList {
 
-	// Объект для хранения списка раскладок
+	// List of layouts
 	extern std::vector<HKL> GuiLayoutList;
 
-	// Загрузить список раскладок
+	// Load list of layouts
 	void load();
 
-	// Вспомогательная функция, возвращающая language id раскладки в виде строки
+	// A helper function that returns language identifier of the layout passed as string
 	tstring layoutLangId(HKL layout);
 
-	// Вспомогательная функция, возвращающая название языка, соответствующего раскладке
+	// A helper function that returns language if the layout passed
 	tstring layoutLanguage(HKL layout);
 }

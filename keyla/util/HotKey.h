@@ -1,93 +1,93 @@
 //
-// Вспомогательный модуль HOTKEY предоставляет класс HotKey
+// Helper module HOTKEY provides class HotKey
 //
 
 #pragma once
 
-// Класс для хранения сочетания клавиш
+// Class to store a shortcut
 class HotKey {
 public:
 
-	// Модификаторы клавиш
+	// Modifiers
 	enum Modifiers {
-		// Левый Ctrl
+		// Left Ctrl
 		LControl  = 1,
-		// Левый Alt
+		// Left Alt
 		LAlt      = 2,
-		// Левый Shift
+		// Left Shift
 		LShift    = 4,
-		// Правый Ctrl
+		// Right Ctrl
 		RControl  = 8,
-		// Правый Alt
+		// Right Alt
 		RAlt      = 16,
-		// Правый Shift
+		// Right Shift
 		RShift    = 32,
-		// Флажок "расширенной клавиши"
+		// Flag of "extended key"
 		Extended  = 128,
 	};
 
-	// Получить название клавиши для отображения пользователю
-	// vk - виртуальный код клавиши
-	// extended - флаг "расширенной клавиши"
+	// Get key name
+	// vk - virtual key code
+	// extended - whether the key is "extended"
 	static tstring keyName(unsigned int vk, bool extended = false);
 
 
-	// Конструктор
+	// Default constructor
 	HotKey();
 
-	// Конструктор
-	// vk - виртуальный код клавиши
-	// modifiers - набор флагов из перечисления Modifiers
+	// Constructor
+	// vk - virtual key code
+	// modifiers - bitwise OR of Modifiers
 	HotKey(unsigned int vk, unsigned int modifiers);
 
 
 	bool operator==(const HotKey & other) const;
 
 
-	// Метод-"сеттер"
-	// vk - виртуальный код клавиши
-	// modifiers - набор флагов из перечисления Modifiers
+	// Set shortcut
+	// vk - virtual key code
+	// modifiers - bitwise OR of Modifiers
 	void set(unsigned int vk, unsigned int modifiers);
 
-	// Очистить сочетание клавиш
+	// Clear shortcut
 	void clear();
 
 
-	// Получить виртуальный код клавиши
+	// Get virtual key code
 	unsigned int vk() const;
 
-	// Получить модификаторы - набор флагов из перечисления Modifiers
+	// Get modifiers (bitwise OR of Modifiers)
 	unsigned int modifiers() const;
 
-	// Получить строку, описывающую сочетание клавиш, для показа пользователю
+	// Get textual representation of the shortcut
 	const tstring & text() const;
 	
 
-	// Загрузить данные из реестра
-	// hkey - ключ или раздел реестра (HKEY_CURRENT_USER)
-	// key - подключ реестра
+	// Load data from registry
+	// hkey - registry key or hive
+	// key - subkey
 	void loadFromRegistry(HKEY hkey, const tstring & key);
 
-	// Загрузить данные в реестр
-	// hkey - ключ или раздел реестра (HKEY_CURRENT_USER)
-	// key - подключ реестра
+	// Save data to registry
+	// hkey - registry key or hive
+	// key - subkey
 	void saveToRegistry(HKEY hkey, const tstring & key);
 
 private:
 
-	// Заполнить m_text согласно m_vk и m_modifiers
+	// Fill m_text accorging to m_vk and m_modifiers
 	void makeText();
 	
-	// виртуальный код клавиши
+	// Virtual key code
 	unsigned int m_vk;
 
-	// набор флагов из перечисления Modifiers
+	// Bitwise OR of Modifiers
 	unsigned int m_modifiers;
 
-	// Строка, описывающая сочетание клавиш, для показа пользователю
-	// NOTE: Обновлять при изменении m_modifiers и/или m_vk
+	// Textual representation of the shortcut
+	// NOTE: Must be updated when m_modifiers and/or m_vk changes
 	tstring m_text;
 
-	// Разделитель в текстовом представлении сочетания клавиш
+	// Separator used in textual representation of a shortcut
 	static const tstring Separator;
 };

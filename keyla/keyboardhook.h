@@ -1,15 +1,15 @@
 //
-// Модуль KEYBOARD_HOOK предоставляет интерфейс управления хуком на клавиатуру
+// Module KEYBOARD_HOOK provides an interface to control keyboard hook
 //
 
 #pragma once
 
 namespace keyboardHook {
 	
-	// Включить хук
+	// Turn the hook on
 	void create();
 
-	// Отключить хук
+	// Turn the hook off
 	void destroy();
 
 }

@@ -1,17 +1,16 @@
 //
-// ћодуль MAIN_WINDOW предоставл€ет методы дл€ управлени€ главным окном.
-// √лавное окно приложени€ не видимо пользователю, оно занимаетс€ обработкой сообщений
-// от иконки в трее и модулей, располагающихс€ в динамически подключаемой библиотеке
+// Module MAIN_WINDOW provides some functions to control the main window.
+// The main window does not interact with user, but does handle some messages from the tray icon.
 //
 
 #pragma once
 
 namespace mainWindow {
 
-	//  од сообщени€ дл€ отправки главному окну уведомлений от иконки в трее
+	// Message identifier used by the tray icon
 	static const unsigned int TrayIconMessage = WM_USER + 1;
 
-	// »дентификатор иконки в трее
+	// Identifier of the only tray icon 
 	static const unsigned int TrayIconId = 0;
 
 	void create();

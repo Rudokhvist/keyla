@@ -1,7 +1,6 @@
 #include "../common.h"
 #include "HotKey.h"
 
-// Разделитель в текстовом представлении сочетания клавиш
 /* static */ const tstring HotKey::Separator = TEXT(" + ");
 
 /* static */ tstring HotKey::keyName(unsigned int vk, bool extended /* = false */) {

@@ -8,17 +8,15 @@
 class GuiLayoutList;
 
 //
-// Вспомотельныей класс элемента управления для выбора сочетания клавиш
-// для любой раскладки в списке
+// Helper class of a control to choose shortcut for any layout in the list
 //
 class HotKeyEditDelegate : public GuiHotKey {
 public:
 
-	// Конструктор
+	// Default contstructor
 	HotKeyEditDelegate();
 
-	// Переопределение метода базового класса. Этому классу требуется
-	// не просто HWND родительского окна, но ссылка на GuiLayoutList
+	// Override GuiHotKey::Create, because we need GuiLayoutList &, not HWND
 	HWND Create(GuiLayoutList & layoutList);
 
 protected:
@@ -27,37 +25,33 @@ protected:
 
 private:
 
-	// Ссылка на список раскладок, который владеет делегатом
+	// The list of layouts that owns this HotKeyEditDelegate
 	GuiLayoutList * m_layoutList;
 };
 
 //
-// Класс элемента управления для вывода списка раскладок
-// и редактирования для каждой из них сочетания клавиш
+// Class of a control to display list of layouts and edit shortcuts for any of them
 //
-// Элемент управления привязывайте к существующему
-// элементу управления ListView с помощью Attach.
-// Удостоверьтесь, что элемент управления имеет стиль Report.
+// Control must be Attach'ed to an existing control
+// Be sure that ListView's type is Report
 //
 class GuiLayoutList : public CWnd{
 public:
 
-	// Конструктор
+	// Default contructor
 	GuiLayoutList();
 
-	// Инициализировать содержимое элемента управления.
-	// Метод update вызывается автоматически
-	// settingsWindow - окно, в котором расположен элемент управления
+	// Initialize control's contents. update() is called automatically
 	void initialize();
 
-	// Обновить содержимое элемента управления
+	// Update control's contents
 	void update();
 
-	// Применить сделанные изменения (внести их в глобальные настройки)
+	// Apply changes (i.e., copy them to the global settings)
 	void apply();
 
-	// Метод вызывается из объекта m_delegate, когда с делегата был снят фокус.
-	// Введённую информацию заносим в таблицу, а делегат скрываем
+	// This method gets called from m_delegate when it looses focus
+	// We save the shortcut and hide the delegate
 	void delegateDeactivated();
 
 protected:
@@ -66,17 +60,15 @@ protected:
 
 private:
 
-	// Локальная копия настроек сочетаний клавиш для раскладок
+	// Local copy of shortcuts for layouts
 	std::vector<HotKey> m_layoutHotKeys;
 
-	// Флажок, который устанавливается, есть идёт редакирования сочетания клавиш
-	// (показан и активен делегат)
+	// Whether the delegate is active
 	bool m_delegateActive;
 
-	// Вспомотельныей класс элемента управления для выбора сочетания клавиш
-	// для любой раскладки в списке
+	// Helper control to choose shortcut for any layout in the list
 	HotKeyEditDelegate m_delegate;
 	
-	// Ряд, в котором располагается делегат, или 0, если в данный момент делегат скрыт
+	// Row where the delegate is placed or 0 if it is not currently active
 	unsigned int m_delegateRow;
 };

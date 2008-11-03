@@ -10,18 +10,18 @@
 #include <map>
 using namespace std;
 
-// Меню иконки в трее
+// Tray icon menu
 static HMENU Menu = 0;
 
-// HWND главного окна. Передаётся в методе create
+// Main window's HWND. Passed through create()
 static HWND Window = 0;
 
-// Всплывающая подсказка у иконки
+// Tray icon's tooltip
 static const LPCTSTR Tooltip = TEXT("keyla - переключатель раскладок клавиатуры");
 
-// Словарь с иконками для каждой раскладки
-// ключ - строковое представление language id ракладки
-// значение - описатель иконки
+// Here is a map of icons corresponding to particular layouts
+// key - layout's language id as string
+// value - icon's handle (HICON)
 class TLayoutIcons : public map<pair<tstring, bool>, HICON> {
 public:
 
@@ -42,13 +42,12 @@ namespace trayIcon {
 	void create(HWND mainWindow) {
 		Window = mainWindow;
 
-		// Загружаем из ресурсов меню иконки в трее
+		// Load the context menu from the resources
 		Menu = LoadMenu(GetModuleHandle(0), MAKEINTRESOURCE(IDM_TRAYICONMENU));
 		assert(Menu != 0);
 
-		// Добавляем иконку в трей.
-		// Чтобы избежать мелькания, не устанавливаем сразу картинку,
-		// сделаем это в indicateLayout по-любому
+		// Add the tray icon to the tray.
+		// Do not set an image here in order to eliminete flickering. We will always do it in indicateLayout()
 		NOTIFYICONDATA nid = {sizeof nid};
 		nid.hWnd = Window;
 		nid.uID = mainWindow::TrayIconId;
@@ -67,26 +66,26 @@ namespace trayIcon {
 		tstring langid = layoutList::layoutLangId(layout);
 		TLayoutIcons::const_iterator it = LayoutIcons.find(langid);
 		if (it != LayoutIcons.end()) {
-			// Иконка уже была загружена
+			// Icon is already loaded
 			icon = it->second;
 		} else {
-			// Загружаем иконку
+			// Load icon
 
 			tstring path = TEXT("icons\\") + langid;
 			path += Application::GetApp()->isActive() ? TEXT(".ico") : TEXT("_grayscale.ico");
 
 			icon = static_cast<HICON>(LoadImage(0, path.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT));
 			if (icon == 0) {
-				// Иконка не найдена. Используем нашу стандартную иконку
+				// If icon was not found, use our main icon
 				assert(false);
 				icon = settings::Settings.mainIcon;
 			} else {
-				// Иконка загружена. Добавляем её в словарь
-				// NOTE: Интересно, передача в insert нашего итератора ускорит вставку???
+				// If icon is loaded, add it to the map
+				// NOTE: We can pass our iterator here to increase performance
 				LayoutIcons.insert(langid, icon);
 			}
 		}
-		// Собственно изменяем иконку
+		// Change icon
 		NOTIFYICONDATA nid = {sizeof nid};
 		nid.hWnd = Window;
 		nid.uID = mainWindow::TrayIconId;

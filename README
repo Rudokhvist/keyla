@@ -1,7 +1,1 @@
-To compile the source code with Visual Studio, copy the contents of one of "projects" directories to the source code root directory (i.e., the directory that contains directories "keyla", "NSIS installer", etc.).  Then open solution file that will be placed in the source code root directory.  PLEASE NOTE:
-  * you should copy files carefully because of those hidden ".svn" folders everywhere.
-  * VS7.1 project files might be outdated
-
-Sorry that the comments in the code are in Russian, not in English.  I doesn't know English well, so I'm now looking for a person who'd like to help me with translation.
-
-Everything is provided under the license placed in the "LICENSE" file.
+To compile the source code with Visual Studio, copy the contents of one of "projects" directories to the source code root directory (i.e., the directory that contains directories "keyla", "NSIS installer", etc.).  Then open solution file that will be placed in the source code root directory. WARNING: copy files carefully because of those ".svn" folders hidden everywhere.

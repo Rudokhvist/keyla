@@ -5,12 +5,13 @@
 
 static HHOOK hook = 0;
 
-// Модификаторы, которые набрали за время действия хука (набор флагов HotKey::Modifiers)
+// Bitwise OR of HotKey::Modifiers that were pressed
 static unsigned int Modifiers = 0;
 
-// Хук на клавиатуру. Тип хука - WH_KEYBOARD_LL, чтобы перехватывать и такие "системные" клавиши, как клавиша Windows
+// Keyboard hook procedure. It must be WH_KEYBOARD_LL in order to
+// catch all shortcuts, including ones used by Windows (e.g., Win-D)
 static LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
-	// В документации сказано, что в случае code < 0 хук должен ничего не делать
+	// MSDN says one must do nothing if code is < 0
 	if (code < 0)
 		return CallNextHookEx(0, code, wparam, lparam);
 
@@ -40,7 +41,7 @@ static LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
 		else if (vk == VK_RSHIFT)   Modifiers |= HotKey::RShift;
 
 		else {
-			// Если была нажата другая клавиша
+			// If the key is not in the list above
 			if (core::keyPressed(vk, Modifiers | (extended ? HotKey::Extended : 0))) {
 				return TRUE;
 			} else {

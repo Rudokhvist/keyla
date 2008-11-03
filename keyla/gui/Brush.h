@@ -1,21 +1,21 @@
 #pragma once
 
 //
-// Класс кисти
+// Class Brush
 //
-// Политика копирования - копирование запрещено
-// Политика преобразования типов - возможно неявное преобразование в HBRUSH
+// Copy policy - copying must be restricted
+// Type cast policy - there is an implicit type cast to HBRUSH
 //
 class Brush {
 public:
 
-	// Конструктор по умолчанию
+	// Default constructor
 	Brush();
 
-	// Конструктор для создания кисти заданного цвета
+	// Constuctor to create a brush of the special color
 	explicit Brush(COLORREF color);
 
-	// Деструктор. Автоматически уничтожает кисть
+	// Destructor that automatically destroys the contained resource (i.e., HBRUSH)
 	~Brush();
 
 	operator HBRUSH();

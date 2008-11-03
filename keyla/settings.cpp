@@ -6,7 +6,7 @@
 namespace settings {
 
 	SettingsStruct::SettingsStruct() : mainIcon(MAKEINTRESOURCE(IDI_MAINICON)) {
-		// остальные члены данных инициализируются в load()
+		// Other members get initialized in load()
 	}
 
 	SettingsStruct Settings;
