@@ -81,8 +81,13 @@ protected:
 				case ID_TRAYICONMENU_TOGGLE: {
 					Application::GetApp()->toggle();
 
+					tstring _1;
+					if (Application::GetApp()->isActive())
+						_1 = LoadStringLang(IDS_DISABLE);
+					else
+						_1 = LoadStringLang(IDS_ENABLE);
 					MENUITEMINFO mii = {sizeof(mii), MIIM_TYPE, MFT_STRING};
-					mii.dwTypeData = Application::GetApp()->isActive() ? _T("Отключить") : _T("Включить");
+					mii.dwTypeData = const_cast<LPTSTR>(_1.c_str());
 					SetMenuItemInfo(trayIcon::getMenu(), id, FALSE, &mii);
 
 					return 0;
