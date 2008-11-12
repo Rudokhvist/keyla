@@ -1,4 +1,5 @@
 #include "../common.h"
+#include "../res/resource.h"
 #include "HotKey.h"
 
 /* static */ const tstring HotKey::Separator = TEXT(" + ");
@@ -116,32 +117,32 @@ void HotKey::makeText() {
 
 	if (m_modifiers & LControl) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Left ");
+		m_text += LoadStringLang(IDS_LEFT);
 		m_text += keyName(VK_CONTROL);
 	}
 	if (m_modifiers & LAlt) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Left ");
+		m_text += LoadStringLang(IDS_LEFT);
 		m_text += keyName(VK_MENU);
 	}
 	if (m_modifiers & LShift) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Left ");
+		m_text += LoadStringLang(IDS_LEFT);
 		m_text += keyName(VK_SHIFT);
 	}
 	if (m_modifiers & RControl) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Right ");
+		m_text += LoadStringLang(IDS_RIGHT);
 		m_text += keyName(VK_CONTROL);
 	}
 	if (m_modifiers & RAlt) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Right ");
+		m_text += LoadStringLang(IDS_RIGHT);
 		m_text += keyName(VK_MENU);
 	}
 	if (m_modifiers & RShift) {
 		if (!m_text.empty()) m_text += Separator;
-		m_text += TEXT("Right ");
+		m_text += LoadStringLang(IDS_RIGHT);
 		m_text += keyName(VK_SHIFT);
 	}
     

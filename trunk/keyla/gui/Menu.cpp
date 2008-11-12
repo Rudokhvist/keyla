@@ -6,7 +6,7 @@
 Menu::Menu() : m_menu(0) {
 }
 
-Menu::Menu(LPCTSTR resourceName) : m_menu(LoadMenu(GetModuleHandle(0), resourceName)) {
+Menu::Menu(LPCTSTR resourceName) : m_menu(LoadMenuIndirect(LoadResourceLang(RT_MENU, resourceName))) {
 	assert(m_menu != 0);
 }
 

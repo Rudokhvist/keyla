@@ -48,20 +48,20 @@ GuiSettingsWindow::Page::Page(GuiSettingsWindow &parent, int resourceId, LPCTSTR
 
 	
 GuiSettingsWindow::CommonPropsPage::CommonPropsPage(GuiSettingsWindow &parent) :
-	Page(parent, IDD_COMMONPROPS, TEXT("Общие")) {
+	Page(parent, IDD_COMMONPROPS, LoadStringLang(IDS_COMMON).c_str()) {
 }
 
 /* virtual */ BOOL GuiSettingsWindow::CommonPropsPage::OnInitDialog() {
 	Page::OnInitDialog();
 
-	verify(m_mainKeyEdit.Attach(GetDlgItem(GetHwnd(), ID_COMMONPROPS_EDIT_KEY)));
+	verify(m_mainKeyEdit.Attach(GetDlgItem(GetHwnd(), IDC_COMMONPROPS_EDIT_KEY)));
 	m_mainKeyEdit.setHotKey(settings::Settings.mainHotKey);
 
 	if (settings::Settings.globalLayout) {
-		CheckDlgButton(GetHwnd(), ID_COMMONPROPS_CHECK_GLOBALLAYOUT, BST_CHECKED);
+		CheckDlgButton(GetHwnd(), IDC_COMMONPROPS_CHECK_GLOBALLAYOUT, BST_CHECKED);
 	}
 	if (settings::Settings.skipSystemHotKey) {
-		CheckDlgButton(GetHwnd(), ID_COMMONPROPS_CHECK_EATWINDOWSKEY, BST_CHECKED);
+		CheckDlgButton(GetHwnd(), IDC_COMMONPROPS_CHECK_EATWINDOWSKEY, BST_CHECKED);
 	}
 
 	return TRUE;
@@ -69,19 +69,19 @@ GuiSettingsWindow::CommonPropsPage::CommonPropsPage(GuiSettingsWindow &parent) :
 
 /* virtual */ void GuiSettingsWindow::CommonPropsPage::apply() {
 	settings::Settings.mainHotKey = m_mainKeyEdit.hotKey();
-	settings::Settings.globalLayout = (IsDlgButtonChecked(GetHwnd(), ID_COMMONPROPS_CHECK_GLOBALLAYOUT) != 0);
-	settings::Settings.skipSystemHotKey = (IsDlgButtonChecked(GetHwnd(), ID_COMMONPROPS_CHECK_EATWINDOWSKEY) != 0);
+	settings::Settings.globalLayout = (IsDlgButtonChecked(GetHwnd(), IDC_COMMONPROPS_CHECK_GLOBALLAYOUT) != 0);
+	settings::Settings.skipSystemHotKey = (IsDlgButtonChecked(GetHwnd(), IDC_COMMONPROPS_CHECK_EATWINDOWSKEY) != 0);
 }
 
 
 GuiSettingsWindow::LayoutPropsPage::LayoutPropsPage(GuiSettingsWindow &parent) :
-	Page(parent, IDD_LAYOUTPROPS, TEXT("Раскладки")) {
+	Page(parent, IDD_LAYOUTPROPS, LoadStringLang(IDS_LAYOUTS).c_str()) {
 }
 
 /* virtual */ BOOL GuiSettingsWindow::LayoutPropsPage::OnInitDialog() {
 	Page::OnInitDialog();
 
-	verify(m_layoutList.Attach(GetDlgItem(GetHwnd(), ID_LAYOUTPROPS_LIST_LAYOUTS)));
+	verify(m_layoutList.Attach(GetDlgItem(GetHwnd(), IDC_LAYOUTPROPS_LIST_LAYOUTS)));
 	m_layoutList.initialize();
 
 	return TRUE;

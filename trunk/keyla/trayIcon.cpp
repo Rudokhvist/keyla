@@ -17,7 +17,7 @@ static HMENU Menu = 0;
 static HWND Window = 0;
 
 // Tray icon's tooltip
-static const LPCTSTR Tooltip = TEXT("keyla - переключатель раскладок клавиатуры");
+static const tstring Tooltip = LoadStringLang(IDS_KEYLA_IS_A_KEYBOARD_LAYOUT_SWITCHER);
 
 // Here is a map of icons corresponding to particular layouts
 // key - layout's language id as string
@@ -43,7 +43,7 @@ namespace trayIcon {
 		Window = mainWindow;
 
 		// Load the context menu from the resources
-		Menu = LoadMenu(GetModuleHandle(0), MAKEINTRESOURCE(IDM_TRAYICONMENU));
+		Menu = LoadMenuIndirect(LoadResourceLang(RT_MENU, MAKEINTRESOURCE(IDM_TRAYICONMENU)));
 		assert(Menu != 0);
 
 		// Add the tray icon to the tray.
@@ -53,7 +53,7 @@ namespace trayIcon {
 		nid.uID = mainWindow::TrayIconId;
 		nid.uFlags = NIF_MESSAGE | NIF_TIP;
 		nid.uCallbackMessage = mainWindow::TrayIconMessage;
-		_tcsncpy(nid.szTip, Tooltip, sizeof(nid.szTip) / sizeof(TCHAR));
+		_tcsncpy(nid.szTip, Tooltip.c_str(), sizeof(nid.szTip) / sizeof(TCHAR));
 		verify(Shell_NotifyIcon(NIM_ADD, &nid));
 	}
 

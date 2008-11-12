@@ -1,6 +1,7 @@
 #include "../common.h"
 #include "../layoutList.h"
 #include "../settings.h"
+#include "../res/resource.h"
 #include "GuiLayoutList.h"
 #include "GuiSettingsWindow.h"
 
@@ -48,10 +49,12 @@ void GuiLayoutList::initialize() {
 	ListView_SetExtendedListViewStyle(hwnd, LVS_EX_GRIDLINES);
 
 	// Now add some columns
+	tstring _1 = LoadStringLang(IDS_LANGUAGE);
+	tstring _2 = LoadStringLang(IDS_SHORTCUT);
 	LVCOLUMN lvc = {LVCF_TEXT};
-	lvc.pszText = TEXT("язык");
+	lvc.pszText = const_cast<LPTSTR>(_1.c_str());
 	ListView_InsertColumn(hwnd, 0, &lvc);
-	lvc.pszText = TEXT("—очетание клавиш");
+	lvc.pszText = const_cast<LPTSTR>(_2.c_str());
 	ListView_InsertColumn(hwnd, 1, &lvc);
 
 	// Save a local copy of Settings to change
