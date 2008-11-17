@@ -33,7 +33,7 @@
     * Найдите в разделе код вида
   
     `BLOCK "StringFileInfo"`
-	  `BEGIN`
-		`BLOCK "040904b0"`    
+	`  BEGIN`
+	`    BLOCK "040904b0"`    
 
 ==== Инсталлятор ====
