@@ -16,15 +16,15 @@
   
   *. Измените комментарий в названии секции и название языка. Например, если переводите на украинский, вместо
   
-  `// === english resources ======================================================
+  `// === english resources ======================================================`
 
-  LANGUAGE LANG_ENGLISH,SUBLANG_DEFAULT`
+  `LANGUAGE LANG_ENGLISH,SUBLANG_DEFAULT`
   
   запишите
   
-  `// === ukrainian resources=====================================================
+  `// === ukrainian resources=====================================================`
 
-  LANGUAGE LANG_UKRAINIAN,SUBLANG_DEFAULT`
+  `LANGUAGE LANG_UKRAINIAN,SUBLANG_DEFAULT`
   
   * Измените информацию о версии. Она располагается под комментарием
   
@@ -32,8 +32,8 @@
   
     * Найдите в разделе код вида
   
-    `BLOCK "StringFileInfo"
-	  BEGIN
-		BLOCK "040904b0"`    
+    `BLOCK "StringFileInfo"`
+	  `BEGIN`
+		`BLOCK "040904b0"`    
 
 ==== Инсталлятор ====
