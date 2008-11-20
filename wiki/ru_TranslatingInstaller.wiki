@@ -46,6 +46,6 @@
 
 ==== 6. Отправка результатов ====
 
-[http://code.google.com/p/keyla/issues/entry Напишите Issue] и вложите все файлы. Если у вас нет аккаунта Google, в порядке исключения можете отправить файлы мне по почте с темой "Keyla localization" (earshinov собака gmail точка com).
+[http://code.google.com/p/keyla/issues/entry Напишите Issue] и вложите все файлы. Если у вас нет аккаунта Google, в порядке исключения можете отправить файлы мне по почте с темой "Keyla installer localization" (earshinov собака gmail точка com).
 
 Можете сложить все файлы в архив, если вам так удобнее. Раскладывать файлы по папкам необязательно. 
