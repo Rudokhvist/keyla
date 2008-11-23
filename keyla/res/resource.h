@@ -25,3 +25,4 @@
 #define IDS_DISABLE                         40006
 #define IDS_ENABLE                          40007
 #define IDS_KEYLA_IS_A_KEYBOARD_LAYOUT_SWITCHER 40008
+#define IDS_KEYLA_SETTINGS                  40009
