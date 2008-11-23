@@ -6,7 +6,7 @@ http://keyla.googlecode.com/svn/wiki/Screenshots/en_TrayIcon.jpg
 
 ----
 
-The Preferences window.
+The Settings window.
 
 http://keyla.googlecode.com/svn/wiki/Screenshots/en_SettingsDialog_Common.jpg
 
