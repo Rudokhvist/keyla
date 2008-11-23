@@ -1,6 +1,6 @@
 #summary Program localization guide
 
-Currently one need to recompile keyla to apply a new translation. Therefore, to localize keyla, you need to: (1) download source files, (2) translate them and (3) send changes to me. I (4) look at the translation, (5) add it to the project and (6) recompile the program. If the installer is already translated into the same language, I (7) increase keyla's version and (8) upload the new version to the site.
+To localize keyla, you need to: (1) download source files, (2) translate them and (3) send changes to me. I (4) look at the translation, (5) add it to the project and (6) recompile the program. If the installer is already translated into the same language, I (7) increase keyla's version and (8) upload the new version to the site.
 
 ==== 1. Preparation ====
 
@@ -33,26 +33,26 @@ use
 Version information is located under the following comment:
 
 `// ------- version info -------------------------------------------------------`
-  
-Find piece of code looking like
-  
+
+Find a piece of code looking like
+
 `BLOCK "StringFileInfo"`
-	
+
 `BEGIN`
-	
+
 `BLOCK "040904b0"`
-	
+
 and replace the first four digits to the code of the language you are translating into excluding the beginning _0x_.
 
-  The list of codes can be found at [http://msdn.microsoft.com/en-us/library/ms776294(VS.85).aspx MSDN]. If the page is not found, please [http://search.msdn.microsoft.com/ search] for "Language Identifier Constants and Strings".
+  The list of codes can be found at [http://msdn.microsoft.com/en-us/library/ms776294(VS.85).aspx this MSDN page]. If the page is not found, please [http://search.msdn.microsoft.com/ search] for "Language Identifier Constants and Strings".
 
-Find *in entire file* the instructions beginning with `VALUE "Translation"` and add to their parameter list the language code and `1200` separating them with commas. In this case _0x_ should be preserved.
- 	
-In the section translate all the strings that take the second place from a `VALUE` keyword.
+Find *in entire file* the instructions beginning with `VALUE "Translation"` and append to their parameter list the language code and `1200` separating them with commas. In this case _0x_ should be preserved.
+
+Translate all the strings from within the section that take the second place in the parameter list near a `VALUE` keyword.
   
 ==== 4. Dialog boxes ====
 
-Information about the dialog boboxes is located under the following comment:
+Information about the dialog boxes is located under the following comment:
 
 `// ------- dialogs ------------------------------------------------------------`
 
@@ -68,7 +68,9 @@ A dialog box is described with a piece of code like the following:
 
 `END`
 
-You have to translate the string located in the code block bounded with `BEGIN` and `END`, where all dialog box controls are described. The beginning and the end of the description of a control are indicated with indentation. The description contains a keyword and a comma-separated parameter list. If the first parameter is a string, you have to translate this string. Otherwise, you have nothing to do with the control.
+You have to translate the string located in the code block bounded with `BEGIN` and `END` where all dialog box controls are described. The beginning and the end of the description of a control are indicated with indentation.
+
+The description contains a keyword and a comma-separated parameter list. If the first parameter is a string, you have to translate this string. Otherwise, you have nothing to do with the control.
 
 ==== 5. Menus ====
 
@@ -86,7 +88,7 @@ Each menu is described with a piece of code like the following:
 
 `END`
 
-You have to translate all the strings located withing the block bounded with `BEGIN` and `END`.
+You have to translate all the strings located within the block bounded with `BEGIN` and `END`.
 
 ==== 6. String table ====
 
@@ -108,4 +110,4 @@ You have to translate all the strings located within the block bounded with `BEG
 
 ==== 7. Sending back the results ====
 
-Please [http://code.google.com/p/keyla/issues/entry write an issue] and attach the changed resources file. If you do not have a Google account, send the file directly to me (earshinov at gmail dot com) with subject "Keyla localization".
+Please [http://code.google.com/p/keyla/issues/entry write an issue] and attach the changed resources file. If you don't have a Google account, send the file directly to me (earshinov at gmail dot com) with subject "Keyla localization".

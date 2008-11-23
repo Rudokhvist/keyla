@@ -6,32 +6,32 @@ Features:
   * indication of the current layout in the system tray
   * a shortcut to switch layouts cyclically
   * shortcuts to switch to a particular layout from the predefined list
-  * AFAIK, it can provide single layout for all applications (i.e., global layout)
+  * AFAIK, it can make all applications use the only layout (i.e., the global layout)
 
 Disadvantages:
-  * lots of other functionality that may be not useful for a user
+  * lots of other features that may be not useful for a user
 
-*[http://haali.cs.msu.ru/winutils/ lswitch]* - a keyboard layout switcher, a simple console program. It is freeware and opensource.
+*[http://haali.cs.msu.ru/winutils/ lswitch]* - a simple console program. Freeware and opensource.
 
 Features:
   * enables you to set a key to switch layouts cyclically
 
-*[http://yurez.narod.ru/capslang.html Capslang]* - a keyboard layout switcher. Enables you to switch the layout using !Caps !Lock. A simple console program. Freeware.
+*[http://yurez.narod.ru/capslang.html Capslang]* - a simple console program. Enables you to switch the layout using Caps Lock. Freeware.
 
 Features:
-  * cyclical layout switching using !Caps !Lock key
+  * cyclical layout switching using Caps Lock key
 
-*[http://www.autohotkey.com/ AutoHotKey]* - a free utility containing a powerful scripting language. It can be used to switch layout. One of solutions described in Russian can be found [http://kapustos.habrahabr.ru/blog/41726/ here]. Of course, it is freeware and opensource. But only a Russian-language interface is available, though this interface is intuitive.
+*[http://www.autohotkey.com/ AutoHotKey]* - a free utility containing a powerful scripting language that can be used to make a keyboard switcher. A solution described in Russian can be found [http://kapustos.habrahabr.ru/blog/41726/ here]. It is freeware and opensource. But only a Russian-language interface is available, though this interface is intuitive.
 
 Features:
   * indication of the current layout on keyboard LEDs
-  * cyclical layout switching using !Caps !Lock or !Num !Lock or !Scroll !Lock key
+  * cyclical layout switching using Caps Lock, Num Lock or Scroll Lock
 
-*[http://www.switchit.ru/ Switch It!]* - a powerful keyboard layout switcher. It is free, but registration is required (AFAIK). Program's interface and description are in Russian.
+*[http://www.switchit.ru/ Switch It!]* - a keyboard layout switcher. It is freeware, but registration is required (AFAIK). Program's interface and description are in Russian.
 
 Features:
   * indication of the current layout in the system tray
   * beep on layout switching
   * a shortcut to switch layout cyclically
-  * can provide single layout for all applications (i.e., global layout)
+  * can make all applications use the only layout (i.e., the global layout)
   * can prohibit swithing layouts from without

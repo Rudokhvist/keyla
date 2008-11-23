@@ -1,17 +1,17 @@
 #summary Brief description and screenshots
 
-Program is controlled using an icon in the tray. When it is clicked with the right mouse button, the program manu appears.
+Keyla is controlled using a tray icon. When it is right-clicked, the program menu appears.
 
 http://keyla.googlecode.com/svn/wiki/Screenshots/en_TrayIcon.jpg
 
 ----
 
-Preferences window.
+The Preferences window.
 
 http://keyla.googlecode.com/svn/wiki/Screenshots/en_SettingsDialog_Common.jpg
 
 ----
 
-The page when one can assign shortcuts to switch to a particular layout. To assign a shortcut click with the left mouse button on a cell in the "Shortcut" column. To clear a shortcut, right-click and select "Clear".
+The page when one can assign shortcuts to switch to a particular layout. To assign a shortcut click on a cell in the "Shortcut" column. To clear a shortcut, right-click a cell and select "Clear".
 
 http://keyla.googlecode.com/svn/wiki/Screenshots/en_SettingsDialog_Layouts.jpg
