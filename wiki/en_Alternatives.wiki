@@ -1,0 +1,37 @@
+#summary Software that can be used instead of keyla
+
+*[http://www.punto.ru/ Punto Switcher]* - an automatic switcher of English and Russian layouts. Freeware. I do not know whether it is translated into languages other than Russian.
+
+Features:
+  * indication of the current layout in the system tray
+  * a shortcut to switch layouts cyclically
+  * shortcuts to switch to a particular layout from the predefined list
+  * AFAIK, it can provide single layout for all applications (i.e., global layout)
+
+Disadvantages:
+  * lots of other functionality that may be not useful for a user
+
+*[http://haali.cs.msu.ru/winutils/ lswitch]* - a keyboard layout switcher, a simple console program. It is freeware and opensource.
+
+Features:
+  * enables you to set a key to switch layouts cyclically
+
+*[http://yurez.narod.ru/capslang.html Capslang]* - a keyboard layout switcher. Enables you to switch the layout using !Caps !Lock. A simple console program. Freeware.
+
+Features:
+  * cyclical layout switching using !Caps !Lock key
+
+*[http://www.autohotkey.com/ AutoHotKey]* - a free utility containing a powerful scripting language. It can be used to switch layout. One of solutions described in Russian can be found [http://kapustos.habrahabr.ru/blog/41726/ here]. Of course, it is freeware and opensource. But only a Russian-language interface is available, though this interface is intuitive.
+
+Features:
+  * indication of the current layout on keyboard LEDs
+  * cyclical layout switching using !Caps !Lock or !Num !Lock or !Scroll !Lock key
+
+*[http://www.switchit.ru/ Switch It!]* - a powerful keyboard layout switcher. It is free, but registration is required (AFAIK). Program's interface and description are in Russian.
+
+Features:
+  * indication of the current layout in the system tray
+  * beep on layout switching
+  * a shortcut to switch layout cyclically
+  * can provide single layout for all applications (i.e., global layout)
+  * can prohibit swithing layouts from without

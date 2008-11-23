@@ -1,0 +1,34 @@
+#summary keyla - a keyboard layout switcher
+
+keyla is a program that enables you to set keyboard shortcuts for switching keyboard layout. You may wish to have a look at  [http://code.google.com/p/keyla/wiki/en_Screenshots brief description and screenshots]. There is also
+[http://code.google.com/p/keyla/wiki/en_Alternatives a list of software that can be used instead of keyla].
+
+==== Supported Operating Systems ====
+
+keyla runs on Windows, starting with Windows. Earlier version of Windows have not been tested yet.
+
+==== Localization ====
+
+The program interface and installer are available in English and Russian. If you would like to help, please look at [http://code.google.com/p/keyla/wiki/en_TranslatingTheProgram interface localization guide] and [http://code.google.com/p/keyla/wiki/en_TranslatingInstaller installer localization guide].
+
+==== Features ====
+
+  * indication of the current layout in the system tray
+  * a shortcut to change layouts cyclically
+  * shortcuts to switch to a particular layout^1^
+  * can provide single layout for all applications (i.e., global layout)
+  * can prohibit swithing layouts from without^2^
+
+^1^ These shortcuts may be useful for those who use more than two keyboard layouts.
+
+^2^ I.e., keyla allows you to prevent switching layouts using the system shortcut or the Language bar.
+
+The program currently contains icons for Russian and English layouts only. To learn how to add a missing icon please see the [http://code.google.com/p/keyla/wiki/en_AddingLayoutIcons adding layout icons how-to].
+
+[http://code.google.com/p/keyla/wiki/en_ChangeLog Change log]
+
+==== Help ====
+
+If you would like to participate in the development, look at [http://code.google.com/p/keyla/wiki/en_DevelopingTasks the developing tasks].
+
+Also, I shall be glad if you localize the program (as mentioned earlier) or translate this description into another language. To learn how to translate the description please see [http://code.google.com/p/keyla/wiki/en_TranslatingWiki the Wiki localization guide].

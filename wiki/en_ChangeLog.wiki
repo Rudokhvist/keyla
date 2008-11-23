@@ -1,0 +1,13 @@
+#summary Change Log
+
+(02.11.2008) *keyla 0.1.2*
+
+  Now it is possible to switch layout in the Command Prompt ([http://code.google.com/p/keyla/issues/detail?id=1 Issue 1])
+  
+(29.09.2008) *keyla 0.1.1*
+
+  Tray icon menu now contains an item to disable keyla
+  
+*keyla 0.1.0*
+
+  The initial version

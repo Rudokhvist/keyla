@@ -1,0 +1,13 @@
+#summary Developing tasks
+
+==== Switching layouts using the tray icon menu ====
+
+It's a very useful feature provided even by the Language Panel in Windows.
+
+_Note._ Implementation isn't simple because when you click the tray icon, the active window looses focus. So a click at a hypothetical menu item will change the keyboard layout of keyla, not the one of the window you wished.
+
+==== Indication of the current layout using keyboard LEDs ====
+
+It's convenient when you can figure the current layout out with your side sight.
+
+_Note._ AFAIK, there is an only way to control LEDs on an USB keyboard from the user mode in Windows NT4 and later. This way is to simulate that a key (!Caps !Lock, !Num Lock or !Scroll Lock) was pressed. The main question is how to enable the !Caps LED so that Windows won't go to the upper case mode... _IMHO_, if the task can not be solved for USB keyboards, it isn't worth to solve it for PS-2 keyboards only.

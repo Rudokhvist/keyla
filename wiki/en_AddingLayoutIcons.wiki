@@ -1,0 +1,24 @@
+#summary Adding layout icons how-to
+
+To add icons for the X language do the following:
+
+  * [http://www.famfamfam.com/lab/icons/flags/ Download] and extract a set of flag icons.
+
+  * Select an icon which you consider to suite to the X language best of all (e.g., icon of the Russian flag for the Russian language).
+  
+  * Make a grayscale version of the icon. Most of image editors can do it. The grayscale icon will be used when keyla is disabled.
+
+  * Convert the icons from PNG to ICO. You can use the [http://converticon.com/ ConvertIcon] site to accomplish this mission. 
+
+  * Go to the program directory (_"C:\Program Files\keyla"_ by default) and put the icons to the "icons" folder.
+
+  * Find English-language name of the X language at [http://msdn.microsoft.com/en-us/library/ms776294(VS.85).aspx this MSDN page].
+
+  If the page is not found, [http://search.msdn.microsoft.com/ search] for _"Language Identifier Constants and Strings"_.
+
+  * There is a hexadecimal number in the column to the left from the language name (e.g., the number corresponding to Russian is _0x0419_). Remove _0x_ and leading zeroes (if you translated into Russian, you would get _419_). Rename the original icon leaving the "ico" extension (the original icon for Russian is named _419.ico_). Rename the grayscale icon in the same way, but add _grayscale_ to the end of the file name (the grayscale icon for Russian is named _419_grayscale.ico_).
+
+  * Done. You do not need to restart keyla. Just switch keyboard layout several times.
+  
+  * Please [http://code.google.com/p/keyla/issues/entry write an issue] and attach the icons. If you do not have a Google account, send the file directly to me (earshinov at gmail dot com) with subject "Keyla layout icons for the X language" replacing X with the actual language name.
+  
