@@ -7,7 +7,7 @@
 #include <functional>
 using namespace std;
 
-GuiSettingsWindow::GuiSettingsWindow() : CPropertySheet(TEXT("Настройки keyla")) {
+GuiSettingsWindow::GuiSettingsWindow() : CPropertySheet(LoadStringLang(IDS_KEYLA_SETTINGS).c_str()) {
 
 	m_PSH.dwFlags |= PSH_USEHICON;
 	m_PSH.hIcon = settings::Settings.mainIcon;
