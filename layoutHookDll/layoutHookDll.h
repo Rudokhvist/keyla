@@ -18,23 +18,12 @@ namespace layoutHookDll {
 	// LPARAM - (HKL) layout
 	const LPCTSTR SetLayoutMessage = _T("keyla - layout hook DLL - message - set layout {09528aa9-d513-4eab-88a5-0b34a264f51a}");
 
-	// Message that can be send to a window using ::SendMessage() to get its layout.
-	// After ::SendMessage() returned call getLayoutResult() to get the layout
-	const LPCTSTR GetLayoutMessage = _T("keyla - layout hook DLL - message - get layout {6d5caf64-dc9f-41c7-984d-209fc14f3aa1}");
-
 	// Initialize.
 	// window - the window where to send our messages
 	DECLSPEC void create(HWND window);
 
 	// Hook procedure
 	DECLSPEC LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam);
-
-	// See description of GetLayoutMessage
-	//
-	// This hack is needed because our hook procesedure's return value
-	// does not become the return value of ::SendMessage()
-	//
-	DECLSPEC HKL getLayoutResult();
 
 	// Deinitialize.
 	DECLSPEC void destroy();

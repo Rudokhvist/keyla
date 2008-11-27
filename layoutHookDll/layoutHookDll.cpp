@@ -12,8 +12,6 @@ namespace {
 		static const LPCTSTR Id;
 
 		HWND window;
-
-		HKL getLayoutResult;
 	};
 	const LPCTSTR SharedStruct::Id = _T("keyla - layout hook DLL - id - shared {df45ca5e-89f8-4834-a98f-3e13c9f69ecb}");
 
@@ -24,7 +22,6 @@ namespace {
 
 	unsigned int LayoutChangedMessage = 0;
 	unsigned int SetLayoutMessage = 0;
-	unsigned int GetLayoutMessage = 0;
 }
 
 namespace layoutHookDll {
@@ -70,16 +67,8 @@ LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
 		::ActivateKeyboardLayout(reinterpret_cast<HKL>(p->lParam), 0);
 		return 0;
 	}
-	else if (p->message == ::GetLayoutMessage) {
-		Shared->getLayoutResult = ::GetKeyboardLayout(0);
-		return 0;
-	}
 
 	return CallNextHookEx(0, code, wparam, lparam);
-}
-
-HKL getLayoutResult() {
-	return Shared->getLayoutResult;
 }
 
 void destroy() {
@@ -95,7 +84,6 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD reason, void * lpvReserved) {
 			// Initialization for every process we are attached to			
 			verify(LayoutChangedMessage = ::RegisterWindowMessage(layoutHookDll::LayoutChangedMessage));
 			verify(SetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::SetLayoutMessage));
-			verify(GetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::GetLayoutMessage));
 
 			Mapping = ::OpenFileMapping(PAGE_READONLY, FALSE, SharedStruct::Id);
 				// This fails when DLL is attached to keyla's process. See create()
