@@ -2,9 +2,11 @@
 
 To localize keyla, you need to: (1) download source files, (2) translate them and (3) send changes to me. I (4) look at the translation, (5) add it to the project and (6) recompile the program. If the installer is already translated into the same language, I (7) increase keyla's version and (8) upload the new version to the site.
 
+Download the resources file ([http://keyla.googlecode.com/svn/trunk/keyla/res/resource.rc one], [http://keyla.googlecode.com/svn/trunk/layoutHookDll/resource.rc two]) and for each of them do the following.
+
 ==== 1. Preparation ====
 
-Download [http://keyla.googlecode.com/svn/trunk/keyla/res/resource.rc the resources file]. Copy any language section and paste it into the end of the file. For example, if you would like to create a translation based on the English-language one, copy the piece from
+Copy any language section and paste it into the end of the file. For example, if you would like to create a translation based on the English-language one, copy the piece from
 
 `// === english resources ======================================================`
 
