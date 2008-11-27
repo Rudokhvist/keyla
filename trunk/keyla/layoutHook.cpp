@@ -38,9 +38,14 @@ namespace layoutHook {
 		return GetKeyboardLayout(GetWindowThreadProcessId(window, 0));
 	}
 
-	void setLayout(HWND window, HKL layout) {		
+	void setLayout(HWND window, HKL layout) {
+
+		// First method. Does not work on desktop
+		::PostMessage(window, WM_INPUTLANGCHANGEREQUEST, 0, reinterpret_cast<LPARAM>(layout));
+
+		// Second method. Does not work in command prompt
 		::SendMessageTimeout(window, SetLayoutMessage, 0, reinterpret_cast<LPARAM>(layout), 0, 1000 /* ms */, NULL);
-		// If timeout elapsed, layout will just not be changed
+			// If timeout elapsed, layout will just not be changed
 	}
 
 	void destroy() {
