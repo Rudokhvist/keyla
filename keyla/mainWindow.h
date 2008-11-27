@@ -7,12 +7,13 @@
 
 namespace mainWindow {
 
-	// Message identifier used by the tray icon
-	static const unsigned int TrayIconMessage = WM_USER + 1;
-
-	// Identifier of the only tray icon 
-	static const unsigned int TrayIconId = 0;
-
+	// Initialize.
 	void create();
 
+	// Add a message handling function
+	typedef bool (*HandlerProc)(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRESULT * ret);
+	void addMessageHandler(HandlerProc handler);
+
+	// Deinitialize.
+	void destroy();
 }

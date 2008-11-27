@@ -9,7 +9,7 @@
 namespace layoutList {
 
 	// List of layouts
-	extern std::vector<HKL> GuiLayoutList;
+	extern std::vector<HKL> LayoutList;
 
 	// Load list of layouts
 	void load();

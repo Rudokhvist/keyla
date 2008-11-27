@@ -1,6 +1,7 @@
 #include "common.h"
 #include "application.h"
 #include "core.h"
+#include "layoutHook.h"
 #include "layoutList.h"
 #include "settings.h"
 #include "trayIcon.h"
@@ -8,7 +9,10 @@
 #include <algorithm>
 using namespace std;
 
-// Remember the layout we switched to in order to allow this change in layoutChanged()
+// Remember the layout we switched to in order to allow this change in layoutChanged().
+// ExpectedLayout must store a real layout (not an HKL_* contant)
+// to be properly compared in layoutChanged().
+//
 static HKL ExpectedLayout;
 
 // Set layout in particular window
@@ -17,19 +21,41 @@ static HKL ExpectedLayout;
 // window - window
 // layout - layout to switch to
 //
+// Layout must not be HKL_NEXT or any other HKL_* constant
+// because it is saved in ExpectedLayout.
+//
 void setLayout(HWND window, HKL layout) {
 	ExpectedLayout = layout;
-	PostMessage(window, WM_INPUTLANGCHANGEREQUEST, 0, reinterpret_cast<LPARAM>(layout));
+	layoutHook::setLayout(window, layout);
 }
 
 namespace core {
 
 	void nextLayout() {
-		::setLayout(GetForegroundWindow(), reinterpret_cast<HKL>(HKL_NEXT));
+
+		// We do not pass HKL_NEXT and manually walk through our layout list
+		// because ::setLayout() does not handle HKL_* constants
+
+		std::vector<HKL>::const_iterator it = layoutList::LayoutList.begin();
+		const std::vector<HKL>::const_iterator end = layoutList::LayoutList.end();
+		for (; it != end; ++it)
+			if (*it == ExpectedLayout)
+				break;
+
+		assert(it != end);
+		if (it == end)
+			// Do not change layout in case of error
+			return;
+
+		++it;
+		if (it == end)
+			it = layoutList::LayoutList.begin();
+
+		::setLayout(GetForegroundWindow(), *it);
 	}
 
 	void setLayout(unsigned int index) {
-		::setLayout(GetForegroundWindow(), layoutList::GuiLayoutList[index] );
+		::setLayout(GetForegroundWindow(), layoutList::LayoutList[index] );
 	}
 
 	void activeWindowChanged(HWND activeWindow, HKL layout) {
@@ -45,7 +71,15 @@ namespace core {
 		trayIcon::indicateLayout(layout);
 	}
 
-	bool layoutChanged(HKL layout) {
+	void layoutChanged(HWND window, HKL layout) {
+
+			// Get the top-level window containing the specified one
+		window = ::GetAncestor(window, GA_ROOT);
+		assert(window == GetForegroundWindow());
+		if (window != GetForegroundWindow())
+			// Ignore
+			return;
+
 		bool ret;
 		if (!Application::GetApp()->isActive()) {
 			// Permit layout change
@@ -55,15 +89,19 @@ namespace core {
 			// Permit layout change
 			ret = false;
 		}
-		else {			
+		else {
 			// Otherwise follow the settings
 			ret = settings::Settings.skipSystemHotKey;
 		}
+
 		if (ret == false) {
-			// If we permitted layout change, indicate new layout
+			// If we allowed the change, save and indicate the new layout...
+			ExpectedLayout = layout;
 			trayIcon::indicateLayout(layout);
 		}
-		return ret;
+		else
+			// ...otherwise restore layout
+			::setLayout(window, ExpectedLayout);
 	}
 
 	bool keyPressed(unsigned int vk, unsigned int modifiers) {

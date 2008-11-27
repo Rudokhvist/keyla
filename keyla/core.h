@@ -20,10 +20,10 @@ namespace core {
 	// layout - layout in the window
 	void activeWindowChanged(HWND activeWindow, HKL layout);
 
-	// Function that gets calles when layout is changed in the active window
-	// layout - new layout
-	// return - whether to forbid this change
-	bool layoutChanged(HKL layout);
+	// Function that gets calles when layout is changed in a window
+	// window - the window
+	// layout - the new layout (may be HKL_NEXT or other HKL_* constant)
+	void layoutChanged(HWND window, HKL layout);
 
 	// Function that gets called when a key pressed
 	//
