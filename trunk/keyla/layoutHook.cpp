@@ -8,7 +8,6 @@ namespace {
 
 unsigned int LayoutChangedMessage = 0;
 unsigned int SetLayoutMessage = 0;
-unsigned int GetLayoutMessage = 0;
 
 HHOOK hook = 0;
 
@@ -28,7 +27,6 @@ namespace layoutHook {
 
 		verify(LayoutChangedMessage = ::RegisterWindowMessage(layoutHookDll::LayoutChangedMessage));
 		verify(SetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::SetLayoutMessage));
-		verify(GetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::GetLayoutMessage));
 		mainWindow::addMessageHandler(messageHandler);
 
 		layoutHookDll::create(mainWindow);
@@ -37,11 +35,7 @@ namespace layoutHook {
 	}
 
 	HKL getLayout(HWND window) {
-		if (!::SendMessageTimeout(window, GetLayoutMessage, 0, 0, 0, 1000 /* ms */, NULL))
-			// If timeout elapsed, we return code of failure
-			return 0;
-
-		return layoutHookDll::getLayoutResult();
+		return GetKeyboardLayout(GetWindowThreadProcessId(window, 0));
 	}
 
 	void setLayout(HWND window, HKL layout) {		
