@@ -3,12 +3,12 @@
 
 namespace layoutList {
 
-	std::vector<HKL> GuiLayoutList;
+	std::vector<HKL> LayoutList;
 
 	void load() {
 		unsigned int layoutsCount = GetKeyboardLayoutList(0, 0);
-		GuiLayoutList.resize(layoutsCount);
-		GetKeyboardLayoutList(layoutsCount, &GuiLayoutList[0]);
+		LayoutList.resize(layoutsCount);
+		GetKeyboardLayoutList(layoutsCount, &LayoutList[0]);
 	}
 
 	tstring layoutLangId(HKL layout) {

@@ -69,8 +69,8 @@ void GuiLayoutList::update() {
 	HWND hwnd = GetHwnd();
 	assert(hwnd != 0);
 
-	for (size_t i = 0; i < layoutList::GuiLayoutList.size(); ++i) {
-		HKL layout = layoutList::GuiLayoutList[i];
+	for (size_t i = 0; i < layoutList::LayoutList.size(); ++i) {
+		HKL layout = layoutList::LayoutList[i];
 		tstring layoutLanguage = layoutList::layoutLanguage(layout);
 		tstring layoutHotKey = m_layoutHotKeys[i].text();
 

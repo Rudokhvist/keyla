@@ -1,15 +1,22 @@
 //
-// Module ACTIVE_WINDOW_HOOK keeps track of active window
-// When user activates other window, module reports the CORE module about it
+// Module LAYOUT_HOOK provide some functions
+// to get or set keyboard layout in a window
 //
 
 #pragma once
 
 namespace layoutHook {
 
-	// Begin keeping track of active window
-	void create();
+	// Initialize
+	void create(HWND mainWindow);
 
-	// Stop keeping track of active window
+	// Get keyboard layout of a window
+	// If fails, returns 0
+	HKL getLayout(HWND window);
+
+	// Set keyboard layout of a window
+	void setLayout(HWND window, HKL layout);
+
+	// Destroy
 	void destroy();
 }

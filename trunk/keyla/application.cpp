@@ -1,3 +1,4 @@
+#include "activeWindowHook.h"
 #include "application.h"
 #include "core.h"
 #include "exclusion/exclusion.h"
@@ -28,7 +29,7 @@ Application::Application() : m_exclusion(0), m_active(false) {
 	layoutList::load();
 	settings::load();
 	mainWindow::create();
-	layoutHook::create();
+	activeWindowHook::create();
 	keyboardHook::create();
 	
 	m_active = true;
@@ -39,6 +40,7 @@ Application::Application() : m_exclusion(0), m_active(false) {
 	m_active = false;
 
 	keyboardHook::destroy();
+	activeWindowHook::destroy();
 	layoutHook::destroy();
 
 	if (m_exclusion) {

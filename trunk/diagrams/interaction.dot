@@ -3,17 +3,19 @@ digraph initialization{
 
 	Core
 	Kh[label="Keyboard hook"]
-	Lh[label="Layout hook"]
+	Ah[label="Active window hook"]
 	Lol[label="List of layouts"]
 	Mw[label="Main window"]
 	Registry
 	Sd[label="Settings dialog"]
 	Settings	
 	Ti[label="Tray icon"]
+	Lh[label="Layout hook"]
+	Lhd[label="Layout hook DLL"]
 	
 	Core -> Ti
 	Kh -> Core
-	Lh -> Core
+	Ah -> Core
 	Lol -> Core[style="dashed"]
 	Lol -> Sd[style="dashed"]
 	Lol -> Ti[style="dashed"]
@@ -21,6 +23,12 @@ digraph initialization{
 	Sd -> Settings[style="dashed", dir="both"]
 	Settings -> Core[style="dashed"]
 	Settings -> Ti[style="dashed"]
-	Ti -> Mw[style="dotted", dir="both"]
+	Ti -> Mw[dir="both"]
 	Ti -> Sd
+	
+	Core -> Lh
+	Ah -> Lh
+	Lh -> Mw[dir="both"]
+	Lh -> Lhd[style="dotted"]
+	Lhd -> Mw[style="dotted"]	
 }

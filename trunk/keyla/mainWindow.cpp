@@ -1,12 +1,28 @@
 #include "common.h"
 #include "application.h"
+#include "layoutHook.h"
 #include "mainWindow.h"
 #include "res/resource.h"
-#include "settingsWindow.h"
 #include "trayIcon.h"
 #include "../win32xx/WinCore.h"
 
+#include <list>
+using namespace std;
+
+namespace {
+
 class MainWindow : public CWnd {
+private:
+
+	typedef list<mainWindow::HandlerProc> Handlers;
+	Handlers m_handlers;
+
+public:
+
+	void AddMessageHandler(mainWindow::HandlerProc handler) {
+		m_handlers.push_back(handler);
+	}
+
 protected:
 
 	virtual void PreRegisterClass(WNDCLASS & wc) {
@@ -30,84 +46,45 @@ protected:
 
 	virtual void OnCreate() {
 		CWnd::OnCreate();
+
 		trayIcon::create(GetHwnd());
+		layoutHook::create(GetHwnd());
 	}
 
 	virtual LRESULT WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
 
-		// Message from the tray icon
-		if (message == mainWindow::TrayIconMessage && wparam == mainWindow::TrayIconId)
-			// NOTE: Do not allow to touch the icon when the settings window is shown
-			switch (lparam) {
-				case WM_CONTEXTMENU:
-				case WM_RBUTTONUP:
-					if (settingsWindow::isShown()) 
-						MessageBeep(-1);
-					else
-						trayIcon::showMenu();
-					return 0;
-				case NIN_KEYSELECT:
-				case NIN_SELECT:
-				case WM_LBUTTONUP:
-					if (settingsWindow::isShown()) 
-						MessageBeep(-1);
-					else
-						settingsWindow::show();
-					return 0;
-			}
-		
 		if (message == WM_DESTROY) {
-		
-			// Destroy the tray icon. We do it here as we should pass main window's HWND.
-			// Otherwise it would be better to do it in the MAIN module.
-			trayIcon::destroy();
-
 			// Quit the application
 			PostQuitMessage(0);
-			return 0;
+		}
+
+		LRESULT ret = 0;
+		Handlers::const_iterator it = m_handlers.begin();
+		const Handlers::const_iterator end = m_handlers.end();
+		for (; it != end; ++it) {
+			if ((*it)(window, message, wparam, lparam, &ret))
+				return ret;
 		}
 
 		return CWnd::WndProc(window, message, wparam, lparam);
 	}
 
-	virtual BOOL OnCommand(WPARAM wparam, LPARAM lparam) {
-		unsigned int code = HIWORD(wparam);
-		unsigned int id = LOWORD(wparam);
-		HWND hwnd = reinterpret_cast<HWND>(lparam);
-
-		// Message from the contenxt menu of the tray icon
-		if (hwnd == 0 && code == 0)
-			switch (id) {
-				case ID_TRAYICONMENU_TOGGLE: {
-					Application::GetApp()->toggle();
-
-					tstring _1;
-					if (Application::GetApp()->isActive())
-						_1 = LoadStringLang(IDS_DISABLE);
-					else
-						_1 = LoadStringLang(IDS_ENABLE);
-					MENUITEMINFO mii = {sizeof(mii), MIIM_TYPE, MFT_STRING};
-					mii.dwTypeData = const_cast<LPTSTR>(_1.c_str());
-					SetMenuItemInfo(trayIcon::getMenu(), id, FALSE, &mii);
-
-					return 0;
-				}
-				case ID_TRAYICONMENU_SETTINGS:
-					settingsWindow::show();
-					return 0;
-				case ID_TRAYICONMENU_EXIT:
-					DestroyWindow();
-					return 0;
-			}
-		return CWnd::OnCommand(wparam, lparam);
-	}
-
 } MyMainWindow;
+
+}
 
 namespace mainWindow {
 
 	void create() {
 		MyMainWindow.Create();
+	}
+
+	void addMessageHandler(HandlerProc handler) {
+		return MyMainWindow.AddMessageHandler(handler);
+	}
+
+	void destroy() {
+		MyMainWindow.DestroyWindow();
 	}
 
 }

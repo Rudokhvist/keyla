@@ -1,44 +1,57 @@
 #include "common.h"
 #include "core.h"
 #include "layoutHook.h"
+#include "mainWindow.h"
+#include "../layoutHookDll/layoutHookDll.h"
 
-static UINT_PTR TimerId = 0;
-static HWND LastActiveWindow = 0;
-static HKL LastActiveLayout = 0;
+namespace {
 
-static void WINAPI timerProc(HWND, UINT message, UINT_PTR timerId, DWORD time) {
-	HWND hwnd = GetForegroundWindow();
-	if (hwnd == 0) return;
+unsigned int LayoutChangedMessage = 0;
+unsigned int SetLayoutMessage = 0;
+unsigned int GetLayoutMessage = 0;
 
-	HKL layout = GetKeyboardLayout(GetWindowThreadProcessId(hwnd, 0));
+HHOOK hook = 0;
 
-	if (hwnd != LastActiveWindow) {
-		LastActiveWindow = hwnd;
-		LastActiveLayout = layout;		
-		core::activeWindowChanged(hwnd, layout);
-		return;
+bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRESULT * ret) {
+	if (message == LayoutChangedMessage) {
+		core::layoutChanged(reinterpret_cast<HWND>(wparam), reinterpret_cast<HKL>(lparam));
+		return true;
 	}
-	
-	if (layout != LastActiveLayout) {		
-		if (core::layoutChanged(layout)) {
-			// Forbid the change
-			PostMessage(hwnd, WM_INPUTLANGCHANGEREQUEST, 0, reinterpret_cast<LPARAM>(LastActiveLayout));
-			return;
-		}
-		LastActiveLayout = layout;
-		return;
-	}
+	return false;
+}
+
 }
 
 namespace layoutHook {
 
-	void create() {
-		TimerId = SetTimer(0, 0, 100 /* milliseconds */, timerProc);
-		assert(TimerId != 0);
+	void create(HWND mainWindow) {
+
+		verify(LayoutChangedMessage = ::RegisterWindowMessage(layoutHookDll::LayoutChangedMessage));
+		verify(SetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::SetLayoutMessage));
+		verify(GetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::GetLayoutMessage));
+		mainWindow::addMessageHandler(messageHandler);
+
+		layoutHookDll::create(mainWindow);
+		hook = SetWindowsHookEx(WH_CALLWNDPROC, layoutHookDll::proc, GetModuleHandle(_T("layoutHookDll.dll")), 0);
+		assert(hook != 0);
+	}
+
+	HKL getLayout(HWND window) {
+		if (!::SendMessageTimeout(window, GetLayoutMessage, 0, 0, 0, 1000 /* ms */, NULL))
+			// If timeout elapsed, we return code of failure
+			return 0;
+
+		return layoutHookDll::getLayoutResult();
+	}
+
+	void setLayout(HWND window, HKL layout) {		
+		::SendMessageTimeout(window, SetLayoutMessage, 0, reinterpret_cast<LPARAM>(layout), 0, 1000 /* ms */, NULL);
+		// If timeout elapsed, layout will just not be changed
 	}
 
 	void destroy() {
-		verify(KillTimer(0, TimerId));
+		verify(UnhookWindowsHookEx(hook));
+		layoutHookDll::destroy();
 	}
 
 }
