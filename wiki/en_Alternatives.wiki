@@ -27,7 +27,7 @@ Features:
   * indication of the current layout on keyboard LEDs
   * cyclical layout switching using Caps Lock, Num Lock or Scroll Lock
 
-*[http://www.switchit.ru/ Switch It!]* - a keyboard layout switcher. It is freeware, but registration is required (AFAIK). Program's interface and description are in Russian.
+*[http://www.switchit.ru/ Switch It!]* - a keyboard layout switcher. Freeware, but is not developed at the moment. Program's interface and description are in Russian.
 
 Features:
   * indication of the current layout in the system tray
