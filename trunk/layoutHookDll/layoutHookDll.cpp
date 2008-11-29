@@ -49,6 +49,9 @@ void create(HWND window) {
 // when user renames a file on the desktop. ActivateKeyboardLayout() works
 // but it can be called within the target process only.
 //
+// This hook procedure must be placed in a DLL. Otherwise a crash occurs
+// in a Windows library when ::SetWindowsHookEx() is called.
+//
 LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
 
 	// MSDN says one must do nothing if code is < 0
