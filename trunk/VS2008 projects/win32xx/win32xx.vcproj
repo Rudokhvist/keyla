@@ -102,7 +102,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WIN32_WINNT=0x0400;_WIN32_IE=0x0500"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 			/>
