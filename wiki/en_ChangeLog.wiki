@@ -1,5 +1,9 @@
 #summary Change Log
 
+(02.12.2008) *keyla 0.1.5*
+  * Now it is possible to use a combination of just command keys as a shortcut (e.g., Right Ctrl)
+  * Now user can select which layouts to use when switching them cyclically
+  
 (28.11.2008) *keyla 0.1.4*
   * Now user can change layout using keyla while renaming a file on desktop ([http://code.google.com/p/keyla/issues/detail?id=1 Issue 1])
   
