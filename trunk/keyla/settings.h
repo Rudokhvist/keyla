@@ -17,6 +17,14 @@ namespace settings {
 	extern struct SettingsStruct {
 		SettingsStruct();
 
+		struct LayoutSettings {
+			inline LayoutSettings() : hotKey(), useWhenSwitchingCyclically(true) {
+			}
+
+			HotKey hotKey;
+			bool useWhenSwitchingCyclically;
+		};
+
 		// Shortcut to switch to next layout
 		HotKey mainHotKey;
 		// Forbid external change of layout (via the language panel or using system shortcut)
@@ -24,7 +32,7 @@ namespace settings {
 		// Whether to use single global layout
 		bool globalLayout;
 		// Shortcuts to switch to particular layouts
-		std::vector<HotKey> layoutHotKeys;
+		std::vector<LayoutSettings> layoutSettings;
 		// Program icon
 		Icon mainIcon;
 	} Settings;
