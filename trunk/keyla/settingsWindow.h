@@ -11,4 +11,7 @@ namespace settingsWindow {
 
 	// Get to know, whether the settings window is active
 	bool isShown();
+
+	// Flash active settings window if any
+	void flash();
 }

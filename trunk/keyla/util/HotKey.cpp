@@ -145,7 +145,10 @@ void HotKey::makeText() {
 		m_text += LoadStringLang(IDS_RIGHT);
 		m_text += keyName(VK_SHIFT);
 	}
-    
-	if (!m_text.empty()) m_text += Separator;
-	m_text += keyName(m_vk, (m_modifiers & Extended) != 0);
+	
+	tstring key = keyName(m_vk, (m_modifiers & Extended) != 0);
+	if (!m_text.empty() && !key.empty()) {
+		m_text += Separator;
+	}
+	m_text += key;
 }

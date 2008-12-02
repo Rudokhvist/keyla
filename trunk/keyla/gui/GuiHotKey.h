@@ -58,6 +58,10 @@ private:
 	// Keyboard hook handle
 	static HHOOK KeyboardHook;
 
+	// Virtual key currently choosen
+	// Used when the keyboard hook is active
+	static unsigned int Vk;
+
 	// Modifiers (see HotKey::Modifiers) currently pressed
 	// Used when the keyboard hook is active
 	static unsigned int Modifiers;
