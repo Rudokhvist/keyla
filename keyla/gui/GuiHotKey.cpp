@@ -5,6 +5,8 @@
 /* static */ GuiHotKey * GuiHotKey::ActiveInstance = 0;
 
 /* static */ HHOOK GuiHotKey::KeyboardHook = 0;
+
+/* static */ unsigned int GuiHotKey::Vk = 0;
 /* static */ unsigned int GuiHotKey::Modifiers = 0;
 
 /* static */ Menu GuiHotKey::ContextMenu(MAKEINTRESOURCE(IDM_HOTKEYEDIT));
@@ -71,6 +73,7 @@ const HotKey & GuiHotKey::hotKey() const {
 
 		case WM_SETFOCUS:
 			ActiveInstance = this;
+			Vk = 0;
 			Modifiers = 0;
 			
 			KeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboardHook, GetModuleHandle(0), 0);
@@ -82,6 +85,7 @@ const HotKey & GuiHotKey::hotKey() const {
 			KeyboardHook = 0;				
 		
 			ActiveInstance = 0;
+			Vk = 0;
 			Modifiers = 0;
 			return 0;
 	}
@@ -95,10 +99,9 @@ const HotKey & GuiHotKey::hotKey() const {
 		return CallNextHookEx(0, code, wparam, lparam);
 
 	// There is no attached control somehow. Do nothing.
-	if (ActiveInstance == 0) {
-		assert(false);
-		return CallNextHookEx(0, code, wparam, lparam); 
-	}
+	assert(ActiveInstance != NULL);
+	if (ActiveInstance == NULL)
+		return CallNextHookEx(0, code, wparam, lparam);
 
 	bool pressed;
 	if (wparam == WM_KEYDOWN || wparam == WM_SYSKEYDOWN)
@@ -127,34 +130,29 @@ const HotKey & GuiHotKey::hotKey() const {
 
 		else {
 			// The key is not in the list above
-			ActiveInstance->setHotKey(vk, Modifiers | (extended ? HotKey::Extended : 0));
+			Vk = vk;
+			Modifiers |= (extended ? HotKey::Extended : 0);
+			ActiveInstance->setHotKey(Vk, Modifiers);
 			return TRUE;
 		}
 
 		// The key is in the list above
-		ActiveInstance->setHotKey(0, Modifiers);
-
-	} else {
-
-			 if (vk == VK_LCONTROL) Modifiers &= ~HotKey::LControl;
+		ActiveInstance->setHotKey(Vk, Modifiers);
+		return TRUE;
+	}
+	else {
+		     if (vk == VK_LCONTROL) Modifiers &= ~HotKey::LControl;
 		else if (vk == VK_LMENU)    Modifiers &= ~HotKey::LAlt;
 		else if (vk == VK_LSHIFT)   Modifiers &= ~HotKey::LShift;
 		else if (vk == VK_RCONTROL) Modifiers &= ~HotKey::RControl;
 		else if (vk == VK_RMENU)    Modifiers &= ~HotKey::RAlt;
 		else if (vk == VK_RSHIFT)   Modifiers &= ~HotKey::RShift;
-
 		else {
-			// The key is not in the list above
-			return TRUE;
+			Vk = 0;
+			Modifiers &= ~HotKey::Extended;
 		}
-
-		// The key is in the list above
-		if (ActiveInstance->hotKey().vk() == 0)
-			ActiveInstance->setHotKey(0, Modifiers);			
+		return TRUE;
 	}
-
-	// The key event was handled
-	return TRUE;
 }
 
 void GuiHotKey::initialize() {

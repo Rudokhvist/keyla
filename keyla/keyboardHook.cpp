@@ -3,15 +3,20 @@
 #include "keyboardHook.h"
 #include "util/HotKey.h"
 
-static HHOOK hook = 0;
+namespace {
+	
+HHOOK hook = 0;
+
+// Virtual key currently choosen
+unsigned int Vk = 0;
 
 // Bitwise OR of HotKey::Modifiers that were pressed
-static unsigned int Modifiers = 0;
+unsigned int Modifiers = 0;
 
 // Keyboard hook procedure. It must be WH_KEYBOARD_LL in order to
 // catch all shortcuts, including ones used by Windows (e.g., Win-D)
-static LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
-	// MSDN says one must do nothing if code is < 0
+LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
+	// MSDN says one must do nothing when code is < 0
 	if (code < 0)
 		return CallNextHookEx(0, code, wparam, lparam);
 
@@ -41,26 +46,37 @@ static LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
 		else if (vk == VK_RSHIFT)   Modifiers |= HotKey::RShift;
 
 		else {
-			// If the key is not in the list above
-			if (core::keyPressed(vk, Modifiers | (extended ? HotKey::Extended : 0))) {
+			// The key is not in the list above
+			Vk = vk;
+			Modifiers |= (extended ? HotKey::Extended : 0);
+			if (core::keyPressed(Vk, Modifiers))
 				return TRUE;
-			} else {
-				return CallNextHookEx(0, code, wparam, lparam);
-			}
+			else
+				return ::CallNextHookEx(0, code, wparam, lparam);
 		}
 
-	} else {
-
-			 if (vk == VK_LCONTROL) Modifiers &= ~HotKey::LControl;
+		// The key is in the list above
+		if (core::keyPressed(Vk, Modifiers))
+			return TRUE;
+		else
+			return CallNextHookEx(0, code, wparam, lparam);
+	}
+	else {
+		     if (vk == VK_LCONTROL) Modifiers &= ~HotKey::LControl;
 		else if (vk == VK_LMENU)    Modifiers &= ~HotKey::LAlt;
 		else if (vk == VK_LSHIFT)   Modifiers &= ~HotKey::LShift;
 		else if (vk == VK_RCONTROL) Modifiers &= ~HotKey::RControl;
 		else if (vk == VK_RMENU)    Modifiers &= ~HotKey::RAlt;
-		else if (vk == VK_RSHIFT)   Modifiers &= ~HotKey::RShift;		
-	}
-
-	return CallNextHookEx(0, code, wparam, lparam);
+		else if (vk == VK_RSHIFT)   Modifiers &= ~HotKey::RShift;
+		else {
+			Vk = 0;
+			Modifiers &= ~HotKey::Extended;
+		}
+		return CallNextHookEx(0, code, wparam, lparam);
+	}	
 }
+
+} // namespace
 
 namespace keyboardHook {
 	
