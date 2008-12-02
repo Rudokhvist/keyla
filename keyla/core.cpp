@@ -33,25 +33,25 @@ namespace core {
 
 	void nextLayout() {
 
-		// We do not pass HKL_NEXT and manually walk through our layout list
-		// because ::setLayout() does not handle HKL_* constants
+		size_t sz = settings::Settings.layoutSettings.size();
+		assert(sz == layoutList::LayoutList.size());
 
-		std::vector<HKL>::const_iterator it = layoutList::LayoutList.begin();
-		const std::vector<HKL>::const_iterator end = layoutList::LayoutList.end();
-		for (; it != end; ++it)
-			if (*it == ExpectedLayout)
+		size_t i = 0;
+		for (; i < sz; ++i)
+			if (layoutList::LayoutList[i] == ExpectedLayout)
 				break;
 
-		assert(it != end);
-		if (it == end)
+		assert(i != sz);
+		if (i == sz)
 			// Do not change layout in case of error
 			return;
 
-		++it;
-		if (it == end)
-			it = layoutList::LayoutList.begin();
-
-		::setLayout(GetForegroundWindow(), *it);
+		for (size_t j = (i + 1) % sz; j != i; j = (j + 1) % sz) {
+			if (settings::Settings.layoutSettings[j].useWhenSwitchingCyclically) {
+				::setLayout(GetForegroundWindow(), layoutList::LayoutList[j]);
+				return;
+			}
+		}
 	}
 
 	void setLayout(unsigned int index) {
@@ -114,14 +114,14 @@ namespace core {
 			return true;
 		}
 
-		vector<HotKey>::const_iterator begin = settings::Settings.layoutHotKeys.begin();
-		vector<HotKey>::const_iterator end = settings::Settings.layoutHotKeys.end();
-		vector<HotKey>::const_iterator it = find(begin, end, h);
-		if (it != end) {
-			setLayout(static_cast<unsigned int>(distance(begin, it)));
-			return true;
-		}
-
+		vector<settings::SettingsStruct::LayoutSettings>::const_iterator begin = settings::Settings.layoutSettings.begin();
+		vector<settings::SettingsStruct::LayoutSettings>::const_iterator end = settings::Settings.layoutSettings.end();
+		vector<settings::SettingsStruct::LayoutSettings>::const_iterator it = begin;
+		for (; it != end; ++it)
+			if (it->hotKey == h) {
+				setLayout(static_cast<unsigned int>(distance(begin, it)));
+				return true;
+			}
 		return false;
 	}
 

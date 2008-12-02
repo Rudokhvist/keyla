@@ -47,10 +47,18 @@ namespace settings {
 		}
 
 		size_t sz = layoutList::LayoutList.size();
-		Settings.layoutHotKeys.resize(sz);
+		Settings.layoutSettings.resize(sz);
 		for (size_t i = 0; i < sz; ++i) {
-			tstring subkey = TEXT("layouts\\") + layoutList::layoutLangId( layoutList::LayoutList[i] ) + TEXT("\\hotKey");
-			Settings.layoutHotKeys[i].loadFromRegistry(hkey, subkey);
+			tstring subkey = TEXT("layouts\\") + layoutList::layoutLangId( layoutList::LayoutList[i] ) + TEXT("\\");
+			Settings.layoutSettings[i].hotKey.loadFromRegistry(hkey, subkey + TEXT("hotKey"));
+
+			ret = RegQueryValueEx(hkey, (subkey + TEXT("useWhenSwitchingCyclically")).c_str(), 0, &type, reinterpret_cast<BYTE *>(&data), &dataSz);
+			if (ret != ERROR_SUCCESS || type != REG_DWORD || dataSz != sizeof(DWORD)) {
+				data = Settings.layoutSettings[i].useWhenSwitchingCyclically;
+				RegSetValueEx(hkey, value, 0, REG_DWORD, reinterpret_cast<const BYTE *>(&data), dataSz);
+			} else { 
+				Settings.layoutSettings[i].useWhenSwitchingCyclically = (data != 0);
+			}
 		}
 
 		RegCloseKey(hkey);
@@ -78,10 +86,13 @@ namespace settings {
 		RegSetValueEx(hkey, value, 0, REG_DWORD, reinterpret_cast<const BYTE *>(&data), sizeof(data));
 
 		size_t sz = layoutList::LayoutList.size();
-		Settings.layoutHotKeys.resize(sz);
+		Settings.layoutSettings.resize(sz);
 		for (size_t i = 0; i < sz; ++i) {
-			tstring subkey = TEXT("layouts\\") + layoutList::layoutLangId( layoutList::LayoutList[i] ) + TEXT("\\hotKey");
-			Settings.layoutHotKeys[i].saveToRegistry(hkey, subkey);
+			tstring subkey = TEXT("layouts\\") + layoutList::layoutLangId( layoutList::LayoutList[i] ) + TEXT("\\");
+			Settings.layoutSettings[i].hotKey.saveToRegistry(hkey, subkey + TEXT("hotKey"));
+
+			data = Settings.layoutSettings[i].useWhenSwitchingCyclically;
+			RegSetValueEx(hkey, (subkey + TEXT("useWhenSwitchingCyclically")).c_str(), 0, REG_DWORD, reinterpret_cast<BYTE *>(&data), sizeof(data));
 		}
 
 		RegCloseKey(hkey);

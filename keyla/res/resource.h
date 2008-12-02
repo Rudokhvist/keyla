@@ -26,3 +26,6 @@
 #define IDS_ENABLE                          40007
 #define IDS_KEYLA_IS_A_KEYBOARD_LAYOUT_SWITCHER 40008
 #define IDS_KEYLA_SETTINGS                  40009
+#define IDS_USE_WHEN_SWITCHING_CYCLICALLY   40010
+#define IDS_YES                             40011
+#define IDS_NO                              40012

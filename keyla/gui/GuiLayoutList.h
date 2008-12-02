@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GuiHotKey.h"
+#include "../settings.h"
 #include "../../win32xx/WinCore.h"
 
 #include <vector>
@@ -61,7 +62,7 @@ protected:
 private:
 
 	// Local copy of shortcuts for layouts
-	std::vector<HotKey> m_layoutHotKeys;
+	std::vector<settings::SettingsStruct::LayoutSettings> m_layoutSettings;
 
 	// Whether the delegate is active
 	bool m_delegateActive;
