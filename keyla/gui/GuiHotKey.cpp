@@ -94,6 +94,9 @@ const HotKey & GuiHotKey::hotKey() const {
 
 /* static */ LRESULT CALLBACK GuiHotKey::keyboardHook(int code, WPARAM wparam, LPARAM lparam) {
 
+	// See also keyboardHook.cpp
+	// TODO: extract common code into a function
+
 	// MSDN says one must do nothing when code is < 0
 	if (code < 0)
 		return CallNextHookEx(0, code, wparam, lparam);
