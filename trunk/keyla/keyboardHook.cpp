@@ -1,3 +1,8 @@
+//
+// We do not use ::RegisterHotKey due to its limitation.
+// For example, it can't distinguish right and left command keys.
+//
+
 #include "common.h"
 #include "core.h"
 #include "keyboardHook.h"
@@ -16,6 +21,10 @@ unsigned int Modifiers = 0;
 // Keyboard hook procedure. It must be WH_KEYBOARD_LL in order to
 // catch all shortcuts, including ones used by Windows (e.g., Win-D)
 LRESULT CALLBACK proc(int code, WPARAM wparam, LPARAM lparam) {
+
+	// See alsp GuiHotKey::keyboardHook
+	// TODO: extract common code into a function
+
 	// MSDN says one must do nothing when code is < 0
 	if (code < 0)
 		return CallNextHookEx(0, code, wparam, lparam);
