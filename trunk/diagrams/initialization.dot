@@ -1,14 +1,15 @@
-digraph initialization{	
-	Main
-	Lol[label="List of layouts"]
-	Settings[]
-	Mw[label="Main window"]
-	Ti[label="Tray icon"]
-	Lh[label="Layout hook"]
-	Lhd[label="Layout hook DLL"]
-	Ah[label="Active window hook"]
-	Kh[label="Keyboard hook"]
-	
+digraph initialization{
+
+	Main[pos="7,4!"]
+	Lol[label="List of layouts", pos="2,3!"]
+	Settings[pos="4,3!"]
+	Mw[label="Main window", pos="6,3!"]
+	Ti[label="Tray icon", pos="5,2!"]
+	Lh[label="Layout hook", pos="7,2!"]
+	Lhd[label="Layout hook DLL", pos="7,1!"]
+	Ah[label="Active window hook", pos="9,3!"]
+	Kh[label="Keyboard hook", pos="12,3!"]
+
 	Main -> Lol
 	Main -> Settings
 	Main -> Mw
@@ -17,4 +18,8 @@ digraph initialization{
 	Lh -> Lhd
 	Main -> Ah
 	Main -> Kh
+	
+	subgraph Legend {
+		2[pos="7,0!",shape="plaintext",label="The more left a component is placed the earlier it gets initialized"]
+	}
 }

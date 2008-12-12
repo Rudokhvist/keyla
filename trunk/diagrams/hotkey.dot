@@ -1,0 +1,31 @@
+digraph hotkey{
+
+	a[label="A. Initial state"]
+	b[label="B. Some command keys were pressed\n and no other keys were pressed or released\n since we leaved the A state"]
+	c[label="C. Some keys were pressed or released\n since we left the B state"]
+	
+	a->a[label="P|smb", color=red]
+	a->b[label="P|com", color=blue]
+	a->a[label="R|smb"]
+	a->a[label="R|com"]
+	
+	b->c[label="P|smb", color=red]
+	b->b[label="P|com", color=blue]
+	b->b[label="R|smb"]
+	b->c[label="R|com\n any left", color=red]
+	b->a[label="R|com\n none left", color=red]
+		
+	c->c[label="P|smb", color=red]
+	c->c[label="P|com", color=blue]
+	c->c[label="R|smb"]
+	c->c[label="R|com\n any left"]
+	c->a[label="R|com\n none left"]
+	
+	/* Legend */
+	node[style=invis]
+	
+	1;2;3;4
+	1->2[label="Ordinary transition"]
+	2->3[color=blue, label="A hotkey is being entered\lkeyla/gui/GuiHotKey.cpp: Update the key labels displayed"]
+	3->4[color=red, label="A valid hotkey\lkeyla/gui/GuiHotKey.cpp: Fix the hotkey up\lkeyla/keyboardHook.cpp: Pass the hotkey to the CORE module"]
+}

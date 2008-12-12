@@ -2,6 +2,7 @@
 
 #include "Menu.h"
 #include "../util/HotKey.h"
+#include "../util/HotKeyAutomaton.h"
 #include "../../win32xx/WinCore.h"
 
 //
@@ -58,13 +59,17 @@ private:
 	// Keyboard hook handle
 	static HHOOK KeyboardHook;
 
-	// Virtual key currently choosen
-	// Used when the keyboard hook is active
-	static unsigned int Vk;
-
-	// Modifiers (see HotKey::Modifiers) currently pressed
-	// Used when the keyboard hook is active
-	static unsigned int Modifiers;
+	// Statechart processing hotkeys
+	class Automaton : public HotKeyAutomaton {
+	protected:
+		inline /* virtual */ void callbackProgress(const HotKey & hotkey) {
+			GuiHotKey::ActiveInstance->setHotKey(hotkey.vk(), hotkey.modifiers());
+		}
+		inline /* virtual */ void callbackHotKey(const HotKey & hotkey) {
+			GuiHotKey::ActiveInstance->setHotKey(hotkey.vk(), hotkey.modifiers());
+		}
+	};
+	static Automaton Autom;
 
 	// Context menu
 	static Menu ContextMenu;

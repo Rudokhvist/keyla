@@ -1,5 +1,4 @@
-digraph initialization{	
-	overlap=scale
+digraph initialization{
 
 	Core
 	Kh[label="Keyboard hook"]
@@ -30,5 +29,21 @@ digraph initialization{
 	Ah -> Lh
 	Lh -> Mw[dir="both"]
 	Lh -> Lhd[style="dotted"]
-	Lhd -> Mw[style="dotted"]	
+	Lhd -> Mw[style="dotted"]
+	
+	
+	2[style="invis"]
+	3[shape="plaintext",label="Methods' invocation"]
+	4[style="invis"]
+	5[shape="plaintext",label="Data transfer"]
+	6[style="invis"]
+	7[shape="plaintext",label="Implementation detail"]
+	
+	/* Legend */
+	
+	2->3
+	3->4[style="invis"]
+	4->5[style="dashed"]
+	5->6[style="invis"]
+	6->7[style="dotted"]
 }

@@ -1,4 +1,5 @@
 digraph initialization{	
+
 	Ti[label="Tray icon", pos="2.5,5!"]
 	Mw[label="Main window", pos="2.5,4!"]
 	Main[pos="2.5,3!"]
@@ -13,4 +14,8 @@ digraph initialization{
 	Main -> Ah
 	Main -> Lh
 	Lh -> Lhd
+	
+	subgraph Legend {
+		2[pos="2.5,0!",shape="plaintext",label="The more left a component is placed the earlier it gets turned off"]
+	}
 }

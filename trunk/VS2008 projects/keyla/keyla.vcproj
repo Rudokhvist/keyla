@@ -187,6 +187,14 @@
 				RelativePath=".\util\HotKey.h"
 				>
 			</File>
+			<File
+				RelativePath=".\util\HotKeyAutomaton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\util\HotKeyAutomaton.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="res"
