@@ -1,5 +1,8 @@
 #summary Change Log
 
+(11.12.2008) *keyla 0.1.6*
+  * Improved hot key handling
+
 (02.12.2008) *keyla 0.1.5*
   * Now it is possible to use a combination of just command keys as a shortcut (e.g., Right Ctrl)
   * Now user can select which layouts to use when switching them cyclically
