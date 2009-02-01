@@ -1,5 +1,9 @@
 #summary Developing tasks
 
+==== Users' suggestions ====
+
+There are some suggestions at the <a href='http://mrshadow.habrahabr.ru/blog/44656/'>discussion at Habrahabr</a> (in Russian).
+
 ==== Switching layouts using the tray icon menu ====
 
 It's a very useful feature provided even by the Language Panel in Windows.
