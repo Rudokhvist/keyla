@@ -4,6 +4,12 @@
 
 There are some suggestions at the <a href='http://mrshadow.habrahabr.ru/blog/44656/'>discussion at Habrahabr</a> (in Russian).
 
+Summary:
+  * provide a key to change layout or letter case of already written text;
+  * support phrase substitution (e.g., "plz" -> "please");
+  * support letter substitution (this may be useful when you don't like your keyboard layout);
+  * show the layout icon next to the text cursor or the focused text entry.
+
 ==== Switching layouts using the tray icon menu ====
 
 It's a very useful feature provided even by the Language Panel in Windows.
