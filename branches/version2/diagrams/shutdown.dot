@@ -1,0 +1,21 @@
+digraph initialization{	
+
+	Ti[label="Tray icon", pos="2.5,5!"]
+	Mw[label="Main window", pos="2.5,4!"]
+	Main[pos="2.5,3!"]
+	Kh[label="Keyboard hook", pos="0,2!"]
+	Ah[label="Active window hook", pos="2.5,2!"]
+	Lh[label="Layout hook", pos="5,2!"]
+	Lhd[label="Layout hook DLL", pos="5,1!"]
+	
+	Ti -> Mw
+	Mw -> Main
+	Main -> Kh
+	Main -> Ah
+	Main -> Lh
+	Lh -> Lhd
+	
+	subgraph Legend {
+		2[pos="2.5,0!",shape="plaintext",label="The more left a component is placed the earlier it gets turned off"]
+	}
+}

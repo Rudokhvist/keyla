@@ -1,0 +1,49 @@
+digraph initialization{
+
+	Core
+	Kh[label="Keyboard hook"]
+	Ah[label="Active window hook"]
+	Lol[label="List of layouts"]
+	Mw[label="Main window"]
+	Registry
+	Sd[label="Settings dialog"]
+	Settings	
+	Ti[label="Tray icon"]
+	Lh[label="Layout hook"]
+	Lhd[label="Layout hook DLL"]
+	
+	Core -> Ti
+	Kh -> Core
+	Ah -> Core
+	Lol -> Core[style="dashed"]
+	Lol -> Sd[style="dashed"]
+	Lol -> Ti[style="dashed"]
+	Sd -> Registry[style="dashed"]
+	Sd -> Settings[style="dashed", dir="both"]
+	Settings -> Core[style="dashed"]
+	Settings -> Ti[style="dashed"]
+	Ti -> Mw[dir="both"]
+	Ti -> Sd
+	
+	Core -> Lh
+	Ah -> Lh
+	Lh -> Mw[dir="both"]
+	Lh -> Lhd[style="dotted"]
+	Lhd -> Mw[style="dotted"]
+	
+	
+	2[style="invis"]
+	3[shape="plaintext",label="Methods' invocation"]
+	4[style="invis"]
+	5[shape="plaintext",label="Data transfer"]
+	6[style="invis"]
+	7[shape="plaintext",label="Implementation detail"]
+	
+	/* Legend */
+	
+	2->3
+	3->4[style="invis"]
+	4->5[style="dashed"]
+	5->6[style="invis"]
+	6->7[style="dotted"]
+}

@@ -1,0 +1,40 @@
+These diagrams may help you to understand the code.
+
+SOFTWARE USED
+
+In order to generate the diagrams I manually filled *.dot files and applied
+GraphViz(http://www.graphviz.org/) and ImageMagick(http://www.imagemagick.org/)
+to them. Here are the commands used:
+
+> neato initialization.dot -T png | \
+> convert.exe - \
+>   -bordercolor white -border 50 \
+>   -gravity North -family "Times New Roman" -pointsize 18 -weight bold \
+>     -draw "text 0,5 'Initialization'" \
+>   initialization.png
+>
+> neato shutdown.dot -T png | \
+> convert.exe - \
+>   -bordercolor white -border 50 \
+>   -gravity North -family "Times New Roman" -pointsize 18 -weight bold \
+>     -draw "text 0,5 'Shutdown'" \
+>   shutdown.png
+>
+> dot interaction.dot -T png | \
+> convert.exe - \
+>   -bordercolor white -border 50 \
+>   -gravity North -family "Times New Roman" -pointsize 18 -weight bold \
+>     -draw "text 0,5 'Interaction'" \
+>   interaction.png
+>
+> dot hotkey.dot -T png | \
+> convert.exe - \
+>   -bordercolor white -border 50 \
+>   -gravity North -family "Times New Roman" -pointsize 18 -weight bold \
+>     -draw "text 0,5 'Keyla handles keyboard keys to detect shortcuts'" \
+>   -gravity South -weight normal -fill gray \
+>     -draw "text 0,5 'Program has to remember all the command keys currently pressed'" \
+>   hotkey.png
+
+Syntax of *.dot files is described at http://www.graphviz.org/Documentation.php
+(see "User's Guides" section).
