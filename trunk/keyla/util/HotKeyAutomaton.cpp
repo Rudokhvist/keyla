@@ -30,9 +30,9 @@ void HotKeyAutomaton::postEvent(WPARAM wparam, LPARAM lparam) {
 
 	bool commandKey =
 		/* Shift, Ctrl, Alt */
-		!extended && vk >= VK_LSHIFT && vk <= VK_RMENU ||
+		vk >= VK_LSHIFT && vk <= VK_RMENU ||
 		/* Winkeys */
-		extended && (vk == VK_LWIN || vk == VK_RWIN);
+		vk == VK_LWIN || vk == VK_RWIN;
 
 	/* Handle the event */
 
