@@ -10,20 +10,15 @@ public:
 
 	// Modifiers
 	enum Modifiers {
-		// Left Ctrl
 		LControl  = 1,
-		// Left Alt
 		LAlt      = 2,
-		// Left Shift
 		LShift    = 4,
-		// Right Ctrl
+		LWin      = 64,
 		RControl  = 8,
-		// Right Alt
 		RAlt      = 16,
-		// Right Shift
 		RShift    = 32,
-		// Flag of "extended key"
-		Extended  = 128,
+		RWin      = 256,
+		Extended  = 128, // Flag of "extended key"
 	};
 
 	// Get key name

@@ -130,6 +130,10 @@ void HotKey::makeText() {
 		m_text += LoadStringLang(IDS_LEFT);
 		m_text += keyName(VK_SHIFT);
 	}
+	if (m_modifiers & LWin) {
+		if (!m_text.empty()) m_text += Separator;
+		m_text += keyName(VK_LWIN, true);
+	}
 	if (m_modifiers & RControl) {
 		if (!m_text.empty()) m_text += Separator;
 		m_text += LoadStringLang(IDS_RIGHT);
@@ -144,6 +148,10 @@ void HotKey::makeText() {
 		if (!m_text.empty()) m_text += Separator;
 		m_text += LoadStringLang(IDS_RIGHT);
 		m_text += keyName(VK_SHIFT);
+	}
+	if (m_modifiers & RWin) {
+		if (!m_text.empty()) m_text += Separator;
+		m_text += keyName(VK_RWIN, true);
 	}
 	
 	tstring key = keyName(m_vk, (m_modifiers & Extended) != 0);
