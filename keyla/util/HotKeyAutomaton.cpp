@@ -28,28 +28,17 @@ void HotKeyAutomaton::postEvent(WPARAM wparam, LPARAM lparam) {
 		return;
 	}
 
-	bool commandKey = ((vk == VK_LCONTROL) ||
-		               (vk == VK_LMENU)    ||
-					   (vk == VK_LSHIFT)   ||
-					   (vk == VK_RCONTROL) ||
-					   (vk == VK_RMENU)    ||
-					   (vk == VK_RSHIFT));
+	bool commandKey =
+		/* Shift, Ctrl, Alt */
+		!extended && vk >= VK_LSHIFT && vk <= VK_RMENU ||
+		/* Winkeys */
+		extended && (vk == VK_LWIN || vk == VK_RWIN);
 
 	/* Handle the event */
 
-	Event event;
-	if (pressed) {
-		if (commandKey)
-			event = P_com;
-		else
-			event = P_smb;
-	}
-	else {
-		if (commandKey)
-			event = R_com;
-		else
-			event = R_smb;
-	}
+	Event event = pressed
+		? (commandKey ? P_com : P_smb)
+		: (commandKey ? R_com : R_smb);
 
 	unsigned int tempModifiers;
 	switch (m_state) {
@@ -125,22 +114,28 @@ void HotKeyAutomaton::updateCommandKeys(bool pressed, unsigned int vk) {
 		switch(vk) {
 			case VK_LSHIFT:
 				m_modifiers |= HotKey::LShift;
-			break;
+				break;
 			case VK_RSHIFT:
 				m_modifiers |= HotKey::RShift;
-			break;
+				break;
 			case VK_LCONTROL:
 				m_modifiers |= HotKey::LControl;
-			break;
+				break;
 			case VK_RCONTROL:
 				m_modifiers |= HotKey::RControl;
-			break;
+				break;
 			case VK_LMENU:
 				m_modifiers |= HotKey::LAlt;
-			break;
+				break;
 			case VK_RMENU:
 				m_modifiers |= HotKey::RAlt;
-			break;
+				break;
+			case VK_LWIN:
+				m_modifiers |= HotKey::LWin;
+				break;
+			case VK_RWIN:
+				m_modifiers |= HotKey::RWin;
+				break;
 			default:
 				assert(false);
 				return;
@@ -149,22 +144,28 @@ void HotKeyAutomaton::updateCommandKeys(bool pressed, unsigned int vk) {
 		switch(vk) {
 			case VK_LSHIFT:
 				m_modifiers &= ~HotKey::LShift;
-			break;
+				break;
 			case VK_RSHIFT:
 				m_modifiers &= ~HotKey::RShift;
-			break;
+				break;
 			case VK_LCONTROL:
 				m_modifiers &= ~HotKey::LControl;
-			break;
+				break;
 			case VK_RCONTROL:
 				m_modifiers &= ~HotKey::RControl;
-			break;
+				break;
 			case VK_LMENU:
 				m_modifiers &= ~HotKey::LAlt;
-			break;
+				break;
 			case VK_RMENU:
 				m_modifiers &= ~HotKey::RAlt;
-			break;
+				break;
+			case VK_LWIN:
+				m_modifiers &= ~HotKey::LWin;
+				break;
+			case VK_RWIN:
+				m_modifiers &= ~HotKey::RWin;
+				break;
 			default:
 				assert(false);
 				return;
