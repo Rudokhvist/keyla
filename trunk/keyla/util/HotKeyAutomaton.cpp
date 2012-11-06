@@ -98,6 +98,7 @@ void HotKeyAutomaton::postEvent(WPARAM wparam, LPARAM lparam) {
 						m_state = StateC;
 					else
 						m_state = StateA;
+					callbackNoop();
 				break;
 				default:
 					callbackNoop();
