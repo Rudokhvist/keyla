@@ -23,7 +23,7 @@ BEGIN
 	END
 	BLOCK "VarFileInfo"
 	BEGIN
-		VALUE "Translation", 0x0409,1200, 0x0419,1200
+		VALUE "Translation", 0x0409,1200, 0x0419,1200, 0x0402,1200
 	END
 END
 
@@ -50,6 +50,33 @@ BEGIN
 	END
 	BLOCK "VarFileInfo"
 	BEGIN
-		VALUE "Translation", 0x0419,1200, 0x0409,1200
+		VALUE "Translation", 0x0419,1200, 0x0409,1200, 0x0402,1200
+	END
+END
+
+// === bulgarian resources ======================================================
+
+LANGUAGE LANG_BULGARIAN,SUBLANG_DEFAULT
+
+// ------- version info -------------------------------------------------------
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION    0,1,4,0
+FILEOS         VOS_NT_WINDOWS32
+FILETYPE       VFT_DLL
+PRODUCTVERSION 0,1,4,0
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040204b0"
+        BEGIN
+            VALUE "LegalCopyright",  "© Евгений Аршинов, 2008"
+			VALUE "FileDescription", "Помощен модул за keyla"
+			VALUE "FileVersion",     "0.1.4.0"
+        END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x0409,1200, 0x0419,1200, 0x0402,1200
 	END
 END
