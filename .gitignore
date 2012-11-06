@@ -1,0 +1,8 @@
+*.vcxproj.*
+Debug/
+Release/
+Thumbs.db
+
+/keyla.ncb
+/keyla.suo
+
