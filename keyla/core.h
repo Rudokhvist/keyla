@@ -32,6 +32,8 @@ namespace core {
 	// return - whether the key was handled
 	bool keyPressed(unsigned int vk, unsigned int modifiers);
 
+	void resetState();
+
 	
 	// Get current layout
 	HKL getLayout();

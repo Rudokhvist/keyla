@@ -18,5 +18,5 @@ namespace layoutHook {
 	void setLayout(HWND window, HKL layout);
 
 	// Destroy
-	void destroy();
+	void destroy(HWND mainWindow);
 }

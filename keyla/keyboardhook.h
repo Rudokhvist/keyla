@@ -9,6 +9,8 @@ namespace keyboardHook {
 	// Turn the hook on
 	void create();
 
+	void resetState();
+
 	// Turn the hook off
 	void destroy();
 

@@ -5,6 +5,7 @@
 #include "layoutList.h"
 #include "settings.h"
 #include "trayIcon.h"
+#include "keyboardhook.h"
 
 #include <algorithm>
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 // ExpectedLayout must store a real layout (not an HKL_* contant)
 // to be properly compared in layoutChanged().
 //
-static HKL ExpectedLayout;
+static HKL ExpectedLayout = 0;
 
 // Set layout in particular window
 // Function overwrited global variable ExpectedLayout.
@@ -128,4 +129,9 @@ namespace core {
 	HKL getLayout() {
 		return ExpectedLayout;
 	}
+
+	void resetState() {
+		keyboardHook::resetState();
+	}
+
 }
