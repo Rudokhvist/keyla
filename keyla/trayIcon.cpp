@@ -6,9 +6,16 @@
 #include "settings.h"
 #include "settingsWindow.h"
 #include "trayIcon.h"
-
+#include "strsafe.h"
 #include <algorithm>
 #include <map>
+
+#ifdef _DEBUG
+#define ICONBGCOLOR RGB(0,128,128)
+#else
+#define ICONBGCOLOR RGB(0,0,128)
+#endif
+
 using namespace std;
 
 namespace {
@@ -136,6 +143,82 @@ namespace trayIcon {
 		showContextMenu(Menu, Window);
 	}
 
+	HICON CreateLangIcon(HKL Lang)
+		//_In  Lang - Keybord layout
+		//Result - icon with two-character lang name
+
+	{
+		wchar_t LangShort[10];
+		LOGFONT lf;
+		HFONT hf;
+		HDC bdc;
+		static HDC mdc = 0;
+		HBITMAP LangBitmap;
+		HBRUSH hBrush;
+		RECT rc;
+
+		GetLocaleInfo(
+			MAKELCID(Lang, SORT_DEFAULT),
+			LOCALE_SISO639LANGNAME,
+			LangShort,
+			250
+			);
+		CharUpperBuff(LangShort, 1);
+
+		if (!mdc)
+			mdc = GetDC(NULL);//ѕолучаем один раз при запуске. Ѕольше не отпускаем.
+							  //Ёто по-идее должно решить проблемы при запущеных играх 
+							  //с хитрым режимом экрана
+							  //и создать новые, интересные проблемы!
+							  //(например, при переключении режима вручную)
+		bdc = CreateCompatibleDC(mdc);
+		//ReleaseDC(NULL,mdc);
+		lf.lfHeight = -MulDiv(7, GetDeviceCaps(bdc, LOGPIXELSY), 72);
+		lf.lfWidth = 0;
+		lf.lfEscapement = 0;
+		lf.lfOrientation = 0;
+		lf.lfWeight = 0; //maybe 400?
+		lf.lfItalic = FALSE;
+		lf.lfUnderline = FALSE;
+		lf.lfStrikeOut = FALSE;
+		lf.lfCharSet = DEFAULT_CHARSET;
+		lf.lfOutPrecision = OUT_DEFAULT_PRECIS;
+		lf.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+		lf.lfQuality = NONANTIALIASED_QUALITY;
+		lf.lfPitchAndFamily = FF_DONTCARE | DEFAULT_PITCH;
+
+		StringCchCopyW(lf.lfFaceName, sizeof(lf.lfFaceName) / sizeof(lf.lfFaceName[0]), L"MS Sans Serif");  		//lstrcpy(lf.lfFaceName, L"MS Sans Serif");
+		hf = CreateFontIndirect(&lf);
+		SelectObject(bdc, hf);
+
+		//LangBitmap=CreateCompatibleBitmap(bdc,16,16);
+		LangBitmap = CreateBitmap(16, 16, 1, 32, NULL);
+		SelectObject(bdc, LangBitmap);
+		hBrush = CreateSolidBrush(ICONBGCOLOR);
+		rc.top = 0;
+		rc.left = 0;
+		rc.bottom = 16;
+		rc.right = 16;
+		FillRect(bdc, &rc, hBrush);
+		//TextOut(bdc, 0, 0, LangShort, wcslen(LangShort));
+		SetTextColor(bdc, RGB(255, 255, 255));
+		SetBkColor(bdc, ICONBGCOLOR);
+		rc.top = 2;
+		DrawText(bdc, LangShort, (int)wcslen(LangShort), &rc, 0);
+		DeleteDC(bdc);
+		DeleteObject(hBrush);
+		DeleteObject(hf);
+
+		ICONINFO ii = { 0 };
+		ii.fIcon = TRUE;
+		ii.hbmColor = LangBitmap;
+		ii.hbmMask = CreateBitmap(16, 16, 1, 24, NULL);
+
+		HICON hIcon = ::CreateIconIndirect(&ii);
+
+		return hIcon;
+	}
+
 	void indicateLayout(HKL layout) {
 
 		HICON icon = 0;
@@ -147,19 +230,20 @@ namespace trayIcon {
 		} else {
 			// Load icon
 
-			tstring path = TEXT("icons\\") + langid;
-			path += Application::GetApp()->isActive() ? TEXT(".ico") : TEXT("_grayscale.ico");
+//			tstring path = TEXT("icons\\") + langid;
+//			path += Application::GetApp()->isActive() ? TEXT(".ico") : TEXT("_grayscale.ico");
 
-			icon = static_cast<HICON>(LoadImage(0, path.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT));
-			assert(icon != NULL);
-			if (icon == NULL) {
+			icon = CreateLangIcon(layout);
+			//icon = static_cast<HICON>(LoadImage(0, path.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT));
+			//assert(icon != NULL);
+			//if (icon == NULL) {
 				// If icon was not found, use our main icon
-				icon = settings::Settings.mainIcon;
-			} else {
+			//	icon = settings::Settings.mainIcon;
+//			} else {
 				// If icon is loaded, add it to the map
 				// NOTE: We can pass our iterator here to increase performance
 				LayoutIcons.insert(langid, icon);
-			}
+			//}
 		}
 		// Change icon
 		NOTIFYICONDATA nid = {sizeof nid};
