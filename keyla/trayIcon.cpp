@@ -1,3 +1,8 @@
+#if _WIN32_WINNT<0x501
+#define _WIN32_WINNT 0x501
+#endif
+
+#include <windows.h> 
 #include "common.h"
 #include "application.h"
 #include "layoutList.h"
@@ -7,14 +12,41 @@
 #include "settingsWindow.h"
 #include "trayIcon.h"
 #include "strsafe.h"
+#include <Winbase.h>
 #include <algorithm>
 #include <map>
+
 
 #ifdef _DEBUG
 #define ICONBGCOLOR RGB(0,128,128)
 #else
 #define ICONBGCOLOR RGB(0,0,128)
 #endif
+
+#define ICONGRAY RGB (96,96,96)
+
+typedef struct {
+	UINT cbSize;
+	DWORD dwMask;
+	int idCommand;
+	int iImage;
+	BYTE fsState;
+	BYTE fsStyle;
+	WORD cx;
+	unsigned __int64 lParam;
+	unsigned __int64 pszText;
+	int cchText;
+} TBBUTTONINFO64, *LPTBBUTTONINFO64;
+
+typedef struct _TNPRIVICON
+{
+	HWND hWnd;
+	UINT uID;
+	UINT uCallbackMessage;
+	DWORD dwState;
+	UINT uVersion;
+	HICON hIcon;
+} TNPRIVICON, *PTNPRIVICON;
 
 using namespace std;
 
@@ -54,6 +86,15 @@ public:
 	}
 } LayoutIcons; 
 
+BOOL DoesWin32MethodExist(PCWSTR pszModuleName, PCSTR pszMethodName)
+{
+	HMODULE hModule = GetModuleHandle(pszModuleName);
+	if (hModule == NULL)
+	{
+		return FALSE;
+	}
+	return (GetProcAddress(hModule, pszMethodName) != NULL);
+}
 
 bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRESULT * ret) {
 
@@ -143,7 +184,7 @@ namespace trayIcon {
 		showContextMenu(Menu, Window);
 	}
 
-	HICON CreateLangIcon(HKL Lang)
+	HICON CreateLangIcon(HKL Lang, COLORREF bgcolor)
 		//_In  Lang - Keybord layout
 		//Result - icon with two-character lang name
 
@@ -166,13 +207,12 @@ namespace trayIcon {
 		CharUpperBuff(LangShort, 1);
 
 		if (!mdc)
-			mdc = GetDC(NULL);//ѕолучаем один раз при запуске. Ѕольше не отпускаем.
-							  //Ёто по-идее должно решить проблемы при запущеных играх 
-							  //с хитрым режимом экрана
-							  //и создать новые, интересные проблемы!
-							  //(например, при переключении режима вручную)
+			mdc = GetDC(NULL);//Get DC once on start, and don't release it
+							  //This can fix the problem with some games
+							  //changing screen mode
+							  //and create new and interesting bugs!
+							  //(maybe when changing screen mode manually?)
 		bdc = CreateCompatibleDC(mdc);
-		//ReleaseDC(NULL,mdc);
 		lf.lfHeight = -MulDiv(7, GetDeviceCaps(bdc, LOGPIXELSY), 72);
 		lf.lfWidth = 0;
 		lf.lfEscapement = 0;
@@ -187,22 +227,20 @@ namespace trayIcon {
 		lf.lfQuality = NONANTIALIASED_QUALITY;
 		lf.lfPitchAndFamily = FF_DONTCARE | DEFAULT_PITCH;
 
-		StringCchCopyW(lf.lfFaceName, sizeof(lf.lfFaceName) / sizeof(lf.lfFaceName[0]), L"MS Sans Serif");  		//lstrcpy(lf.lfFaceName, L"MS Sans Serif");
+		StringCchCopyW(lf.lfFaceName, sizeof(lf.lfFaceName) / sizeof(lf.lfFaceName[0]), L"MS Sans Serif");
 		hf = CreateFontIndirect(&lf);
 		SelectObject(bdc, hf);
 
-		//LangBitmap=CreateCompatibleBitmap(bdc,16,16);
 		LangBitmap = CreateBitmap(16, 16, 1, 32, NULL);
 		SelectObject(bdc, LangBitmap);
-		hBrush = CreateSolidBrush(ICONBGCOLOR);
+		hBrush = CreateSolidBrush(bgcolor);
 		rc.top = 0;
 		rc.left = 0;
 		rc.bottom = 16;
 		rc.right = 16;
 		FillRect(bdc, &rc, hBrush);
-		//TextOut(bdc, 0, 0, LangShort, wcslen(LangShort));
 		SetTextColor(bdc, RGB(255, 255, 255));
-		SetBkColor(bdc, ICONBGCOLOR);
+		SetBkColor(bdc, bgcolor);
 		rc.top = 2;
 		DrawText(bdc, LangShort, (int)wcslen(LangShort), &rc, 0);
 		DeleteDC(bdc);
@@ -221,37 +259,116 @@ namespace trayIcon {
 
 	void indicateLayout(HKL layout) {
 
+		static BOOL fFlipFlop = TRUE;
+		static int prev_pos = 0;
 		HICON icon = 0;
+		HWND TrayNotifyHandle;
+		HWND OSDependence;
+		HWND FSysTrayHandle;
+		int count;
+		int pos;
+		HANDLE hTrayProc;
+		DWORD dwTrayProcessID;
+		void* lpData;
+		void* icoData;
+		TBBUTTONINFO64 mtbbi;
+		SIZE_T dwBytesRead = -1;
+		LPTBBUTTONINFO ptb;
+		TNPRIVICON pico;
+
+		BOOL is64bit = ((DoesWin32MethodExist(L"kernel32.dll", "IsWow64Process") && IsWow64Process(GetCurrentProcess(), &is64bit)) && is64bit);
+
+
 		tstring langid = layoutList::layoutLangId(layout);
 		TLayoutIcons::const_iterator it = LayoutIcons.find(langid);
 		if (it != LayoutIcons.end()) {
 			// Icon is already loaded
 			icon = it->second;
 		} else {
-			// Load icon
 
-//			tstring path = TEXT("icons\\") + langid;
-//			path += Application::GetApp()->isActive() ? TEXT(".ico") : TEXT("_grayscale.ico");
+			icon = CreateLangIcon(layout, Application::GetApp()->isActive()? ICONBGCOLOR:ICONGRAY);
+			LayoutIcons.insert(langid, icon);
 
-			icon = CreateLangIcon(layout);
-			//icon = static_cast<HICON>(LoadImage(0, path.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT));
-			//assert(icon != NULL);
-			//if (icon == NULL) {
-				// If icon was not found, use our main icon
-			//	icon = settings::Settings.mainIcon;
-//			} else {
-				// If icon is loaded, add it to the map
-				// NOTE: We can pass our iterator here to increase performance
-				LayoutIcons.insert(langid, icon);
-			//}
 		}
+
 		// Change icon
-		NOTIFYICONDATA nid = {sizeof nid};
+		NOTIFYICONDATA nid = { sizeof nid };
 		nid.hWnd = Window;
 		nid.uID = TrayIconId;
 		nid.uFlags = NIF_ICON;
 		nid.hIcon = icon;
-		verify(Shell_NotifyIcon(NIM_MODIFY, &nid));
+
+		if (fFlipFlop) {//if icon already was set - check it's position
+			TrayNotifyHandle = FindWindow(L"Shell_TrayWnd", NULL);
+			if (TrayNotifyHandle) {
+				TrayNotifyHandle = FindWindowEx(TrayNotifyHandle, 0, L"TrayNotifyWnd", NULL);
+				if (TrayNotifyHandle) {
+					OSDependence = FindWindowEx(TrayNotifyHandle, 0, L"SysPager", NULL);
+					if (!OSDependence) {
+						// W2K don't have SysPager
+						OSDependence = TrayNotifyHandle;
+					}
+					FSysTrayHandle = FindWindowEx(OSDependence, 0, L"ToolbarWindow32", NULL);
+				}
+			}
+			count = (int)SendMessage(FSysTrayHandle, TB_BUTTONCOUNT, 0, 0);
+			pos = -1;
+			//Dirty hack to find our icon position
+			GetWindowThreadProcessId(FSysTrayHandle, &dwTrayProcessID);
+			hTrayProc = OpenProcess(PROCESS_ALL_ACCESS, 0, dwTrayProcessID);
+			if (hTrayProc) {
+				if (lpData = VirtualAllocEx(hTrayProc, 0, sizeof(TBBUTTONINFO64), MEM_COMMIT, PAGE_READWRITE)) {
+					for (int i = 0; i<count; i++) {
+						memset(&mtbbi, 0, sizeof(mtbbi));
+						if (is64bit)
+							mtbbi.cbSize = sizeof(TBBUTTONINFO64);
+						else
+							mtbbi.cbSize = sizeof(TBBUTTONINFO);
+						mtbbi.dwMask = TBIF_BYINDEX | TBIF_LPARAM;
+						if (WriteProcessMemory(hTrayProc, lpData, &mtbbi, sizeof(TBBUTTONINFO64), &dwBytesRead)) {
+							if (SendMessage(FSysTrayHandle, TB_GETBUTTONINFO, i, (LPARAM)lpData) >= 0) {
+								// read data from another process
+								if (ReadProcessMemory(hTrayProc, lpData, &mtbbi, sizeof(TBBUTTONINFO64), &dwBytesRead)) {
+									icoData = NULL;
+									if (is64bit) {
+										if (!(int)*(((int*)&mtbbi.lParam) + 1))
+											icoData = (void*)mtbbi.lParam;
+									}
+									else {
+										ptb = (LPTBBUTTONINFO)&mtbbi;
+										icoData = (void*)((LPTBBUTTONINFO)&mtbbi)->lParam;
+									}
+									if (icoData && ReadProcessMemory(hTrayProc, icoData, &pico, sizeof(TNPRIVICON), &dwBytesRead)) {
+										if ((pico.hWnd != 0) && (pico.hWnd == Window)) {
+											//it's our window
+											pos = i;
+											break;
+										}
+									} //else throw std::exception("ReadMemory2"); //ReadMemory
+								} //else throw std::exception("ReadMemory");//ReadMemory
+							} //else throw std::exception("SendMessage");//SendMessage
+						} //else throw std::exception("WriteProcessMemory");//WriteProcessMemory
+					} //for
+					VirtualFreeEx(hTrayProc, lpData, 0, MEM_RELEASE);
+					CloseHandle(hTrayProc);
+				} //else throw std::exception("lpData");//if (lpData)
+			} //else throw std::exception("hTrayProc");//if (hTrayProc)
+			if ((pos<0) || (pos>prev_pos)) {
+				//We are not first - try to redraw
+				fFlipFlop = FALSE;
+				Shell_NotifyIcon(NIM_DELETE, &nid);
+			}
+			if (pos<0) pos = 0;
+			prev_pos = pos;
+		} //if (fFlipFlop)	
+
+		if (fFlipFlop)
+			verify(Shell_NotifyIcon(NIM_MODIFY, &nid));
+		else {
+			verify(Shell_NotifyIcon(NIM_ADD, &nid));
+			fFlipFlop = TRUE;
+		}
+
 	}
 
 	void destroy() {

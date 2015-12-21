@@ -46,6 +46,16 @@ namespace settings {
 			Settings.globalLayout = (data != 0);
 		}
 
+		value = TEXT("noleftright");
+		ret = RegQueryValueEx(hkey, value, 0, &type, reinterpret_cast<BYTE *>(&data), &dataSz);
+		if (ret != ERROR_SUCCESS || type != REG_DWORD || dataSz != sizeof(DWORD)) {
+			data = Settings.noleftright;
+			RegSetValueEx(hkey, value, 0, REG_DWORD, reinterpret_cast<const BYTE *>(&data), dataSz);
+		}
+		else {
+			Settings.noleftright = (data != 0);
+		}
+
 		size_t sz = layoutList::LayoutList.size();
 		Settings.layoutSettings.resize(sz);
 		for (size_t i = 0; i < sz; ++i) {
@@ -83,6 +93,10 @@ namespace settings {
 
 		value = TEXT("globalLayout");
 		data = Settings.globalLayout;
+		RegSetValueEx(hkey, value, 0, REG_DWORD, reinterpret_cast<const BYTE *>(&data), sizeof(data));
+
+		value = TEXT("noleftright");
+		data = Settings.noleftright;
 		RegSetValueEx(hkey, value, 0, REG_DWORD, reinterpret_cast<const BYTE *>(&data), sizeof(data));
 
 		size_t sz = layoutList::LayoutList.size();

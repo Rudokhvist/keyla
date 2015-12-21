@@ -109,6 +109,7 @@ namespace core {
 			return false;
 		
 		HotKey h(vk, modifiers);
+
 		if (settings::Settings.mainHotKey == h) {
 			nextLayout();
 			return true;

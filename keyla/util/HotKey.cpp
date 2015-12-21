@@ -1,6 +1,7 @@
 #include "../common.h"
 #include "../res/resource.h"
 #include "HotKey.h"
+#include "../settings.h"
 
 /* static */ const tstring HotKey::Separator = TEXT(" + ");
 
@@ -22,7 +23,22 @@ HotKey::HotKey(unsigned int vk, unsigned int modifiers) {
 }
 
 bool HotKey::operator==(const HotKey & other) const {
-	return m_vk == other.m_vk && m_modifiers == other.m_modifiers;
+	if (settings::Settings.noleftright) {
+		unsigned int mymods = m_modifiers |
+			((m_modifiers & (unsigned int)0x0007) << 3) |
+			((m_modifiers & (unsigned int)0x0038) >> 3) |
+			((m_modifiers & (unsigned int)0x0040) << 2) |
+			((m_modifiers & (unsigned int)0x0100) >> 2);
+		unsigned int othermods = other.m_modifiers |
+			((other.m_modifiers & (unsigned int)0x0007) << 3) |
+			((other.m_modifiers & (unsigned int)0x0038) >> 3) |
+			((other.m_modifiers & (unsigned int)0x0040) << 2) |
+			((other.m_modifiers & (unsigned int)0x0100) >> 2);
+		return m_vk == other.m_vk && mymods == othermods;
+	}
+	else {
+		return m_vk == other.m_vk && m_modifiers == other.m_modifiers;
+	}
 }
 
 void HotKey::set(unsigned int vk, unsigned int modifiers)

@@ -63,6 +63,9 @@ GuiSettingsWindow::CommonPropsPage::CommonPropsPage(GuiSettingsWindow &parent) :
 	if (settings::Settings.skipSystemHotKey) {
 		CheckDlgButton(GetHwnd(), IDC_COMMONPROPS_CHECK_EATWINDOWSKEY, BST_CHECKED);
 	}
+	if (settings::Settings.noleftright) {
+		CheckDlgButton(GetHwnd(), IDC_COMMONPROPS_CHECK_NOLEFTRIGHT, BST_CHECKED);
+	}
 
 	return TRUE;
 }
@@ -70,6 +73,7 @@ GuiSettingsWindow::CommonPropsPage::CommonPropsPage(GuiSettingsWindow &parent) :
 /* virtual */ void GuiSettingsWindow::CommonPropsPage::apply() {
 	settings::Settings.mainHotKey = m_mainKeyEdit.hotKey();
 	settings::Settings.globalLayout = (IsDlgButtonChecked(GetHwnd(), IDC_COMMONPROPS_CHECK_GLOBALLAYOUT) != 0);
+	settings::Settings.noleftright = (IsDlgButtonChecked(GetHwnd(), IDC_COMMONPROPS_CHECK_NOLEFTRIGHT) != 0);
 	settings::Settings.skipSystemHotKey = (IsDlgButtonChecked(GetHwnd(), IDC_COMMONPROPS_CHECK_EATWINDOWSKEY) != 0);
 }
 

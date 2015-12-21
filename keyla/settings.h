@@ -31,6 +31,8 @@ namespace settings {
 		bool skipSystemHotKey;
 		// Whether to use single global layout
 		bool globalLayout;
+		// Treat Left and Right Ctrl/Alt/Shift as the same key 
+		bool noleftright;
 		// Shortcuts to switch to particular layouts
 		std::vector<LayoutSettings> layoutSettings;
 		// Program icon
