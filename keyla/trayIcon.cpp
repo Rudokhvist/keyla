@@ -362,9 +362,12 @@ namespace trayIcon {
 			prev_pos = pos;
 		} //if (fFlipFlop)	
 
-		if (fFlipFlop)
+		if (fFlipFlop) {
 			verify(Shell_NotifyIcon(NIM_MODIFY, &nid));
-		else {
+		} else {
+		 	nid.uFlags = NIF_MESSAGE | NIF_TIP;
+		    nid.uCallbackMessage = TrayIconMessage;
+			_tcsncpy(nid.szTip, Tooltip.c_str(), sizeof(nid.szTip) / sizeof(TCHAR));
 			verify(Shell_NotifyIcon(NIM_ADD, &nid));
 			fFlipFlop = TRUE;
 		}
