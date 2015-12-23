@@ -55,6 +55,7 @@ protected:
 
 		if (message == WM_DESTROY) {
 			// Quit the application
+			layoutHook::destroy(window);
 			PostQuitMessage(0);
 		}
 

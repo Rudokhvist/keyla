@@ -41,7 +41,6 @@ Application::Application() : m_exclusion(0), m_active(false) {
 
 	keyboardHook::destroy();
 	activeWindowHook::destroy();
-	layoutHook::destroy();
 
 	if (m_exclusion) {
 		verify(::CloseHandle(m_exclusion));

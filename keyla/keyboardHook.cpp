@@ -87,4 +87,9 @@ namespace keyboardHook {
 		verify(UnhookWindowsHookEx(hook));
 	}
 
+	void resetState() {
+		OutputDebugString(L"resetState()\n");
+		Autom.initialize();
+	}
+
 }
