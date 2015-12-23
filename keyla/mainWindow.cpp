@@ -1,10 +1,11 @@
+#include "../win32xx/wxx_wincore.h"
 #include "common.h"
 #include "application.h"
 #include "layoutHook.h"
 #include "mainWindow.h"
 #include "res/resource.h"
 #include "trayIcon.h"
-#include "../win32xx/WinCore.h"
+
 
 #include <list>
 using namespace std;
@@ -44,11 +45,12 @@ protected:
 		CWnd::PreCreate(cs);
 	}
 
-	virtual void OnCreate() {
-		CWnd::OnCreate();
+	virtual int OnCreate(LPCREATESTRUCT pcs) {
+		CWnd::OnCreate(pcs);
 
 		trayIcon::create(GetHwnd());
 		layoutHook::create(GetHwnd());
+		return 0;
 	}
 
 	virtual LRESULT WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
@@ -67,7 +69,7 @@ protected:
 				return ret;
 		}
 
-		return CWnd::WndProc(window, message, wparam, lparam);
+		return CWnd::WndProc(message, wparam, lparam);
 	}
 
 } MyMainWindow;
@@ -85,7 +87,7 @@ namespace mainWindow {
 	}
 
 	void destroy() {
-		MyMainWindow.DestroyWindow();
+		MyMainWindow.Destroy();
 	}
 
 }

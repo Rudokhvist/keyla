@@ -2,7 +2,7 @@
 
 #include "GuiLayoutList.h"
 #include "GuiHotKey.h"
-#include "../../win32xx/PropertySheet.h"
+#include "../../win32xx/wxx_propertysheet.h"
 
 class GuiSettingsWindow : public CPropertySheet {
 public:
@@ -22,9 +22,9 @@ private:
 		// Constructor
 		Page(GuiSettingsWindow & parent, int resourceId, LPCTSTR title);
 
-		virtual void OnSetActive();
-		virtual void OnApply();
-		virtual void OnOK();
+		virtual int OnSetActive();
+		virtual int OnApply();
+		virtual int OnOK();
 
 		// Apply changes. This method gets called from an instance of GuiSettingsWindow
 		virtual void apply() = 0;

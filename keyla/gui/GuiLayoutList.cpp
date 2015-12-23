@@ -37,7 +37,7 @@ void GuiLayoutList::initialize() {
 	assert(hwnd != 0);
 
 	// Create the delegate
-	m_delegate.DestroyWindow();
+	m_delegate.Destroy();
 	m_delegate.Create(*this);
 
 	// Set up the delegate
@@ -105,7 +105,7 @@ void GuiLayoutList::delegateDeactivated() {
 	m_layoutSettings[m_delegateRow].hotKey = m_delegate.hotKey();
 	ListView_SetItemText(GetHwnd(), m_delegateRow, 1, const_cast<LPTSTR>(m_delegate.hotKey().text().c_str()));
 	
-	verify(ShowWindow(m_delegate, SW_HIDE));
+	verify(::ShowWindow(m_delegate, SW_HIDE));
 	
 	m_delegateActive = false;
 	m_delegateRow = 0;
@@ -130,9 +130,9 @@ void GuiLayoutList::delegateDeactivated() {
 			if (col == 1) {
 				RECT rc;
 				ListView_GetSubItemRect(window, row, col, LVIR_LABEL, &rc);
-				SetWindowPos(m_delegate, 0, rc.left + 1, rc.top, rc.right - rc.left, rc.bottom - rc.top - 1, SWP_NOZORDER | SWP_SHOWWINDOW);
+				::SetWindowPos(m_delegate, 0, rc.left + 1, rc.top, rc.right - rc.left, rc.bottom - rc.top - 1, SWP_NOZORDER | SWP_SHOWWINDOW);
 				
-				SetFocus(m_delegate);
+				::SetFocus(m_delegate);
 				m_delegate.setHotKey(m_layoutSettings[row].hotKey);
 
 				m_delegateActive = true;			
@@ -151,6 +151,6 @@ void GuiLayoutList::delegateDeactivated() {
 			break;
 		}
 	}
-	return CWnd::WndProc(window, message, wparam, lparam);
+	return CWnd::WndProc( message, wparam, lparam);
 }
 

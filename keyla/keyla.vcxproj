@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -14,16 +14,19 @@
     <ProjectGuid>{A850C0B9-606E-4B47-BB99-D0A679AA3987}</ProjectGuid>
     <RootNamespace>keyla</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -55,14 +58,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WIN32_WINNT=0x0500;WINVER=0x0500;_WIN32_IE=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\base\keyla\win32xx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(TargetDir)/layoutHookDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -124,6 +128,38 @@
     <ClCompile Include="trayIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\win32xx\wxx_archive.h" />
+    <ClInclude Include="..\win32xx\wxx_controls.h" />
+    <ClInclude Include="..\win32xx\wxx_cstring.h" />
+    <ClInclude Include="..\win32xx\wxx_dialog.h" />
+    <ClInclude Include="..\win32xx\wxx_docking.h" />
+    <ClInclude Include="..\win32xx\wxx_file.h" />
+    <ClInclude Include="..\win32xx\wxx_frame.h" />
+    <ClCompile Include="..\win32xx\wxx_gdi.h" />
+    <ClInclude Include="..\win32xx\wxx_imagelist.h" />
+    <ClInclude Include="..\win32xx\wxx_listview.h" />
+    <ClInclude Include="..\win32xx\wxx_mdi.h" />
+    <ClInclude Include="..\win32xx\wxx_menu.h" />
+    <ClInclude Include="..\win32xx\wxx_menubar.h" />
+    <ClInclude Include="..\win32xx\wxx_propertysheet.h" />
+    <ClInclude Include="..\win32xx\wxx_rebar.h" />
+    <ClInclude Include="..\win32xx\wxx_regkey.h" />
+    <ClInclude Include="..\win32xx\wxx_ribbon.h" />
+    <ClInclude Include="..\win32xx\wxx_richedit.h" />
+    <ClInclude Include="..\win32xx\wxx_shared_ptr.h" />
+    <ClInclude Include="..\win32xx\wxx_socket.h" />
+    <ClInclude Include="..\win32xx\wxx_statusbar.h" />
+    <ClInclude Include="..\win32xx\wxx_stdcontrols.h" />
+    <ClInclude Include="..\win32xx\wxx_tab.h" />
+    <ClInclude Include="..\win32xx\wxx_taskdialog.h" />
+    <ClInclude Include="..\win32xx\wxx_time.h" />
+    <ClInclude Include="..\win32xx\wxx_toolbar.h" />
+    <ClInclude Include="..\win32xx\wxx_treeview.h" />
+    <ClInclude Include="..\win32xx\wxx_wceframe.h" />
+    <ClInclude Include="..\win32xx\wxx_wcestddef.h" />
+    <ClInclude Include="..\win32xx\wxx_webbrowser.h" />
+    <ClInclude Include="..\win32xx\wxx_wincore.h" />
+    <ClInclude Include="..\win32xx\wxx_winutils.h" />
     <ClInclude Include="util\HotKey.h" />
     <ClInclude Include="util\HotKeyAutomaton.h" />
     <ClInclude Include="res\resource.h" />
@@ -158,10 +194,6 @@
   <ItemGroup>
     <ProjectReference Include="..\layoutHookDll\layoutHookDll.vcxproj">
       <Project>{4df65ffd-0dfb-4a78-a96a-00e023d5932a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\win32xx\win32xx.vcxproj">
-      <Project>{c536715f-9f07-4d45-87f6-95e212ca81a0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

@@ -1,4 +1,4 @@
-
+#define _WINSOCKAPI_
 #include <windows.h> 
 #include "common.h"
 #include "application.h"
@@ -74,12 +74,12 @@ public:
 
 	using map<pair<tstring, bool>, HICON>::find;
 	iterator find(const tstring & langid) {
-		return find(make_pair(langid, Application::GetApp()->isActive()));
+		return find(make_pair(langid, GetApplication().isActive()));
 	}
 
 	using map<pair<tstring, bool>, HICON>::insert;
 	pair<iterator, bool> insert(const tstring & langid, HICON icon) {
-		return insert(make_pair(make_pair(langid, Application::GetApp()->isActive()), icon));
+		return insert(make_pair(make_pair(langid, GetApplication().isActive()), icon));
 	}
 } LayoutIcons; 
 
@@ -139,10 +139,10 @@ bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRE
 		if (hwnd == 0 && code == 0)
 			switch (id) {
 				case ID_TRAYICONMENU_TOGGLE: {
-					Application::GetApp()->toggle();
+					GetApplication().toggle();
 
 					tstring _1;
-					if (Application::GetApp()->isActive())
+					if (GetApplication().isActive())
 						_1 = LoadStringLang(IDS_DISABLE);
 					else
 						_1 = LoadStringLang(IDS_ENABLE);
@@ -222,7 +222,7 @@ namespace trayIcon {
 		RECT rc;
 
 		GetLocaleInfo(
-			MAKELCID(Lang, SORT_DEFAULT),
+			MAKELCID(LOWORD(Lang), SORT_DEFAULT),
 			LOCALE_SISO639LANGNAME,
 			LangShort,
 			250
@@ -307,7 +307,7 @@ namespace trayIcon {
 			icon = it->second;
 		} else {
 
-			icon = CreateLangIcon(layout, Application::GetApp()->isActive()? ICONBGCOLOR:ICONGRAY);
+			icon = CreateLangIcon(layout, GetApplication().isActive()? ICONBGCOLOR:ICONGRAY);
 			LayoutIcons.insert(langid, icon);
 
 		}
@@ -385,7 +385,7 @@ namespace trayIcon {
 
 		wchar_t LangLong [250];
 		GetLocaleInfo(
-			MAKELCID(layout, SORT_DEFAULT),
+			MAKELCID(LOWORD(layout), SORT_DEFAULT),
 			LOCALE_SNATIVELANGNAME,
 			LangLong,
 			250
