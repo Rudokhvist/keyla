@@ -13,7 +13,7 @@ namespace layoutList {
 
 	tstring layoutLangId(HKL layout) {
 		TCHAR buf[6];
-		_itot(LOWORD(layout), buf, 16);
+		_itot_s(LOWORD(layout),buf,16);
 		return tstring(buf);
 	}
 	

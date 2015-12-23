@@ -1,8 +1,10 @@
 *.aps
 *.vcxproj.*
+*.sdf
 
 Debug/
 Release/
+.vs/
 Thumbs.db
 
 /keyla.ncb

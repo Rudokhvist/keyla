@@ -390,7 +390,10 @@ namespace Win32xx
 	CPropertySheet::CPropertySheet(LPCTSTR pszCaption /*= NULL*/, HWND hwndParent /* = NULL*/)
 	{
 		m_szCaption[0] = _T('\0');
-		if (pszCaption) lstrcpyn(m_szCaption, pszCaption, MAX_STRING_SIZE);
+		if (pszCaption) {
+			swprintf_s (m_szCaption,sizeof(m_szCaption),_T("keyla v.%s"),pszCaption);
+			//lstrcpyn(m_szCaption, pszCaption, MAX_STRING_SIZE);
+		}
 		ZeroMemory(&m_PSH, sizeof (PROPSHEETHEADER));
 		m_ppsp = NULL;
 

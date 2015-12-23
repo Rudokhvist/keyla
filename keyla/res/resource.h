@@ -4,6 +4,7 @@
 #define ID_TRAYICONMENU_TOGGLE              1000
 #define ID_TRAYICONMENU_SETTINGS            1001
 #define ID_TRAYICONMENU_EXIT                1002
+#define ID_TRAYICONMENU_LANGSETUP           1003
 
 #define IDD_COMMONPROPS                     102
 #define IDC_COMMONPROPS_EDIT_KEY            1000
@@ -30,3 +31,5 @@
 #define IDS_USE_WHEN_SWITCHING_CYCLICALLY   40010
 #define IDS_YES                             40011
 #define IDS_NO                              40012
+#define VERSION							0,1,10,0
+#define VERSIONSTR						"0.1.10.0\0"

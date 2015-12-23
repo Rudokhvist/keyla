@@ -1,6 +1,3 @@
-#if _WIN32_WINNT<0x501
-#define _WIN32_WINNT 0x501
-#endif
 
 #include <windows.h> 
 #include "common.h"
@@ -86,14 +83,29 @@ public:
 	}
 } LayoutIcons; 
 
-BOOL DoesWin32MethodExist(PCWSTR pszModuleName, PCSTR pszMethodName)
+typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+BOOL IsWow64()
 {
-	HMODULE hModule = GetModuleHandle(pszModuleName);
-	if (hModule == NULL)
-	{
-		return FALSE;
-	}
-	return (GetProcAddress(hModule, pszMethodName) != NULL);
+    BOOL bIsWow64 = FALSE;
+
+    //IsWow64Process is not available on all supported versions of Windows.
+    //Use GetModuleHandle to get a handle to the DLL that contains the function
+    //and GetProcAddress to get a pointer to the function if available.
+
+    fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
+        GetModuleHandle(TEXT("kernel32")),"IsWow64Process");
+
+    if(NULL != fnIsWow64Process)
+    {
+        if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64))
+        {
+            //handle error
+        }
+    }
+    return bIsWow64;
 }
 
 bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRESULT * ret) {
@@ -143,6 +155,17 @@ bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRE
 				case ID_TRAYICONMENU_SETTINGS:
 					settingsWindow::show();
 					return 0;
+				case ID_TRAYICONMENU_LANGSETUP:
+					{
+					HINSTANCE nResult = ShellExecute(NULL, NULL, L"rundll32.exe", L"shell32.dll,Control_RunDLL input.dll",NULL,SW_SHOW);
+				    //Unsure, if below part needed at all. Let it be.
+					#pragma warning(disable:4311)
+				    if ((int)nResult == SE_ERR_ACCESSDENIED) { // Trick for requesting elevation, this is a verb not listed in the documentation above.
+						ShellExecute(NULL,L"runas", L"rundll32.exe", L"shell32.dll,Control_RunDLL input.dll",NULL,SW_SHOW);
+					}
+					#pragma warning(default:4311)
+					}
+					return 0;
 				case ID_TRAYICONMENU_EXIT:
 					trayIcon::destroy();
 					mainWindow::destroy();
@@ -176,7 +199,7 @@ namespace trayIcon {
 		nid.uID = TrayIconId;
 		nid.uFlags = NIF_MESSAGE | NIF_TIP;
 		nid.uCallbackMessage = TrayIconMessage;
-		_tcsncpy(nid.szTip, Tooltip.c_str(), sizeof(nid.szTip) / sizeof(TCHAR));
+		StringCchCopyW(nid.szTip, sizeof(nid.szTip) / sizeof(TCHAR), Tooltip.c_str());
 		verify(Shell_NotifyIcon(NIM_ADD, &nid));
 	}
 
@@ -242,7 +265,7 @@ namespace trayIcon {
 		SetTextColor(bdc, RGB(255, 255, 255));
 		SetBkColor(bdc, bgcolor);
 		rc.top = 2;
-		DrawText(bdc, LangShort, (int)wcslen(LangShort), &rc, 0);
+		DrawText(bdc, LangShort, (int)wcslen(LangShort), &rc, DT_CENTER | DT_VCENTER);
 		DeleteDC(bdc);
 		DeleteObject(hBrush);
 		DeleteObject(hf);
@@ -276,9 +299,7 @@ namespace trayIcon {
 		LPTBBUTTONINFO ptb;
 		TNPRIVICON pico;
 
-		BOOL is64bit = ((DoesWin32MethodExist(L"kernel32.dll", "IsWow64Process") && IsWow64Process(GetCurrentProcess(), &is64bit)) && is64bit);
-
-
+		
 		tstring langid = layoutList::layoutLangId(layout);
 		TLayoutIcons::const_iterator it = LayoutIcons.find(langid);
 		if (it != LayoutIcons.end()) {
@@ -295,7 +316,7 @@ namespace trayIcon {
 		NOTIFYICONDATA nid = { sizeof nid };
 		nid.hWnd = Window;
 		nid.uID = TrayIconId;
-		nid.uFlags = NIF_ICON;
+		nid.uFlags = NIF_ICON | NIF_TIP;
 		nid.hIcon = icon;
 
 		if (fFlipFlop) {//if icon already was set - check it's position
@@ -320,7 +341,7 @@ namespace trayIcon {
 				if (lpData = VirtualAllocEx(hTrayProc, 0, sizeof(TBBUTTONINFO64), MEM_COMMIT, PAGE_READWRITE)) {
 					for (int i = 0; i<count; i++) {
 						memset(&mtbbi, 0, sizeof(mtbbi));
-						if (is64bit)
+						if (IsWow64())
 							mtbbi.cbSize = sizeof(TBBUTTONINFO64);
 						else
 							mtbbi.cbSize = sizeof(TBBUTTONINFO);
@@ -330,7 +351,7 @@ namespace trayIcon {
 								// read data from another process
 								if (ReadProcessMemory(hTrayProc, lpData, &mtbbi, sizeof(TBBUTTONINFO64), &dwBytesRead)) {
 									icoData = NULL;
-									if (is64bit) {
+									if (IsWow64()) {
 										if (!(int)*(((int*)&mtbbi.lParam) + 1))
 											icoData = (void*)mtbbi.lParam;
 									}
@@ -362,12 +383,21 @@ namespace trayIcon {
 			prev_pos = pos;
 		} //if (fFlipFlop)	
 
+		wchar_t LangLong [250];
+		GetLocaleInfo(
+			MAKELCID(layout, SORT_DEFAULT),
+			LOCALE_SNATIVELANGNAME,
+			LangLong,
+			250
+		);
+		CharUpperBuff(LangLong, 1);
+		StringCchCopyW(nid.szTip, sizeof(nid.szTip) / sizeof(TCHAR), LangLong);
+
 		if (fFlipFlop) {
 			verify(Shell_NotifyIcon(NIM_MODIFY, &nid));
 		} else {
-		 	nid.uFlags = NIF_MESSAGE | NIF_TIP;
-		    nid.uCallbackMessage = TrayIconMessage;
-			_tcsncpy(nid.szTip, Tooltip.c_str(), sizeof(nid.szTip) / sizeof(TCHAR));
+		 	nid.uFlags = nid.uFlags | NIF_MESSAGE;
+		    nid.uCallbackMessage = TrayIconMessage;		
 			verify(Shell_NotifyIcon(NIM_ADD, &nid));
 			fFlipFlop = TRUE;
 		}

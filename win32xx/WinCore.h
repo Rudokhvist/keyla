@@ -479,7 +479,8 @@ namespace Win32xx
 		return lpstrRet;
 	}
   #endif // !lstrcpyn
-
+/*
+//commented because not used here, and makes warnings.
 	inline tString CharToTString(const char* s)
 	{
 		// Handy for converting char to TCHAR
@@ -504,6 +505,7 @@ namespace Win32xx
 		int len = 1 + lstrlen(t);
 		char* c = new char[len];
 		wcstombs(c, t, len);
+
 		str = c;
 		delete []c;
   #else
@@ -511,7 +513,7 @@ namespace Win32xx
   #endif
 		return str;
 	}
-
+*/
   #ifndef TLS_OUT_OF_INDEXES
 	#define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
   #endif
