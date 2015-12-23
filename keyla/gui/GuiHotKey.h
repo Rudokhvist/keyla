@@ -3,7 +3,7 @@
 #include "Menu.h"
 #include "../util/HotKey.h"
 #include "../util/HotKeyAutomaton.h"
-#include "../../win32xx/WinCore.h"
+#include "../../win32xx/wxx_wincore.h"
 
 //
 // Class of a control to choose a key binding

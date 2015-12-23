@@ -15,17 +15,17 @@ GuiHotKey::GuiHotKey() : m_lastInitializedHwnd(0) {
 
 void GuiHotKey::setHotKey(const HotKey & hotKey) {
 	m_hotKey = hotKey;
-    SetWindowText(GetHwnd(), m_hotKey.text().c_str());
+    ::SetWindowText(GetHwnd(), m_hotKey.text().c_str());
 }
 
 void GuiHotKey::setHotKey(unsigned int vk, unsigned int modifiers) {
 	m_hotKey.set(vk, modifiers);
-    SetWindowText(GetHwnd(), m_hotKey.text().c_str());
+    ::SetWindowText(GetHwnd(), m_hotKey.text().c_str());
 }
 
 void GuiHotKey::clearHotKey() {
 	m_hotKey.clear();
-    SetWindowText(GetHwnd(), m_hotKey.text().c_str());
+    ::SetWindowText(GetHwnd(), m_hotKey.text().c_str());
 }
 
 const HotKey & GuiHotKey::hotKey() const {
@@ -86,7 +86,7 @@ const HotKey & GuiHotKey::hotKey() const {
 			Autom.initialize();
 			return 0;
 	}
-	return CWnd::WndProc(window, message, wparam, lparam);
+	return CWnd::WndProc( message, wparam, lparam);
 }
 
 /* static */ LRESULT CALLBACK GuiHotKey::keyboardHook(int code, WPARAM wparam, LPARAM lparam) {
@@ -104,6 +104,6 @@ void GuiHotKey::initialize() {
 	HCURSOR cursor = LoadCursor(0, IDC_ARROW);
 	#pragma warning(push)
 	#pragma warning(disable: 4244) // warning C4244: 'argument' : conversion from 'LONG_PTR' to 'LONG', possible loss of data
-	SetClassLongPtr(GetHwnd(), GCLP_HCURSOR, reinterpret_cast<LONG_PTR>(cursor));
+	::SetClassLongPtr(GetHwnd(), GCLP_HCURSOR, reinterpret_cast<LONG_PTR>(cursor));
 	#pragma warning(pop)
 }

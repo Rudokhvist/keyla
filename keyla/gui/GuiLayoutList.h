@@ -2,7 +2,7 @@
 
 #include "GuiHotKey.h"
 #include "../settings.h"
-#include "../../win32xx/WinCore.h"
+#include "../../win32xx/wxx_wincore.h"
 
 #include <vector>
 

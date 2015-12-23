@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -9,6 +9,40 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="wxx_archive.h" />
+    <ClInclude Include="wxx_controls.h" />
+    <ClInclude Include="wxx_cstring.h" />
+    <ClInclude Include="wxx_dialog.h" />
+    <ClInclude Include="wxx_docking.h" />
+    <ClInclude Include="wxx_file.h" />
+    <ClInclude Include="wxx_frame.h" />
+    <ClInclude Include="wxx_gdi.h" />
+    <ClInclude Include="wxx_imagelist.h" />
+    <ClInclude Include="wxx_listview.h" />
+    <ClInclude Include="wxx_mdi.h" />
+    <ClInclude Include="wxx_menu.h" />
+    <ClInclude Include="wxx_menubar.h" />
+    <ClInclude Include="wxx_propertysheet.h" />
+    <ClInclude Include="wxx_rebar.h" />
+    <ClInclude Include="wxx_regkey.h" />
+    <ClInclude Include="wxx_ribbon.h" />
+    <ClInclude Include="wxx_richedit.h" />
+    <ClInclude Include="wxx_shared_ptr.h" />
+    <ClInclude Include="wxx_socket.h" />
+    <ClInclude Include="wxx_statusbar.h" />
+    <ClInclude Include="wxx_stdcontrols.h" />
+    <ClInclude Include="wxx_tab.h" />
+    <ClInclude Include="wxx_taskdialog.h" />
+    <ClInclude Include="wxx_time.h" />
+    <ClInclude Include="wxx_toolbar.h" />
+    <ClInclude Include="wxx_treeview.h" />
+    <ClInclude Include="wxx_wceframe.h" />
+    <ClInclude Include="wxx_wcestddef.h" />
+    <ClInclude Include="wxx_webbrowser.h" />
+    <ClInclude Include="wxx_wincore.h" />
+    <ClInclude Include="wxx_winutils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C536715F-9F07-4D45-87F6-95E212CA81A0}</ProjectGuid>
@@ -20,10 +54,12 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -66,31 +102,6 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="Changes.txt" />
-    <None Include="Classes.txt" />
-    <None Include="Copyright.txt" />
-    <None Include="Info.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Dialog.h" />
-    <ClInclude Include="Frame.h" />
-    <ClInclude Include="GDI.h" />
-    <ClInclude Include="MDI.h" />
-    <ClInclude Include="PropertySheet.h" />
-    <ClInclude Include="Splitter.h" />
-    <ClInclude Include="WinCore.h" />
-    <ClInclude Include="Default_Resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Dialog.cpp" />
-    <ClCompile Include="Frame.cpp" />
-    <ClCompile Include="GDI.cpp" />
-    <ClCompile Include="MDI.cpp" />
-    <ClCompile Include="PropertySheet.cpp" />
-    <ClCompile Include="Splitter.cpp" />
-    <ClCompile Include="WinCore.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

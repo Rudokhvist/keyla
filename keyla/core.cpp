@@ -59,7 +59,7 @@ namespace core {
 	}
 
 	void activeWindowChanged(HWND activeWindow, HKL layout) {
-		if (Application::GetApp()->isActive() && ExpectedLayout != 0 && settings::Settings.globalLayout) {
+		if (GetApplication().isActive() && ExpectedLayout != 0 && settings::Settings.globalLayout) {
 			// Switch layout in this window to match the global layout
 			// We will set tray icon and do other indication in layoutChanged(), which we will certainly reach
 			::setLayout(activeWindow, ExpectedLayout);
@@ -81,7 +81,7 @@ namespace core {
 			return;
 
 		bool ret;
-		if (!Application::GetApp()->isActive()) {
+		if (!GetApplication().isActive()) {
 			// Permit layout change
 			ret = false;
 		}
@@ -105,7 +105,7 @@ namespace core {
 	}
 
 	bool keyPressed(unsigned int vk, unsigned int modifiers) {
-		if (!Application::GetApp()->isActive())
+		if (!GetApplication().isActive())
 			return false;
 		
 		HotKey h(vk, modifiers);

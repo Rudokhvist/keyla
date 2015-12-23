@@ -1,5 +1,6 @@
+#include "../win32xx/wxx_wincore.h"
 #include "common.h"
-#include "../win32xx/WinCore.h"
+
 
 class Application : public CWinApp {
 public:
@@ -7,10 +8,6 @@ public:
 	Application();
 	virtual BOOL InitInstance();
 	virtual ~Application();
-
-	static Application * GetApp() {
-		return static_cast<Application *>(CWinApp::GetApp());
-	}
 
 	void toggle();
 	bool isActive() {
@@ -22,3 +19,5 @@ private:
 	HANDLE m_exclusion;
 	bool m_active;
 };
+
+inline Application& GetApplication() { return static_cast<Application&>(GetApp()); }
