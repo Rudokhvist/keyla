@@ -1,8 +1,12 @@
 #include "common.h"
 #include <Wtsapi32.h>
 // Wtsapi32.h doesn't damn help.
+#ifndef WM_WTSSESSION_CHANGE
 #define WM_WTSSESSION_CHANGE	0x02B1
+#endif
+#ifndef WTS_SESSION_LOCK
 #define WTS_SESSION_LOCK 7
+#endif
 
 #include "core.h"
 #include "layoutHook.h"
