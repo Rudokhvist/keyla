@@ -69,7 +69,7 @@
       <AdditionalIncludeDirectories>C:\base\keyla\win32xx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(TargetDir)/layoutHookDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wtsapi32.lib;$(TargetDir)/layoutHookDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)keyla.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)keyla.pdb</ProgramDatabaseFile>
