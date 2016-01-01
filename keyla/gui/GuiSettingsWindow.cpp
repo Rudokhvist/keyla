@@ -7,7 +7,8 @@
 #include <functional>
 using namespace std;
 
-GuiSettingsWindow::GuiSettingsWindow() : CPropertySheet(_T(VERSIONSTR)) {
+
+GuiSettingsWindow::GuiSettingsWindow() : CPropertySheet((std::wstring(_T("keyla ver. "))+std::wstring(_T(VERSIONSTR))).c_str()) {
 
 	SetIcon(IDI_MAINICON);
 	AddPage(new CommonPropsPage(*this));
