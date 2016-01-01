@@ -28,7 +28,7 @@ Application::Application() : m_exclusion(0), m_active(false) {
 
 	layoutList::load();
 	settings::load();
-	mainWindow::create();
+	GetMainWindow().Create();
 	activeWindowHook::create();
 	keyboardHook::create();
 	

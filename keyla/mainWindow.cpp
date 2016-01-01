@@ -10,30 +10,20 @@
 #include <list>
 using namespace std;
 
-namespace {
+//namespace {
 
-class MainWindow : public CWnd {
-private:
-
-	typedef list<mainWindow::HandlerProc> Handlers;
-	Handlers m_handlers;
-
-public:
-
-	void AddMessageHandler(mainWindow::HandlerProc handler) {
+	void  MainWindow::AddMessageHandler(HandlerProc handler) {
 		m_handlers.push_back(handler);
 	}
 
-protected:
-
-	virtual void PreRegisterClass(WNDCLASS & wc) {
+	void MainWindow::PreRegisterClass(WNDCLASS & wc) {
 		CWnd::PreRegisterClass(wc);
 
 		// Use partucular window class to be able to find a running application instance easily
 		wc.lpszClassName = TEXT("keyla main window");
 	}
 
-	virtual void PreCreate(CREATESTRUCT & cs) {
+	void MainWindow::PreCreate(CREATESTRUCT & cs) {
 		// Window only handles messages. It does not interact with user, so hide it.
 		cs.style &= ~WS_VISIBLE;
 
@@ -45,7 +35,7 @@ protected:
 		CWnd::PreCreate(cs);
 	}
 
-	virtual int OnCreate(LPCREATESTRUCT pcs) {
+	int MainWindow::OnCreate(LPCREATESTRUCT pcs) {
 		CWnd::OnCreate(pcs);
 
 		trayIcon::create(GetHwnd());
@@ -53,8 +43,8 @@ protected:
 		return 0;
 	}
 
-	virtual LRESULT WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
-
+	LRESULT MainWindow::WndProc(UINT message, WPARAM wparam, LPARAM lparam) {
+		HWND window = m_hWnd;
 		if (message == WM_DESTROY) {
 			// Quit the application
 			PostQuitMessage(0);
@@ -67,15 +57,15 @@ protected:
 			if ((*it)(window, message, wparam, lparam, &ret))
 				return ret;
 		}
-
 		return CWnd::WndProc(message, wparam, lparam);
 	}
 
-} MyMainWindow;
 
-}
 
+//}
+/*
 namespace mainWindow {
+
 
 	void create() {
 		MyMainWindow.Create();
@@ -87,6 +77,7 @@ namespace mainWindow {
 
 	void destroy() {
 		MyMainWindow.Destroy();
+		::PostQuitMessage(0);
 	}
-
-}
+*/
+//}

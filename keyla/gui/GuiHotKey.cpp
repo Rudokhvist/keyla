@@ -37,8 +37,8 @@ const HotKey & GuiHotKey::hotKey() const {
 	cs.style = WS_CHILD | ES_READONLY;
 }
 
-/* virtual */ LRESULT GuiHotKey::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
-
+/* virtual */ LRESULT GuiHotKey::WndProc(UINT message, WPARAM wparam, LPARAM lparam) {
+	HWND window=m_hWnd;
 	if (m_lastInitializedHwnd != window) {
 		m_lastInitializedHwnd = window;
 		initialize();
