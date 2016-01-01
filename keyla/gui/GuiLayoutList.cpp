@@ -14,7 +14,7 @@ HWND HotKeyEditDelegate::Create(GuiLayoutList & layoutList) {
 	return GuiHotKey::Create(layoutList);
 }
 
-/* virtual */ LRESULT HotKeyEditDelegate::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+/* virtual */ LRESULT HotKeyEditDelegate::WndProc(UINT message, WPARAM wparam, LPARAM lparam) {
 	switch (message) {
 		case WM_KILLFOCUS:
 			if (!m_layoutList) {
@@ -24,7 +24,7 @@ HWND HotKeyEditDelegate::Create(GuiLayoutList & layoutList) {
 			m_layoutList->delegateDeactivated();
 			break;
 	}
-	return GuiHotKey::WndProc(window, message, wparam, lparam);
+	return GuiHotKey::WndProc(message, wparam, lparam);
 }
 
 GuiLayoutList::GuiLayoutList() : m_delegateActive(false), m_delegateRow(0) {
@@ -111,7 +111,8 @@ void GuiLayoutList::delegateDeactivated() {
 	m_delegateRow = 0;
 }
 
-/* virtual */ LRESULT GuiLayoutList::WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+/* virtual */ LRESULT GuiLayoutList::WndProc(UINT message, WPARAM wparam, LPARAM lparam) {
+	HWND window=m_hWnd;
 	switch (message) {
 		case WM_LBUTTONUP: {
 			// When a cell in the second column is clicked, edit the shortcut in it
@@ -151,6 +152,6 @@ void GuiLayoutList::delegateDeactivated() {
 			break;
 		}
 	}
-	return CWnd::WndProc( message, wparam, lparam);
+	return CWnd::WndProc(message, wparam, lparam);
 }
 

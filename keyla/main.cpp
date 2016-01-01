@@ -8,5 +8,5 @@
 #include "application.h"
 
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int) {
-	Application().Run();
+	return Application().Run();
 }

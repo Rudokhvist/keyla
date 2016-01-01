@@ -34,7 +34,7 @@ public:
 protected:
 
 	virtual void PreCreate(CREATESTRUCT & cs);
-	virtual LRESULT WndProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+	virtual LRESULT WndProc(UINT message, WPARAM wparam, LPARAM lparam);
 
 private:
 

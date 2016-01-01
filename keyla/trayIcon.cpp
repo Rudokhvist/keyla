@@ -168,7 +168,7 @@ bool messageHandler(HWND window, UINT message, WPARAM wparam, LPARAM lparam, LRE
 					return 0;
 				case ID_TRAYICONMENU_EXIT:
 					trayIcon::destroy();
-					mainWindow::destroy();
+					GetApplication().GetMainWindow().Destroy();
 					return 0;
 			}
 	}
@@ -183,7 +183,7 @@ namespace trayIcon {
 		Window = mainWindow;
 
 		// Add our message handler
-		mainWindow::addMessageHandler(messageHandler);
+		GetApplication().GetMainWindow().AddMessageHandler(messageHandler);
 
 		// Load the context menu from the resources
 		Menu = LoadMenuIndirect(LoadResourceLang(RT_MENU, MAKEINTRESOURCE(IDM_TRAYICONMENU)));

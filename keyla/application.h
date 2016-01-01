@@ -1,5 +1,6 @@
 #include "../win32xx/wxx_wincore.h"
 #include "common.h"
+#include "mainWindow.h"
 
 
 class Application : public CWinApp {
@@ -14,8 +15,10 @@ public:
 		return m_active;
 	}
 
-private:
+	MainWindow& GetMainWindow() { return m_mainWindow; }
 
+private:
+	MainWindow m_mainWindow;
 	HANDLE m_exclusion;
 	bool m_active;
 };

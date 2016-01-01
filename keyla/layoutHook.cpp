@@ -11,6 +11,7 @@
 #include "core.h"
 #include "layoutHook.h"
 #include "mainWindow.h"
+#include "application.h"
 #include "../layoutHookDll/layoutHookDll.h"
 
 namespace {
@@ -41,7 +42,7 @@ namespace layoutHook {
 
 		verify(LayoutChangedMessage = ::RegisterWindowMessage(layoutHookDll::LayoutChangedMessage));
 		verify(SetLayoutMessage = ::RegisterWindowMessage(layoutHookDll::SetLayoutMessage));
-		mainWindow::addMessageHandler(messageHandler);
+		GetApplication().GetMainWindow().AddMessageHandler(messageHandler);
 
 		layoutHookDll::create(mainWindow);
 		hook = SetWindowsHookEx(WH_CALLWNDPROC, layoutHookDll::proc, GetModuleHandle(_T("layoutHookDll.dll")), 0);
